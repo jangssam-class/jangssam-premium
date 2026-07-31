@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맞춤 과외 상담 신청 | 장쌤의 과외교실</title>
+<meta name="description" content="지역과 과목에 맞춰 간편하게 신청하는 장쌤의 과외교실 상담 페이지입니다.">
+<style>
+:root{--navy:#17345f;--blue:#2f72d6;--orange:#d27a2c;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--bg:#f7f9fc;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}a{text-decoration:none;color:inherit}
+.header{background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.header-inner{width:min(1080px,calc(100% - 32px));min-height:72px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font-weight:800;color:var(--navy);font-size:20px}.back{padding:10px 16px;border-radius:12px;background:var(--navy);color:#fff;font-weight:700}
+.hero{padding:70px 16px 42px;text-align:center;background:linear-gradient(135deg,#eef5ff,#fff8ef)}.hero span{display:inline-block;padding:7px 12px;border-radius:999px;background:#e4efff;color:var(--blue);font-size:13px;font-weight:800}.hero h1{font-size:clamp(32px,6vw,52px);line-height:1.2;color:var(--navy);margin:18px 0 12px}.hero p{margin:0;color:var(--muted);font-size:18px}
+.wrap{width:min(920px,calc(100% - 32px));margin:36px auto 70px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 18px 45px rgba(31,51,81,.08)}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}.chip{padding:9px 14px;border-radius:999px;background:#eef5ff;color:var(--navy);font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.field{display:flex;flex-direction:column;gap:8px}.field.full{grid-column:1/-1}.field label{font-weight:800;color:var(--navy)}.field input,.field select,.field textarea{width:100%;border:1px solid #d7dee8;border-radius:13px;padding:14px 15px;font:inherit;background:#fff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#6ea2e7;box-shadow:0 0 0 3px rgba(47,114,214,.12)}textarea{min-height:130px;resize:vertical}.notice{margin-top:20px;padding:16px 18px;border-radius:14px;background:#fff7ed;color:#8a4b16;font-size:14px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}.btn{border:0;border-radius:14px;padding:15px 18px;font:inherit;font-weight:800;cursor:pointer;text-align:center}.btn-primary{background:var(--blue);color:#fff}.btn-call{background:#fff;border:1px solid var(--line);color:var(--navy)}.btn:hover{transform:translateY(-1px)}.result{display:none;margin-top:18px;padding:16px;border-radius:14px;background:#edf8f0;color:#22623a;font-weight:700}.footer{text-align:center;padding:28px 16px;background:#102f5c;color:#dbeafe}
+@media(max-width:680px){.grid,.actions{grid-template-columns:1fr}.card{padding:22px}.hero{padding-top:54px}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a class="logo" href="index.html">장쌤의 과외교실</a><a class="back" href="index.html">메인으로</a></div></header>
+<section class="hero"><span>QUICK CONSULTATION</span><h1>지역과 과목에 맞춘<br>간편 상담 신청</h1><p>선택하신 카테고리를 자동으로 반영해 빠르게 상담을 시작할 수 있습니다.</p></section>
+<main class="wrap">
+<section class="card">
+<div class="summary" id="summary"></div>
+<form id="consultForm">
+<div class="grid">
+<div class="field"><label for="name">학생 또는 학부모 성함</label><input id="name" name="name" type="text" placeholder="예: 김민준 학부모" required></div>
+<div class="field"><label for="phone">연락처</label><input id="phone" name="phone" type="tel" placeholder="예: 010-1234-5678" required></div>
+<div class="field"><label for="region">희망 지역</label><select id="region" name="region" required><option value="">지역 선택</option><option>서울</option><option>경기도</option><option>인천</option><option>부산</option><option>대구</option><option>대전</option><option>광주</option><option>울산</option><option>기타 지역</option></select></div>
+<div class="field"><label for="subject">희망 과목</label><select id="subject" name="subject" required><option value="">과목 선택</option><option>수학</option><option>영어</option><option>국어</option><option>과학</option><option>사회</option><option>역사</option><option>코딩</option><option>논술</option><option>검정고시</option><option>기타 과목</option></select></div>
+<div class="field"><label for="grade">학년</label><select id="grade" name="grade" required><option value="">학년 선택</option><option>초등학생</option><option>중학생</option><option>고등학생</option><option>성인</option><option>검정고시 준비</option></select></div>
+<div class="field"><label for="classType">희망 수업 방식</label><select id="classType" name="classType"><option>상담 후 결정</option><option>방문 과외</option><option>화상수업</option><option>방문·화상 모두 가능</option></select></div>
+<div class="field full"><label for="message">상담 내용</label><textarea id="message" name="message" placeholder="현재 성적, 목표, 희망 요일과 시간 등을 적어주세요."></textarea></div>
+</div>
+<div class="notice">아래 버튼을 누르면 작성한 상담 내용이 자동으로 복사되고 무료 상담 신청 페이지가 열립니다. 열린 신청 페이지의 상담 내용란에 붙여넣기하면 됩니다.</div>
+<div class="actions"><button class="btn btn-primary" type="submit">상담 내용 복사 후 신청하기</button><a class="btn btn-call" href="tel:01097680911">전화 상담 010-9768-0911</a></div>
+<div class="result" id="result">상담 내용이 복사되었습니다. 새로 열린 신청 페이지에 붙여넣어 주세요.</div>
+</form>
+</section>
+</main>
+<footer class="footer">© 2026 장쌤의 과외교실. All Rights Reserved.</footer>
+<script>
+const params=new URLSearchParams(location.search);
+const regionParam=params.get('region')||'';
+const subjectParam=params.get('subject')||'';
+const region=document.getElementById('region');
+const subject=document.getElementById('subject');
+const summary=document.getElementById('summary');
+if(regionParam){region.value=regionParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">선택 지역: ${regionParam}</span>`)}
+if(subjectParam){subject.value=subjectParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">선택 과목: ${subjectParam}</span>`)}
+if(!regionParam&&!subjectParam){summary.innerHTML='<span class="chip">맞춤 과외 상담</span>'}
+document.getElementById('consultForm').addEventListener('submit',async function(e){
+ e.preventDefault();
+ const text=`[장쌤의 과외교실 상담 신청]\n성함: ${document.getElementById('name').value}\n연락처: ${document.getElementById('phone').value}\n지역: ${region.value}\n과목: ${subject.value}\n학년: ${document.getElementById('grade').value}\n수업 방식: ${document.getElementById('classType').value}\n상담 내용: ${document.getElementById('message').value||'없음'}`;
+ try{await navigator.clipboard.writeText(text)}catch(err){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
+ document.getElementById('result').style.display='block';
+ window.open('https://naver.me/xPY0a7X1','_blank','noopener,noreferrer');
+});
+</script>
+</body>
+</html>

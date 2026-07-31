@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>교육정보 | 장쌤의과외교실</title>
+  <meta name="description" content="과목별 공부법, 검정고시, 코딩과외와 학부모 교육정보를 확인하세요.">
+  <link rel="stylesheet" href="blog.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="blog-header"><div class="blog-header-inner">
+  <a class="blog-logo" href="index.html"><img src="이미지/로고.png" alt="장쌤의과외교실 로고"><span>장쌤의과외교실</span></a>
+  <nav class="blog-nav"><a href="index.html">홈</a><a href="지역별과외찾기.html">지역별 과외</a><a href="화상수업.html">화상수업</a><a class="consult" href="상담신청.html">상담 신청</a></nav>
+</div></header>
+<section class="blog-hero"><div class="blog-wrap"><span class="blog-eyebrow">JANGSSAM EDUCATION INFO</span><h1>교육정보</h1><p>학생에게 맞는 공부법부터 과목별 학습 전략까지, 수업 현장에서 필요한 정보를 차근차근 전해드립니다.</p></div></section>
+<section class="blog-tools"><div class="blog-wrap"><form class="blog-search" id="blogSearch"><input id="searchInput" type="search" placeholder="궁금한 공부법이나 과목을 검색하세요" aria-label="교육정보 검색"><button type="submit">검색</button></form><div class="blog-categories" id="categoryButtons"></div></div></section>
+<main class="blog-main"><div class="blog-wrap">
+  <section class="featured-area" id="featuredArea" hidden><div class="section-heading"><span>추천 교육정보</span><h2>먼저 읽어보면 좋은 글</h2></div><div class="featured-grid" id="featuredGrid"></div></section>
+  <div class="section-heading list-heading"><span>전체 교육정보</span><h2>최근 포스팅</h2><p id="postCount"></p></div>
+  <div class="post-grid" id="postGrid"><div class="loading-card">교육정보를 불러오는 중입니다.</div></div>
+  <div class="empty" id="emptyMessage">검색 결과가 없습니다. 다른 검색어나 카테고리를 선택해 주세요.</div>
+</div></main>
+<footer class="blog-footer">© 2026 장쌤의과외교실. All rights reserved.</footer>
+<script src="blog.js"></script>
+</body></html>

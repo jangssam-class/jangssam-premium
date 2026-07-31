@@ -1,0 +1,18 @@
+장쌤 홈페이지 V7.1 실제 작동 안내
+
+1. 프로젝트 파일 전체를 GitHub 저장소 최상단에 업로드합니다.
+2. Netlify에서 이 저장소를 연결합니다. Build command는 비우고 Publish directory는 . 또는 비워둡니다.
+3. 블로그 주소: /blog.html
+4. 글쓰기 주소: /admin/
+
+포스팅 절차
+1) /admin/ 접속
+2) 새 글 작성 또는 기존 글 선택 후 수정
+3) 글 저장
+4) posts.json 다운로드
+5) GitHub 저장소의 content/posts.json을 다운로드한 파일로 교체
+6) Commit changes
+7) Netlify 자동 배포 완료 후 /blog.html에서 확인
+
+이 방식은 로그인 서버나 외부 CMS 설정 없이 업로드 즉시 작동합니다.
+관리자 화면의 저장은 브라우저 임시 저장이며, 실제 공개는 content/posts.json을 GitHub에 올려야 합니다.
