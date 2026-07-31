@@ -41,12 +41,23 @@
 const params=new URLSearchParams(location.search);
 const regionParam=params.get('region')||'';
 const subjectParam=params.get('subject')||'';
+const gradeParam=params.get('grade')||'';
+const methodParam=params.get('method')||'';
+const inquiryParam=params.get('inquiry')||'';
 const region=document.getElementById('region');
 const subject=document.getElementById('subject');
+const grade=document.getElementById('grade');
+const classType=document.getElementById('classType');
+const message=document.getElementById('message');
 const summary=document.getElementById('summary');
+const gradeMap={'초등':'초등학생','중등':'중학생','고등':'고등학생','검정고시':'검정고시 준비'};
+const methodMap={'방문수업':'방문 과외','화상수업':'화상수업','상담 후 결정':'상담 후 결정'};
 if(regionParam){region.value=regionParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">선택 지역: ${regionParam}</span>`)}
 if(subjectParam){subject.value=subjectParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">선택 과목: ${subjectParam}</span>`)}
-if(!regionParam&&!subjectParam){summary.innerHTML='<span class="chip">맞춤 과외 상담</span>'}
+if(gradeParam){grade.value=gradeMap[gradeParam]||gradeParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">학년: ${gradeParam}</span>`)}
+if(methodParam){classType.value=methodMap[methodParam]||methodParam;summary.insertAdjacentHTML('beforeend',`<span class="chip">수업 방식: ${methodParam}</span>`)}
+if(inquiryParam){summary.insertAdjacentHTML('beforeend',`<span class="chip">${inquiryParam}</span>`);message.value=`${gradeParam||'학생'} ${subjectParam||''} ${methodParam||''} 선생님 안내를 희망합니다.\n희망 지역과 가능한 요일·시간을 상담하고 싶습니다.`.replace(/ +/g,' ').trim()}
+if(!regionParam&&!subjectParam&&!gradeParam&&!methodParam&&!inquiryParam){summary.innerHTML='<span class="chip">맞춤 과외 상담</span>'}
 document.getElementById('consultForm').addEventListener('submit',async function(e){
  e.preventDefault();
  const text=`[장쌤의 과외교실 상담 신청]\n성함: ${document.getElementById('name').value}\n연락처: ${document.getElementById('phone').value}\n지역: ${region.value}\n과목: ${subject.value}\n학년: ${document.getElementById('grade').value}\n수업 방식: ${document.getElementById('classType').value}\n상담 내용: ${document.getElementById('message').value||'없음'}`;
