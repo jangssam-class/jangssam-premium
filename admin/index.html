@@ -2,23 +2,58 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#0c3268">
   <title>장쌤 교육정보 관리자</title>
   <link rel="icon" href="/이미지/favicon-32.png" type="image/png">
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #f4f7fb; }
+    .boot {
+      min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #0b274d; text-align: center;
+    }
+    .boot-card { max-width: 520px; padding: 32px; border-radius: 24px; background: #fff;
+      box-shadow: 0 18px 50px rgba(9, 38, 79, .12); border: 1px solid #dce7f5; }
+    .boot h1 { margin: 0 0 12px; font-size: 24px; }
+    .boot p { margin: 0; color: #60728c; line-height: 1.7; }
+  </style>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <div class="boot" id="cmsBoot">
+    <div class="boot-card">
+      <h1>장쌤 교육정보 관리자</h1>
+      <p>관리자 로그인과 포스팅 화면을 불러오는 중입니다.<br>처음 접속하면 로그인 창이 표시될 수 있습니다.</p>
+    </div>
+  </div>
   <noscript>관리자 화면을 사용하려면 JavaScript를 켜주세요.</noscript>
   <script>
+    window.CMS_MANUAL_INIT = true;
+
+    function startCms() {
+      if (!window.CMS) return;
+      window.CMS.init();
+      const boot = document.getElementById('cmsBoot');
+      if (boot) boot.remove();
+    }
+
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on('init', function(user) {
         if (!user) {
-          window.netlifyIdentity.on('login', function() { location.reload(); });
+          window.netlifyIdentity.open('login');
         }
+      });
+      window.netlifyIdentity.on('login', function() {
+        window.netlifyIdentity.close();
+        location.reload();
+      });
+      window.netlifyIdentity.on('logout', function() {
+        location.reload();
       });
     }
   </script>
-  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js" onload="startCms()"></script>
 </body>
 </html>
