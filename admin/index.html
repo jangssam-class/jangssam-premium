@@ -1,28 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ko">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="noindex,nofollow" name="robots"/>
 <title>장쌤 교육정보 글쓰기</title>
 <style>
 :root{--navy:#0f2f5d;--blue:#2467e8;--line:#dce5f2;--bg:#f5f8fc;--text:#14233c}*{box-sizing:border-box}body{margin:0;font-family:Pretendard,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}header{background:#fff;border-bottom:1px solid var(--line);padding:18px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}header a{color:var(--navy);text-decoration:none;font-weight:800}.wrap{max-width:1180px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:380px 1fr;gap:22px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 35px rgba(25,55,90,.07);padding:20px}h1{font-size:24px;margin:0 0 8px}h2{font-size:18px;margin:0 0 14px}.hint{font-size:13px;line-height:1.65;color:#65748b;margin:0 0 18px}.posts{display:grid;gap:10px;max-height:70vh;overflow:auto}.post-item{border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}.post-item.active{border-color:var(--blue);background:#f1f6ff}.post-item strong{display:block;font-size:14px}.post-item small{color:#718098}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{display:grid;gap:7px;font-size:13px;font-weight:700}input,select,textarea{width:100%;border:1px solid #cfd9e8;border-radius:10px;padding:11px 12px;font:inherit;background:#fff}textarea{min-height:110px;resize:vertical}#body{min-height:290px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}button{border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#eaf1fb;color:var(--navy)}.danger{background:#fff0f0;color:#b42318}.notice{margin-top:16px;padding:13px;border-radius:10px;background:#fff8e7;color:#795500;font-size:13px;line-height:1.65}.status{margin-top:12px;font-size:13px;font-weight:700;color:#176b3a}.top-actions{display:flex;gap:8px}.top-actions button{padding:9px 12px}@media(max-width:860px){.wrap{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.posts{max-height:300px}}
 </style>
-</head>
+<link href="/이미지/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/></head>
 <body>
-<header><a href="../blog.html">장쌤 교육정보</a><div class="top-actions"><button class="secondary" id="loadFile">posts.json 불러오기</button><input type="file" id="fileInput" accept="application/json" hidden></div></header>
+<header><a href="../blog.html">장쌤 교육정보</a><div class="top-actions"><button class="secondary" id="loadFile">posts.json 불러오기</button><input accept="application/json" hidden="" id="fileInput" type="file"/></div></header>
 <div class="wrap">
 <section class="panel"><h1>포스팅 관리</h1><p class="hint">현재 게시된 글을 불러와 수정하거나 새 글을 만든 뒤, 완성된 <b>posts.json</b> 파일을 내려받아 GitHub의 <b>content/posts.json</b>에 덮어쓰면 실제 홈페이지에 반영됩니다.</p><button class="primary" id="newPost">새 글 작성</button><div class="posts" id="postList"></div></section>
 <section class="panel"><h2 id="formTitle">새 글 작성</h2><form id="editor"><div class="grid">
-<label>주소용 영문 이름<input id="slug" required placeholder="middle-math-study"></label>
-<label>작성일<input id="date" type="date" required></label>
-<label>제목<input id="title" required></label>
+<label>주소용 영문 이름<input id="slug" placeholder="middle-math-study" required=""/></label>
+<label>작성일<input id="date" required="" type="date"/></label>
+<label>제목<input id="title" required=""/></label>
 <label>카테고리<select id="category"><option>수학</option><option>영어</option><option>국어</option><option>과학</option><option>검정고시</option><option>코딩</option><option>학습관리</option><option>교육소식</option></select></label>
-<label class="full">목록 요약<textarea id="excerpt" required></textarea></label>
-<label class="full">대표 이미지 경로<input id="image" placeholder="이미지/blog/example.jpg"></label>
-<label class="full">대표 이미지 설명<input id="imageAlt"></label>
-<label><span><input id="featured" type="checkbox" style="width:auto"> 추천 글</span></label>
-<label><span><input id="published" type="checkbox" style="width:auto" checked> 공개</span></label>
-<label class="full">본문(Markdown 지원)<textarea id="body" required placeholder="## 소제목&#10;&#10;본문 내용을 입력하세요."></textarea></label>
-</div><div class="actions"><button class="primary" type="submit">글 저장</button><button class="secondary" type="button" id="download">posts.json 다운로드</button><button class="danger" type="button" id="delete">선택 글 삭제</button></div><div class="status" id="status"></div><div class="notice">중요: 이 관리자 페이지는 서버 없이 안전하게 작동하는 편집기입니다. 여기서 저장한 내용은 현재 브라우저에 임시 저장됩니다. 홈페이지에 공개하려면 반드시 <b>posts.json 다운로드</b> 후 GitHub의 <b>content/posts.json</b> 파일을 교체하고 커밋해야 합니다.</div></form></section>
+<label class="full">목록 요약<textarea id="excerpt" required=""></textarea></label>
+<label class="full">대표 이미지 경로<input id="image" placeholder="이미지/blog/example.jpg"/></label>
+<label class="full">대표 이미지 설명<input id="imageAlt"/></label>
+<label><span><input id="featured" style="width:auto" type="checkbox"/> 추천 글</span></label>
+<label><span><input checked="" id="published" style="width:auto" type="checkbox"/> 공개</span></label>
+<label class="full">본문(Markdown 지원)<textarea id="body" placeholder="## 소제목
+
+본문 내용을 입력하세요." required=""></textarea></label>
+</div><div class="actions"><button class="primary" type="submit">글 저장</button><button class="secondary" id="download" type="button">posts.json 다운로드</button><button class="danger" id="delete" type="button">선택 글 삭제</button></div><div class="status" id="status"></div><div class="notice">중요: 이 관리자 페이지는 서버 없이 안전하게 작동하는 편집기입니다. 여기서 저장한 내용은 현재 브라우저에 임시 저장됩니다. 홈페이지에 공개하려면 반드시 <b>posts.json 다운로드</b> 후 GitHub의 <b>content/posts.json</b> 파일을 교체하고 커밋해야 합니다.</div></form></section>
 </div>
 <script>
 const els=id=>document.getElementById(id);let data={posts:[]},selected=-1;

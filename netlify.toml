@@ -1,29 +1,19 @@
 [build]
   publish = "."
 
-[[redirects]]
-  from = "/admin"
-  to = "/admin/"
-  status = 301
-
-[[redirects]]
-  from = "/blog"
-  to = "/blog.html"
-  status = 200
-
-[[headers]]
-  for = "/admin/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
-    Cache-Control = "no-cache"
-
-[[headers]]
-  for = "/content/*"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-
 [[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/이미지/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
