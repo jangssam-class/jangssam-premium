@@ -1,20 +1,18 @@
-장쌤의과외교실 V10.1 네이버 SEO 적용 안내
+장쌤 홈페이지 V10.2 네이버 SEO 마스터 적용 안내
 
-1. 이 압축파일 내부 전체를 jangssam-premium GitHub 저장소 최상단에 덮어씁니다.
-2. Commit changes 후 Netlify 배포 완료를 기다립니다.
-3. 아래 주소가 모두 열리는지 확인합니다.
+1. 이 폴더 안의 파일과 폴더 전체를 GitHub jangssam-premium 저장소 최상단에 업로드합니다.
+2. 같은 이름의 기존 파일은 삭제하지 말고 덮어씁니다.
+3. Commit changes를 누릅니다.
+4. Netlify 자동 배포가 Published 상태가 될 때까지 기다립니다.
+5. 아래 주소가 정상적으로 열리는지 확인합니다.
+   - https://jangssam-premium.netlify.app/
    - https://jangssam-premium.netlify.app/robots.txt
    - https://jangssam-premium.netlify.app/sitemap.xml
    - https://jangssam-premium.netlify.app/rss.xml
-4. 네이버 서치어드바이저에서 사이트를 등록합니다.
-5. 소유확인에서 HTML 태그 방식을 선택하면 네이버가 verification 메타 태그를 제공합니다.
-6. 그 태그 전체를 index.html의 <head> 안에 추가하고 GitHub에 다시 업로드합니다.
-7. 요청 > 사이트맵 제출에 sitemap.xml을 입력합니다.
-8. 요청 > RSS 제출에 rss.xml을 입력합니다.
-9. 검증 > robots.txt에서 수집과 URL 허용 여부를 확인합니다.
-10. 검증 > URL 검사로 메인, 교육정보, 화상수업 페이지를 검사합니다.
+6. 네이버 서치어드바이저로 돌아가 소유확인 버튼을 누릅니다.
+7. 사이트맵 제출에는 sitemap.xml, RSS 제출에는 rss.xml을 입력합니다.
 
-중요
-- 현재 대표 URL은 https://jangssam-premium.netlify.app 기준입니다.
-- 추후 자체 도메인을 연결하면 canonical, sitemap.xml, robots.txt, Open Graph의 도메인을 새 주소로 일괄 변경해야 합니다.
-- 검색 노출과 순위는 보장되지 않으며, 유용하고 고유한 콘텐츠를 꾸준히 게시해야 합니다.
+적용된 네이버 소유확인 태그:
+<meta name="naver-site-verification" content="e776122d31e1462506b4463657e71940684a5b2b" />
+
+버전: V10.2-NAVER-SEO-MASTER-VERIFIED-20260803
