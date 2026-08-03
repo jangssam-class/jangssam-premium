@@ -23,7 +23,7 @@
     : `<div class="post-thumb post-thumb-fallback"><span>${escapeHtml(post.category)}</span></div>`;
 
   const card = (post, featured = false) => `
-    <a class="post-card${featured ? ' featured-card' : ''}" href="posts/${encodeURIComponent(post.slug)}.html">
+    <a class="post-card${featured ? ' featured-card' : ''}" href="post.html?slug=${encodeURIComponent(post.slug)}">
       ${image(post)}
       <div class="post-card-body">
         <span class="post-category">${escapeHtml(post.category)}</span>

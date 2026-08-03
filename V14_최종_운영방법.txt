@@ -1,0 +1,40 @@
+장쌤 Premium V14 최종 운영 안내
+
+이 버전의 원칙
+- 별도 Node 빌드 없이 정적 사이트로 작동합니다.
+- 관리자에서 작성한 글은 content/posts.json에 저장됩니다.
+- 블로그 목록, 글 상세, 메인 최신글은 posts.json을 직접 읽어 자동 반영합니다.
+- 기존 지역 SEO, 네이버 인증, robots.txt, sitemap.xml, RSS는 유지합니다.
+
+최초 1회 Netlify 설정
+1. Project configuration > Identity > Registration에서 Invite only 선택
+2. Identity > Users에서 본인 이메일 Invite users
+3. Identity > Services > Git Gateway > Enable Git Gateway
+4. 초대 메일에서 비밀번호 설정
+5. https://jangssam-premium.netlify.app/admin/ 접속
+
+포스팅 방법
+1. /admin/ 로그인
+2. 교육정보 포스팅 > 전체 포스팅 관리
+3. 포스팅 목록에서 Add item
+4. 제목, 날짜, 카테고리, 요약, 본문 입력
+5. 주소용 영문 이름은 예: middle-math-study처럼 작성
+6. Save 또는 Publish
+7. GitHub main 브랜치에 content/posts.json 변경이 커밋됩니다.
+8. Netlify 새 프로덕션 배포가 완료되면 홈페이지에 표시됩니다.
+
+중요: 현재 Netlify 상단에 'production deploys are paused'가 보이면
+- 기존 홈페이지는 계속 열립니다.
+- 관리자 발행으로 GitHub 커밋은 만들어질 수 있어도 새 내용은 프로덕션에 배포되지 않습니다.
+- 다음 결제 주기에 무료 크레딧이 초기화되거나 유료 크레딧을 추가한 뒤 배포가 재개됩니다.
+- Netlify 프로덕션 배포는 현재 크레딧을 사용합니다.
+
+검색 관련
+- 기존 sitemap.xml과 rss.xml은 기본 페이지와 기존 게시글 정보를 유지합니다.
+- V14에서 새 포스팅은 blog.html과 post.html?slug=주소로 즉시 표시됩니다.
+- 새 글을 네이버에 빠르게 알리려면 서치어드바이저 > 웹페이지 수집에서 blog.html을 다시 요청하세요.
+
+최종 확인 주소
+- 메인: https://jangssam-premium.netlify.app/
+- 블로그: https://jangssam-premium.netlify.app/blog.html
+- 관리자: https://jangssam-premium.netlify.app/admin/

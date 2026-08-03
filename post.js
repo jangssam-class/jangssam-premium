@@ -14,10 +14,10 @@
       else{close();html+=`<p>${inline(line)}</p>`;}}
     close();return html;
   }
-  fetch('content/posts.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{
+  fetch('/content/posts.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{
     const post=(data.posts||[]).find(p=>p.slug===slug&&p.published!==false);if(!post)throw new Error('not found');
     document.title=`${post.title} | 장쌤의과외교실`;
     const desc=document.querySelector('meta[name="description"]');if(desc)desc.content=post.excerpt||post.title;
     article.innerHTML=`<header class="article-header"><span class="post-category">${escapeHtml(post.category)}</span><h1>${escapeHtml(post.title)}</h1><p class="article-excerpt">${escapeHtml(post.excerpt)}</p><div class="post-meta">${escapeHtml(post.date)} · 장쌤 교육정보</div></header>${post.image?`<figure class="article-image"><img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.imageAlt || post.title)}"></figure>`:''}<div class="article-content">${markdown(post.body)}</div>`;
-  }).catch(()=>{article.innerHTML='<div class="article-error"><h1>글을 찾을 수 없습니다.</h1><p>주소가 잘못되었거나 비공개로 전환된 글입니다.</p><a href="blog.html">교육정보로 돌아가기</a></div>';});
+  }).catch(()=>{article.innerHTML='<div class="article-error"><h1>글을 찾을 수 없습니다.</h1><p>주소가 잘못되었거나 비공개로 전환된 글입니다.</p><a href="/blog.html">교육정보로 돌아가기</a></div>';});
 })();

@@ -1,5 +1,4 @@
 [build]
-  command = "node scripts/build-content.js"
   publish = "."
 
 [[headers]]
@@ -8,6 +7,7 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 [[headers]]
   for = "/이미지/*"
@@ -16,5 +16,10 @@
 
 [[headers]]
   for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/content/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
