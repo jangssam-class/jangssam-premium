@@ -1704,7 +1704,7 @@
 
   /* Full detailed blocks are opened from the hamburger menu when needed */
   #about,#subjectDetail,#regionSearch,#gradeGrowth,#gradeResults,#teachers,#faq,#educationInfo{display:none!important}
-  #about.jj-mobile-expanded,#subjectDetail.jj-mobile-expanded,#regionSearch.jj-mobile-expanded,#gradeGrowth.jj-mobile-expanded,#gradeResults.jj-mobile-expanded,#teachers.jj-mobile-expanded,#faq.jj-mobile-expanded,#educationInfo.jj-mobile-expanded{display:block!important;animation:jjV8Reveal .28s ease-out}
+  #about.jj-mobile-expanded,#subjectDetail.jj-mobile-expanded,#region-map-search.jj-mobile-expanded,#grade-growth.jj-mobile-expanded,#grade-results.jj-mobile-expanded,#teachers.jj-mobile-expanded,#faq.jj-mobile-expanded,#education-info.jj-mobile-expanded{display:block!important;animation:jjV8Reveal .28s ease-out}
   @keyframes jjV8Reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   .jj-mobile-detail-close{display:flex!important;align-items:center;justify-content:center;width:calc(100% - 32px);max-width:520px;margin:14px auto 4px;border:1px solid #cdd8e4;background:#fff;border-radius:13px;padding:12px 16px;color:#173e68;font-weight:800;font-size:14px}
 
@@ -1763,7 +1763,45 @@
   #subject .subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .jj-mobile-quick-grid{gap:8px}
 }
-</style><meta content="V8.0-MOBILE-UX-RENEWAL-20260803" name="jj-version"/></head>
+</style><meta content="V8.0-MOBILE-UX-RENEWAL-20260803" name="jj-version"/>
+<style id="jjV81MobileConciseFix">
+@media (max-width: 768px){
+  /* 모바일 첫 화면에는 핵심 섹션만 표시 */
+  .features,
+  #about,
+  .stats,
+  .process,
+  #subject-detail-hub,
+  #region-map-search,
+  #grade-growth,
+  #grade-results,
+  .why-us,
+  #teachers,
+  #faq,
+  #education-info,
+  .region-detail-section{display:none!important;}
+
+  /* 햄버거 메뉴에서 선택한 상세 섹션은 다시 표시 */
+  #about.jj-mobile-expanded,
+  #region-map-search.jj-mobile-expanded,
+  #grade-growth.jj-mobile-expanded,
+  #grade-results.jj-mobile-expanded,
+  #teachers.jj-mobile-expanded,
+  #faq.jj-mobile-expanded,
+  #education-info.jj-mobile-expanded{display:block!important;}
+
+  /* 남겨둔 핵심 섹션도 모바일에서는 압축 */
+  #home{min-height:auto!important;padding-bottom:24px!important;}
+  #onlinePromo{padding-top:34px!important;padding-bottom:34px!important;}
+  #subject{padding-top:42px!important;padding-bottom:42px!important;}
+  #review{padding-top:42px!important;padding-bottom:42px!important;}
+  #contact{padding-top:42px!important;padding-bottom:96px!important;}
+  #subject .subject-grid > *:nth-child(n+7){display:none!important;}
+  #review .review-grid > *:nth-child(n+4){display:none!important;}
+  .jj-mobile-quick{display:block!important;}
+}
+</style>
+</head>
 <body>
 <!-- ==========================
             HEADER
@@ -1845,9 +1883,9 @@
                     ×
                 </button>
 </div>
-<nav aria-label="모바일 주요 메뉴" class="mobile-navbar"><a href="#home" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">01</span><span><strong>홈</strong><small>메인 화면</small></span></a><a href="#onlineClass" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">02</span><span><strong>화상수업</strong><small>1:1 실시간 화상수업</small></span></a><a href="#" onclick="window.JJCurriculum.open(); window.JJMenu.close(); return false;"><span class="mobile-nav-number">03</span><span><strong>커리큘럼</strong><small>학년별 상세 과정 보기</small></span></a><a href="#subject" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">04</span><span><strong>과목안내</strong><small>과목별 수업 안내</small></span></a><a data-v8-menu="region" href="#regionSearch" onclick="window.JJMobileSections.open('regionSearch'); return false;">
+<nav aria-label="모바일 주요 메뉴" class="mobile-navbar"><a href="#home" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">01</span><span><strong>홈</strong><small>메인 화면</small></span></a><a href="화상수업.html" onclick="window.JJMenu.close();"><span class="mobile-nav-number">02</span><span><strong>화상수업</strong><small>1:1 실시간 화상수업</small></span></a><a href="#" onclick="window.JJCurriculum.open(); window.JJMenu.close(); return false;"><span class="mobile-nav-number">03</span><span><strong>커리큘럼</strong><small>학년별 상세 과정 보기</small></span></a><a href="#subject" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">04</span><span><strong>과목안내</strong><small>과목별 수업 안내</small></span></a><a data-v8-menu="region" href="#regionSearch" onclick="window.JJMobileSections.open('region-map-search'); return false;">
 <span class="mobile-nav-number">05</span><span><strong>지역별 과외</strong><small>전국 지역과 수업 방식 확인</small></span>
-</a><a data-v8-menu="growth" href="#gradeResults" onclick="window.JJMobileSections.open('gradeResults'); return false;">
+</a><a data-v8-menu="growth" href="#gradeResults" onclick="window.JJMobileSections.open('grade-results'); return false;">
 <span class="mobile-nav-number">06</span><span><strong>성적향상 사례</strong><small>학생들의 학습 변화 보기</small></span>
 </a><a data-v8-menu="about" href="#about" onclick="window.JJMobileSections.open('about'); return false;">
 <span class="mobile-nav-number">07</span><span><strong>수업 특징</strong><small>관리 방식과 수업 원칙</small></span>
@@ -1980,7 +2018,7 @@
 <a class="jj-mobile-quick-card" href="#subject" onclick="window.JJMenu &amp;&amp; window.JJMenu.go('#subject'); return false;">
 <span>02</span><strong>과목 선택</strong><small>수업 안내 보기</small>
 </a>
-<button class="jj-mobile-quick-card" onclick="window.JJMobileSections.open('regionSearch')" type="button">
+<button class="jj-mobile-quick-card" onclick="window.JJMobileSections.open('region-map-search')" type="button">
 <span>03</span><strong>지역 찾기</strong><small>방문·화상 확인</small>
 </button>
 <a class="jj-mobile-quick-card" href="#review" onclick="window.JJMenu &amp;&amp; window.JJMenu.go('#review'); return false;">
@@ -3021,7 +3059,7 @@ document.querySelectorAll('[data-jj-region]').forEach(b=>b.addEventListener('cli
 <button aria-expanded="false" class="btn primary review-loadmore-btn" id="reviewLoadMoreBtn" type="button">후기 더보기</button>
 </div>
 <div class="jj-mobile-review-actions">
-<button onclick="window.JJMobileSections.open('gradeResults')" type="button">성적향상 사례 전체보기</button>
+<button onclick="window.JJMobileSections.open('grade-results')" type="button">성적향상 사례 전체보기</button>
 <a href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">상담 신청하기</a>
 </div></div>
 </section>
