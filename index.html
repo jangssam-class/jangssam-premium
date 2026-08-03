@@ -1656,7 +1656,6 @@
   .jj-region{font-size:9px!important;padding:3px!important}
 }
 </style>
-
 <style id="v53-real-fix">
 /* V5.3 실제 요청사항 반영 */
 .online-board{padding:24px!important;display:block!important;height:auto!important;min-height:250px!important;background:#eef6ff!important}
@@ -1671,7 +1670,100 @@
 @media(max-width:900px){.why-grid{grid-template-columns:1fr!important;gap:30px!important}.why-image{max-width:620px;margin:0 auto}.why-values{grid-template-columns:1fr}.why-us{padding:52px 0!important}}
 </style>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-</head>
+<style id="jjV8MobileUxStyles">
+/* =========================================================
+   V8.0 MOBILE UX RENEWAL - concise mobile homepage
+   Desktop layout remains unchanged.
+   ========================================================= */
+.jj-mobile-quick,.jj-mobile-review-actions,.jj-mobile-sticky-cta{display:none}
+@media (max-width: 768px){
+  html{scroll-padding-top:74px}
+  body{padding-bottom:76px}
+
+  /* first screen becomes shorter and clearer */
+  #home.hero{min-height:auto!important;padding:92px 0 38px!important}
+  #home .hero-content{gap:18px!important}
+  #home h1{font-size:clamp(30px,9vw,42px)!important;line-height:1.18!important;margin-bottom:14px!important}
+  #home .hero-desc,#home .hero-description{font-size:15px!important;line-height:1.65!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  #home .hero-buttons{gap:10px!important;margin-top:18px!important}
+  #home .hero-buttons a,#home .hero-buttons button{min-height:48px!important;padding:13px 16px!important;font-size:14px!important}
+  #home .hero-visual{max-height:310px!important;overflow:hidden}
+
+  .jj-mobile-quick{display:block;background:#f6f8fc;padding:26px 16px 34px}
+  .jj-mobile-quick-inner{max-width:520px;margin:0 auto}
+  .jj-mobile-proof{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;font-size:12px;color:#35516e;margin-bottom:13px}
+  .jj-mobile-quick h2{margin:0;text-align:center;font-size:22px;line-height:1.35;color:#102d4d}
+  .jj-mobile-quick>div>p,.jj-mobile-quick-inner>p{text-align:center;margin:8px 0 18px;color:#6d7d8f;font-size:13px;line-height:1.55}
+  .jj-mobile-quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .jj-mobile-quick-card{border:1px solid #dbe4ee;background:#fff;border-radius:16px;padding:15px 13px;text-decoration:none;color:#12304f;text-align:left;display:flex;flex-direction:column;min-height:105px;box-shadow:0 7px 22px rgba(20,47,73,.06);font:inherit}
+  .jj-mobile-quick-card span{font-size:11px;color:#6e8296;margin-bottom:auto}
+  .jj-mobile-quick-card strong{font-size:16px;margin:6px 0 3px}
+  .jj-mobile-quick-card small{font-size:12px;color:#738395}
+  .jj-mobile-quick-card.primary{background:#173e68;color:#fff;border-color:#173e68}
+  .jj-mobile-quick-card.primary span,.jj-mobile-quick-card.primary small{color:#dbe9f8}
+
+  /* Full detailed blocks are opened from the hamburger menu when needed */
+  #about,#subjectDetail,#regionSearch,#gradeGrowth,#gradeResults,#teachers,#faq,#educationInfo{display:none!important}
+  #about.jj-mobile-expanded,#subjectDetail.jj-mobile-expanded,#regionSearch.jj-mobile-expanded,#gradeGrowth.jj-mobile-expanded,#gradeResults.jj-mobile-expanded,#teachers.jj-mobile-expanded,#faq.jj-mobile-expanded,#educationInfo.jj-mobile-expanded{display:block!important;animation:jjV8Reveal .28s ease-out}
+  @keyframes jjV8Reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .jj-mobile-detail-close{display:flex!important;align-items:center;justify-content:center;width:calc(100% - 32px);max-width:520px;margin:14px auto 4px;border:1px solid #cdd8e4;background:#fff;border-radius:13px;padding:12px 16px;color:#173e68;font-weight:800;font-size:14px}
+
+  /* online class: compact teaser only */
+  #onlinePromo{padding:42px 0!important}
+  #onlinePromo .online-promo-wrap{display:block!important}
+  #onlinePromo .online-promo-content h2{font-size:27px!important;line-height:1.3!important}
+  #onlinePromo .online-promo-content>p{font-size:14px!important;line-height:1.65!important}
+  #onlinePromo .online-promo-points{grid-template-columns:1fr 1fr!important;gap:9px!important;margin:20px 0!important}
+  #onlinePromo .online-promo-points>div{padding:13px!important;min-height:110px!important}
+  #onlinePromo .online-promo-points>div:nth-child(n+3){display:none!important}
+  #onlinePromo .online-promo-visual{display:none!important}
+  #onlinePromo .online-promo-buttons{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}
+  #onlinePromo .online-promo-buttons a{padding:13px 8px!important;font-size:13px!important;text-align:center!important}
+
+  /* show only six most requested subjects */
+  #subject{padding:42px 0!important}
+  #subject .section-title{margin-bottom:22px!important}
+  #subject .section-title h2{font-size:25px!important}
+  #subject .subject-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+  #subject .subject-card{display:none!important;min-height:112px!important;padding:14px 7px!important;border-radius:14px!important}
+  #subject .subject-card[data-subject="math"],#subject .subject-card[data-subject="english"],#subject .subject-card[data-subject="korean"],#subject .subject-card[data-subject="science"],#subject .subject-card[data-subject="coding"],#subject .subject-card[data-subject="ged"]{display:flex!important}
+  #subject .subject-card-icon{width:38px!important;height:38px!important;font-size:17px!important;margin-bottom:7px!important}
+  #subject .subject-card h3{font-size:14px!important;margin:0!important}
+  #subject .subject-card p,#subject .subject-more{display:none!important}
+
+  /* only three reviews on the compact homepage */
+  #review{padding:42px 0!important}
+  #review .review-grid{grid-template-columns:1fr!important;gap:11px!important}
+  #review .review-card{display:none!important;padding:18px!important}
+  #review .review-card:nth-child(-n+3){display:block!important}
+  #review .review-bottom{display:none!important}
+  .jj-mobile-review-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+  .jj-mobile-review-actions button,.jj-mobile-review-actions a{border:1px solid #cad7e5;border-radius:12px;padding:13px 8px;background:#fff;color:#173e68;text-align:center;text-decoration:none;font-weight:800;font-size:13px}
+  .jj-mobile-review-actions a{background:#173e68;color:#fff;border-color:#173e68}
+
+  /* final consultation stays concise */
+  #contact{padding:42px 0 34px!important}
+  #contact .contact-grid{display:block!important}
+  #contact .contact-right{display:none!important}
+  #contact .contact-left>h2{font-size:30px!important;line-height:1.25!important}
+  #contact .contact-info{margin-top:18px!important;padding:18px!important}
+  #contact .why-intro{font-size:13px!important;line-height:1.65!important}
+  #contact .why-item{display:none!important}
+  #contact .why-item:nth-of-type(-n+4){display:flex!important}
+  #contact .contact-cta{padding:17px!important;margin-top:16px!important}
+  #contact .contact-stats{display:none!important}
+  #contact .contact-buttons{grid-template-columns:1fr 1fr!important;gap:9px!important}
+  #contact .contact-buttons .naver{grid-column:1/-1!important}
+
+  .jj-mobile-sticky-cta{position:fixed;display:grid;grid-template-columns:.82fr 1.18fr;gap:8px;left:0;right:0;bottom:0;z-index:9998;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);padding:9px 12px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px rgba(16,45,77,.12)}
+  .jj-mobile-sticky-cta a{display:flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #c9d5e2;border-radius:12px;min-height:46px;color:#173e68;font-weight:800;font-size:14px}
+  .jj-mobile-sticky-cta a.main{background:#173e68;color:#fff;border-color:#173e68}
+}
+@media (max-width: 380px){
+  #subject .subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .jj-mobile-quick-grid{gap:8px}
+}
+</style><meta content="V8.0-MOBILE-UX-RENEWAL-20260803" name="jj-version"/></head>
 <body>
 <!-- ==========================
             HEADER
@@ -1753,7 +1845,13 @@
                     ×
                 </button>
 </div>
-<nav aria-label="모바일 주요 메뉴" class="mobile-navbar"><a href="#home" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">01</span><span><strong>홈</strong><small>메인 화면</small></span></a><a href="#onlineClass" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">02</span><span><strong>화상수업</strong><small>1:1 실시간 화상수업</small></span></a><a href="#" onclick="window.JJCurriculum.open(); window.JJMenu.close(); return false;"><span class="mobile-nav-number">03</span><span><strong>커리큘럼</strong><small>학년별 상세 과정 보기</small></span></a><a href="#subject" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">04</span><span><strong>과목안내</strong><small>과목별 수업 안내</small></span></a><a href="#teachers" onclick="window.JJMenu.close(); window.JJMobileTeacher.open(); return false;"><span class="mobile-nav-number">05</span><span><strong>선생님</strong><small>맞춤 선생님 안내</small></span></a><a href="#review" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">06</span><span><strong>수업후기</strong><small>학생·학부모 후기</small></span></a><a href="blog.html" onclick="window.JJMenu.close();"><span class="mobile-nav-number">07</span><span><strong>교육정보</strong><small>공부법·입시·학부모 정보</small></span></a><a href="#faq" onclick="window.JJMenu.close(); window.JJMobileFAQ.open(); return false;"><span class="mobile-nav-number">08</span><span><strong>자주 묻는 질문</strong><small>수업 관련 FAQ</small></span></a><a href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank"><span class="mobile-nav-number">09</span><span><strong>무료상담</strong><small>네이버폼 바로 신청</small></span></a></nav>
+<nav aria-label="모바일 주요 메뉴" class="mobile-navbar"><a href="#home" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">01</span><span><strong>홈</strong><small>메인 화면</small></span></a><a href="#onlineClass" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">02</span><span><strong>화상수업</strong><small>1:1 실시간 화상수업</small></span></a><a href="#" onclick="window.JJCurriculum.open(); window.JJMenu.close(); return false;"><span class="mobile-nav-number">03</span><span><strong>커리큘럼</strong><small>학년별 상세 과정 보기</small></span></a><a href="#subject" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">04</span><span><strong>과목안내</strong><small>과목별 수업 안내</small></span></a><a data-v8-menu="region" href="#regionSearch" onclick="window.JJMobileSections.open('regionSearch'); return false;">
+<span class="mobile-nav-number">05</span><span><strong>지역별 과외</strong><small>전국 지역과 수업 방식 확인</small></span>
+</a><a data-v8-menu="growth" href="#gradeResults" onclick="window.JJMobileSections.open('gradeResults'); return false;">
+<span class="mobile-nav-number">06</span><span><strong>성적향상 사례</strong><small>학생들의 학습 변화 보기</small></span>
+</a><a data-v8-menu="about" href="#about" onclick="window.JJMobileSections.open('about'); return false;">
+<span class="mobile-nav-number">07</span><span><strong>수업 특징</strong><small>관리 방식과 수업 원칙</small></span>
+</a><a href="#teachers" onclick="window.JJMenu.close(); window.JJMobileTeacher.open(); return false;"><span class="mobile-nav-number">08</span><span><strong>선생님</strong><small>맞춤 선생님 안내</small></span></a><a href="#review" onclick="window.JJMenu.go(this.getAttribute('href')); return false;"><span class="mobile-nav-number">09</span><span><strong>수업후기</strong><small>학생·학부모 후기</small></span></a><a href="blog.html" onclick="window.JJMenu.close();"><span class="mobile-nav-number">10</span><span><strong>교육정보</strong><small>공부법·입시·학부모 정보</small></span></a><a href="#faq" onclick="window.JJMenu.close(); window.JJMobileFAQ.open(); return false;"><span class="mobile-nav-number">11</span><span><strong>자주 묻는 질문</strong><small>수업 관련 FAQ</small></span></a><a href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank"><span class="mobile-nav-number">12</span><span><strong>무료상담</strong><small>네이버폼 바로 신청</small></span></a></nav>
 <div class="mobile-consult-card">
 <span class="mobile-consult-badge">
                     상담 가능
@@ -1868,6 +1966,30 @@
                         </button>
 </div>
 </div></div></div></section>
+<section aria-label="모바일 핵심 안내" class="jj-mobile-quick" id="mobileQuickOverview">
+<div class="jj-mobile-quick-inner">
+<div class="jj-mobile-proof">
+<strong>1:1 맞춤 수업</strong><span>·</span><strong>전국 화상수업</strong><span>·</span><strong>방문수업 상담</strong>
+</div>
+<h2>필요한 정보만 빠르게 확인하세요</h2>
+<p>상세한 수업 안내는 메뉴에서 언제든 확인할 수 있습니다.</p>
+<div class="jj-mobile-quick-grid">
+<a class="jj-mobile-quick-card primary" href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">
+<span>01</span><strong>무료 상담</strong><small>바로 신청하기</small>
+</a>
+<a class="jj-mobile-quick-card" href="#subject" onclick="window.JJMenu &amp;&amp; window.JJMenu.go('#subject'); return false;">
+<span>02</span><strong>과목 선택</strong><small>수업 안내 보기</small>
+</a>
+<button class="jj-mobile-quick-card" onclick="window.JJMobileSections.open('regionSearch')" type="button">
+<span>03</span><strong>지역 찾기</strong><small>방문·화상 확인</small>
+</button>
+<a class="jj-mobile-quick-card" href="#review" onclick="window.JJMenu &amp;&amp; window.JJMenu.go('#review'); return false;">
+<span>04</span><strong>수업 후기</strong><small>성장 이야기 보기</small>
+</a>
+</div>
+</div>
+</section>
+
 <!-- =========================================
      ONLINE CLASS PROMOTION
 ========================================= -->
@@ -2898,7 +3020,10 @@ document.querySelectorAll('[data-jj-region]').forEach(b=>b.addEventListener('cli
                 </p>
 <button aria-expanded="false" class="btn primary review-loadmore-btn" id="reviewLoadMoreBtn" type="button">후기 더보기</button>
 </div>
-</div>
+<div class="jj-mobile-review-actions">
+<button onclick="window.JJMobileSections.open('gradeResults')" type="button">성적향상 사례 전체보기</button>
+<a href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">상담 신청하기</a>
+</div></div>
 </section>
 <!-- ==========================
           FAQ
@@ -6819,7 +6944,6 @@ window.JJCapitalTutoring={open:open,close:close,setRegion:setRegion};
   });
 })();
 </script>
-
 <!-- V5.4 ADD-ONLY LAYOUT FIX: region grid, online board overlap, contact spacing -->
 <style id="v54AddOnlyLayoutFix">
 /* 1. 지역 선택: 기존 지도형 좌표를 해제하고 균일한 버튼 그리드로 정렬 */
@@ -6966,7 +7090,6 @@ window.JJCapitalTutoring={open:open,close:close,setRegion:setRegion};
   #contact .why-title,#contact .why-intro,#contact .why-item:last-of-type{grid-column:1!important}
 }
 </style>
-
 <script>
 if (window.netlifyIdentity) {
   window.netlifyIdentity.on("init", user => {
@@ -6975,62 +7098,59 @@ if (window.netlifyIdentity) {
   window.netlifyIdentity.on("login", () => { window.location.href = "/admin/"; });
 }
 </script>
-
 <!-- V7.2 모바일 선생님·FAQ 실동작 팝업 -->
-<div class="jj-v72-modal" id="jjMobileTeacherModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="jjMobileTeacherTitle">
-  <div class="jj-v72-backdrop" data-v72-close="teacher"></div>
-  <section class="jj-v72-panel">
-    <button class="jj-v72-close" type="button" aria-label="선생님 안내 닫기" data-v72-close="teacher">×</button>
-    <span class="jj-v72-kicker">맞춤 선생님 안내</span>
-    <h2 id="jjMobileTeacherTitle">학생에게 맞는 수업을 함께 찾아보세요</h2>
-    <p class="jj-v72-lead">학년, 과목, 수업 방식을 선택하면 상담 신청 페이지로 연결됩니다. 상담 내용을 확인한 뒤 지역과 일정에 맞는 선생님을 안내해드립니다.</p>
-    <form id="jjTeacherQuickForm" class="jj-v72-form">
-      <fieldset><legend>학생 학년</legend><div class="jj-v72-options">
-        <label><input type="radio" name="grade" value="초등" required><span>초등</span></label>
-        <label><input type="radio" name="grade" value="중등"><span>중등</span></label>
-        <label><input type="radio" name="grade" value="고등"><span>고등</span></label>
-        <label><input type="radio" name="grade" value="검정고시"><span>검정고시</span></label>
-      </div></fieldset>
-      <fieldset><legend>희망 과목</legend><div class="jj-v72-options jj-v72-options-subject">
-        <label><input type="radio" name="subject" value="수학" required><span>수학</span></label>
-        <label><input type="radio" name="subject" value="영어"><span>영어</span></label>
-        <label><input type="radio" name="subject" value="국어"><span>국어</span></label>
-        <label><input type="radio" name="subject" value="과학"><span>과학</span></label>
-        <label><input type="radio" name="subject" value="코딩"><span>코딩</span></label>
-        <label><input type="radio" name="subject" value="기타"><span>기타</span></label>
-      </div></fieldset>
-      <fieldset><legend>수업 방식</legend><div class="jj-v72-options">
-        <label><input type="radio" name="method" value="방문수업" required><span>방문수업</span></label>
-        <label><input type="radio" name="method" value="화상수업"><span>화상수업</span></label>
-        <label><input type="radio" name="method" value="상담 후 결정"><span>상담 후 결정</span></label>
-      </div></fieldset>
-      <p class="jj-v72-form-error" id="jjTeacherQuickError" aria-live="polite"></p>
-      <button class="jj-v72-primary" type="submit">맞춤 선생님 상담 신청</button>
-      <a class="jj-v72-secondary" href="#teachers" id="jjTeacherListLink">선생님 안내 영역 먼저 보기</a>
-    </form>
-  </section>
+<div aria-hidden="true" aria-labelledby="jjMobileTeacherTitle" aria-modal="true" class="jj-v72-modal" id="jjMobileTeacherModal" role="dialog">
+<div class="jj-v72-backdrop" data-v72-close="teacher"></div>
+<section class="jj-v72-panel">
+<button aria-label="선생님 안내 닫기" class="jj-v72-close" data-v72-close="teacher" type="button">×</button>
+<span class="jj-v72-kicker">맞춤 선생님 안내</span>
+<h2 id="jjMobileTeacherTitle">학생에게 맞는 수업을 함께 찾아보세요</h2>
+<p class="jj-v72-lead">학년, 과목, 수업 방식을 선택하면 상담 신청 페이지로 연결됩니다. 상담 내용을 확인한 뒤 지역과 일정에 맞는 선생님을 안내해드립니다.</p>
+<form class="jj-v72-form" id="jjTeacherQuickForm">
+<fieldset><legend>학생 학년</legend><div class="jj-v72-options">
+<label><input name="grade" required="" type="radio" value="초등"/><span>초등</span></label>
+<label><input name="grade" type="radio" value="중등"/><span>중등</span></label>
+<label><input name="grade" type="radio" value="고등"/><span>고등</span></label>
+<label><input name="grade" type="radio" value="검정고시"/><span>검정고시</span></label>
+</div></fieldset>
+<fieldset><legend>희망 과목</legend><div class="jj-v72-options jj-v72-options-subject">
+<label><input name="subject" required="" type="radio" value="수학"/><span>수학</span></label>
+<label><input name="subject" type="radio" value="영어"/><span>영어</span></label>
+<label><input name="subject" type="radio" value="국어"/><span>국어</span></label>
+<label><input name="subject" type="radio" value="과학"/><span>과학</span></label>
+<label><input name="subject" type="radio" value="코딩"/><span>코딩</span></label>
+<label><input name="subject" type="radio" value="기타"/><span>기타</span></label>
+</div></fieldset>
+<fieldset><legend>수업 방식</legend><div class="jj-v72-options">
+<label><input name="method" required="" type="radio" value="방문수업"/><span>방문수업</span></label>
+<label><input name="method" type="radio" value="화상수업"/><span>화상수업</span></label>
+<label><input name="method" type="radio" value="상담 후 결정"/><span>상담 후 결정</span></label>
+</div></fieldset>
+<p aria-live="polite" class="jj-v72-form-error" id="jjTeacherQuickError"></p>
+<button class="jj-v72-primary" type="submit">맞춤 선생님 상담 신청</button>
+<a class="jj-v72-secondary" href="#teachers" id="jjTeacherListLink">선생님 안내 영역 먼저 보기</a>
+</form>
+</section>
 </div>
-
-<div class="jj-v72-modal" id="jjMobileFaqModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="jjMobileFaqTitle">
-  <div class="jj-v72-backdrop" data-v72-close="faq"></div>
-  <section class="jj-v72-panel jj-v72-faq-panel">
-    <button class="jj-v72-close" type="button" aria-label="자주 묻는 질문 닫기" data-v72-close="faq">×</button>
-    <span class="jj-v72-kicker">자주 묻는 질문</span>
-    <h2 id="jjMobileFaqTitle">수업 전 궁금한 내용을 확인해보세요</h2>
-    <div class="jj-v72-faq-list">
-      <details><summary>화상수업도 가능한가요?</summary><p>네. 전국 어디에서나 실시간 화면 공유와 음성 대화를 이용한 1:1 화상수업이 가능합니다. 학생 일정에 맞춰 수업 시간을 상담합니다.</p></details>
-      <details><summary>방문수업은 어느 지역에서 가능한가요?</summary><p>학생의 거주 지역과 희망 과목, 선생님 일정에 따라 가능 여부가 달라집니다. 먼저 상담을 남겨주시면 방문 가능 지역을 확인해 안내드립니다.</p></details>
-      <details><summary>수업 횟수와 시간은 어떻게 정하나요?</summary><p>보통 주 1~3회 범위에서 학생의 목표와 일정에 맞춰 정합니다. 한 회 수업 시간도 학년과 과목에 따라 상담 후 결정합니다.</p></details>
-      <details><summary>수업료는 어떻게 안내받나요?</summary><p>학년, 과목, 수업 시간, 방문 또는 화상 여부에 따라 달라질 수 있어 상담 내용을 확인한 뒤 정확히 안내드립니다.</p></details>
-      <details><summary>체험 또는 상담 수업이 있나요?</summary><p>무료 상담을 통해 현재 학습 상황과 목표를 먼저 확인합니다. 수업 시작 전 진행 방식과 학습 계획을 충분히 안내드립니다.</p></details>
-      <details><summary>숙제와 복습도 관리해주나요?</summary><p>수업 내용에 맞춰 과제와 복습 범위를 안내하고, 다음 수업에서 이해도와 오답을 점검합니다. 학생에게 필요한 경우 학습 루틴도 함께 조정합니다.</p></details>
-      <details><summary>학부모에게 수업 진행 상황을 알려주나요?</summary><p>학습 변화와 보완이 필요한 부분을 이해하기 쉽게 안내합니다. 상담 주기와 전달 방식은 수업 시작 전 협의할 수 있습니다.</p></details>
-      <details><summary>결석하거나 수업 시간을 바꿔야 할 때는 어떻게 하나요?</summary><p>가능한 한 미리 담당 선생님과 조율해 보강 또는 일정 변경 여부를 확인합니다. 구체적인 기준은 수업 시작 전 안내드립니다.</p></details>
-    </div>
-    <a class="jj-v72-primary jj-v72-faq-consult" href="https://naver.me/xPY0a7X1" target="_blank" rel="noopener noreferrer">궁금한 내용 무료 상담하기</a>
-  </section>
+<div aria-hidden="true" aria-labelledby="jjMobileFaqTitle" aria-modal="true" class="jj-v72-modal" id="jjMobileFaqModal" role="dialog">
+<div class="jj-v72-backdrop" data-v72-close="faq"></div>
+<section class="jj-v72-panel jj-v72-faq-panel">
+<button aria-label="자주 묻는 질문 닫기" class="jj-v72-close" data-v72-close="faq" type="button">×</button>
+<span class="jj-v72-kicker">자주 묻는 질문</span>
+<h2 id="jjMobileFaqTitle">수업 전 궁금한 내용을 확인해보세요</h2>
+<div class="jj-v72-faq-list">
+<details><summary>화상수업도 가능한가요?</summary><p>네. 전국 어디에서나 실시간 화면 공유와 음성 대화를 이용한 1:1 화상수업이 가능합니다. 학생 일정에 맞춰 수업 시간을 상담합니다.</p></details>
+<details><summary>방문수업은 어느 지역에서 가능한가요?</summary><p>학생의 거주 지역과 희망 과목, 선생님 일정에 따라 가능 여부가 달라집니다. 먼저 상담을 남겨주시면 방문 가능 지역을 확인해 안내드립니다.</p></details>
+<details><summary>수업 횟수와 시간은 어떻게 정하나요?</summary><p>보통 주 1~3회 범위에서 학생의 목표와 일정에 맞춰 정합니다. 한 회 수업 시간도 학년과 과목에 따라 상담 후 결정합니다.</p></details>
+<details><summary>수업료는 어떻게 안내받나요?</summary><p>학년, 과목, 수업 시간, 방문 또는 화상 여부에 따라 달라질 수 있어 상담 내용을 확인한 뒤 정확히 안내드립니다.</p></details>
+<details><summary>체험 또는 상담 수업이 있나요?</summary><p>무료 상담을 통해 현재 학습 상황과 목표를 먼저 확인합니다. 수업 시작 전 진행 방식과 학습 계획을 충분히 안내드립니다.</p></details>
+<details><summary>숙제와 복습도 관리해주나요?</summary><p>수업 내용에 맞춰 과제와 복습 범위를 안내하고, 다음 수업에서 이해도와 오답을 점검합니다. 학생에게 필요한 경우 학습 루틴도 함께 조정합니다.</p></details>
+<details><summary>학부모에게 수업 진행 상황을 알려주나요?</summary><p>학습 변화와 보완이 필요한 부분을 이해하기 쉽게 안내합니다. 상담 주기와 전달 방식은 수업 시작 전 협의할 수 있습니다.</p></details>
+<details><summary>결석하거나 수업 시간을 바꿔야 할 때는 어떻게 하나요?</summary><p>가능한 한 미리 담당 선생님과 조율해 보강 또는 일정 변경 여부를 확인합니다. 구체적인 기준은 수업 시작 전 안내드립니다.</p></details>
 </div>
-
+<a class="jj-v72-primary jj-v72-faq-consult" href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">궁금한 내용 무료 상담하기</a>
+</section>
+</div>
 <style id="jjV72MobileModalStyles">
 .jj-v72-modal{position:fixed;inset:0;z-index:100500;display:none;align-items:flex-end;justify-content:center;padding:18px}
 .jj-v72-modal.is-open{display:flex}
@@ -7065,7 +7185,6 @@ body.jj-v72-lock{overflow:hidden!important}
 @media(min-width:769px){.jj-v72-modal{align-items:center}.jj-v72-panel{border-radius:26px}}
 @media(max-width:380px){.jj-v72-options-subject{grid-template-columns:repeat(2,minmax(0,1fr))}.jj-v72-panel{padding-left:16px;padding-right:16px}}
 </style>
-
 <script id="jjV72MobileModalScript">
 (function(){
   const teacherModal=document.getElementById('jjMobileTeacherModal');
@@ -7104,6 +7223,40 @@ body.jj-v72-lock{overflow:hidden!important}
   });
 })();
 </script>
-
-</body>
+<div class="jj-mobile-sticky-cta" id="jjMobileStickyCta">
+<a href="tel:01097680911">전화 상담</a>
+<a class="main" href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">무료 상담 신청</a>
+</div><script id="jjV8MobileUxScript">
+(function(){
+  function isMobile(){ return window.matchMedia('(max-width: 768px)').matches; }
+  function closeAll(scrollHome){
+    document.querySelectorAll('.jj-mobile-expanded').forEach(function(el){ el.classList.remove('jj-mobile-expanded'); });
+    if(scrollHome){
+      var q=document.getElementById('mobileQuickOverview')||document.getElementById('home');
+      if(q) q.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }
+  function open(id){
+    var el=document.getElementById(id);
+    if(!el) return;
+    if(window.JJMenu && window.JJMenu.close) window.JJMenu.close();
+    if(!isMobile()){ el.scrollIntoView({behavior:'smooth',block:'start'}); return; }
+    closeAll(false);
+    el.classList.add('jj-mobile-expanded');
+    if(!el.querySelector(':scope > .jj-mobile-detail-close')){
+      var btn=document.createElement('button');
+      btn.type='button'; btn.className='jj-mobile-detail-close';
+      btn.textContent='간단한 메인 화면으로 돌아가기';
+      btn.addEventListener('click',function(){ closeAll(true); });
+      el.insertBefore(btn,el.firstChild);
+    }
+    requestAnimationFrame(function(){ el.scrollIntoView({behavior:'smooth',block:'start'}); });
+  }
+  window.JJMobileSections={open:open,closeAll:closeAll};
+  document.addEventListener('click',function(e){
+    var home=e.target.closest('#mobileMenu a[href="#home"]');
+    if(home) closeAll(false);
+  });
+})();
+</script></body>
 </html>

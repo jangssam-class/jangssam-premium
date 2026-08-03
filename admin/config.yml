@@ -1,0 +1,41 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: ko
+publish_mode: simple
+media_folder: "이미지/blog"
+public_folder: "/이미지/blog"
+
+site_url: "https://effulgent-belekoy-3b4c61.netlify.app"
+display_url: "https://effulgent-belekoy-3b4c61.netlify.app"
+logo_url: "/이미지/로고.png"
+
+collections:
+  - name: "education_posts"
+    label: "교육정보 포스팅"
+    files:
+      - name: "posts"
+        label: "전체 포스팅 관리"
+        file: "content/posts.json"
+        format: "json"
+        fields:
+          - label: "포스팅 목록"
+            name: "posts"
+            widget: "list"
+            label_singular: "포스팅"
+            summary: "{{fields.date}} | {{fields.category}} | {{fields.title}}"
+            add_to_top: true
+            fields:
+              - { label: "주소용 영문 이름", name: "slug", widget: "string", hint: "영문 소문자와 하이픈만 사용하세요. 예: middle-math-study" }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "작성일", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - label: "카테고리"
+                name: "category"
+                widget: "select"
+                options: ["수학", "영어", "국어", "과학", "검정고시", "코딩", "학습관리", "교육소식"]
+              - { label: "목록 요약", name: "excerpt", widget: "text" }
+              - { label: "대표 이미지", name: "image", widget: "image", required: false }
+              - { label: "추천 글", name: "featured", widget: "boolean", default: false }
+              - { label: "공개", name: "published", widget: "boolean", default: true }
+              - { label: "본문", name: "body", widget: "markdown" }
