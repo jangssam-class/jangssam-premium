@@ -1937,7 +1937,37 @@
       }
     ]
   }
-]</script><link href="/rss.xml" rel="alternate" title="장쌤의과외교실 교육정보 RSS" type="application/rss+xml"/><style>.jj-seo-region-hub{padding:72px 0;background:#f4f8ff}.jj-seo-region-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:26px}.jj-seo-region-head span{font-size:12px;letter-spacing:.13em;color:#d08e16;font-weight:900}.jj-seo-region-head h2{font-size:36px;margin:8px 0;color:#0b2d59}.jj-seo-region-head p{margin:0;color:#64748b}.jj-seo-region-head>a{padding:12px 18px;border-radius:10px;background:#2467e8;color:#fff;font-weight:900}.jj-seo-region-links{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.jj-seo-region-links a{padding:18px;border:1px solid #dbe7f6;border-radius:14px;background:#fff;color:#163c72;font-weight:900;text-align:center}@media(max-width:768px){.jj-seo-region-hub{padding:48px 0}.jj-seo-region-head{display:block}.jj-seo-region-head h2{font-size:28px}.jj-seo-region-head>a{display:inline-block;margin-top:18px}.jj-seo-region-links{grid-template-columns:repeat(2,1fr)}.jj-seo-region-links a:last-child{grid-column:1/-1}}</style></head>
+]</script><link href="/rss.xml" rel="alternate" title="장쌤의과외교실 교육정보 RSS" type="application/rss+xml"/><style>.jj-seo-region-hub{padding:72px 0;background:#f4f8ff}.jj-seo-region-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:26px}.jj-seo-region-head span{font-size:12px;letter-spacing:.13em;color:#d08e16;font-weight:900}.jj-seo-region-head h2{font-size:36px;margin:8px 0;color:#0b2d59}.jj-seo-region-head p{margin:0;color:#64748b}.jj-seo-region-head>a{padding:12px 18px;border-radius:10px;background:#2467e8;color:#fff;font-weight:900}.jj-seo-region-links{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.jj-seo-region-links a{padding:18px;border:1px solid #dbe7f6;border-radius:14px;background:#fff;color:#163c72;font-weight:900;text-align:center}@media(max-width:768px){.jj-seo-region-hub{padding:48px 0}.jj-seo-region-head{display:block}.jj-seo-region-head h2{font-size:28px}.jj-seo-region-head>a{display:inline-block;margin-top:18px}.jj-seo-region-links{grid-template-columns:repeat(2,1fr)}.jj-seo-region-links a:last-child{grid-column:1/-1}}</style>
+<style id="jjAllSubjectsStyles">
+.jj-all-subjects-open{display:none}
+.jj-all-subjects-modal{position:fixed;inset:0;z-index:100050;display:none;align-items:flex-end;justify-content:center}
+.jj-all-subjects-modal.open{display:flex}
+.jj-all-subjects-backdrop{position:absolute;inset:0;background:rgba(8,30,66,.56);backdrop-filter:blur(3px)}
+.jj-all-subjects-panel{position:relative;width:min(680px,100%);max-height:88dvh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -18px 60px rgba(7,35,76,.22);animation:jjSubjectsUp .25s ease-out}
+@keyframes jjSubjectsUp{from{transform:translateY(35px);opacity:.5}to{transform:none;opacity:1}}
+.jj-all-subjects-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}
+.jj-all-subjects-head span{display:block;color:#2563eb;font-size:12px;font-weight:800;letter-spacing:.16em;margin-bottom:7px}
+.jj-all-subjects-head h2{margin:0;color:#071f42;font-size:25px;line-height:1.25}
+.jj-all-subjects-head p{margin:8px 0 0;color:#6b778b;font-size:14px;line-height:1.55}
+.jj-all-subjects-close{flex:0 0 42px;width:42px;height:42px;border:0;border-radius:50%;background:#edf4ff;color:#174a88;font-size:28px;line-height:1;cursor:pointer}
+.jj-all-subjects-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.jj-all-subject-item{display:grid;grid-template-columns:46px 1fr;grid-template-rows:auto auto;column-gap:11px;align-items:center;text-align:left;min-height:86px;padding:13px;border:1px solid #d9e6f7;border-radius:17px;background:#f8fbff;color:#081f40;cursor:pointer}
+.jj-all-subject-item b{grid-row:1/3;display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:#e8f1ff;color:#2466d8;font-size:19px}
+.jj-all-subject-item strong{font-size:16px;line-height:1.2}
+.jj-all-subject-item span{color:#748197;font-size:12px;line-height:1.3}
+.jj-all-subject-item.wide{grid-column:1/-1}
+.jj-all-subjects-consult{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:16px;border-radius:15px;background:#174a80;color:#fff!important;font-weight:800;text-decoration:none}
+body.jj-subjects-modal-open{overflow:hidden}
+@media(max-width:768px){
+  #subject .subject-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;overflow:visible!important;transform:none!important}
+  #subject .subject-grid>.subject-card{display:none!important}
+  #subject .subject-grid>.subject-card[data-subject="ged"],#subject .subject-grid>.subject-card[data-subject="coding"],#subject .subject-grid>.subject-card[data-subject="math"]{display:flex!important}
+  .jj-all-subjects-open{display:flex;width:calc(100% - 40px);max-width:420px;min-height:52px;margin:18px auto 0;padding:0 18px;align-items:center;justify-content:space-between;border:1px solid #bcd4f5;border-radius:15px;background:#fff;color:#16467c;font-size:16px;font-weight:800;box-shadow:0 9px 24px rgba(35,91,165,.09);cursor:pointer}
+}
+@media(min-width:769px){.jj-all-subjects-modal{display:none!important}}
+@media(max-width:390px){.jj-all-subjects-grid{grid-template-columns:1fr}.jj-all-subject-item.wide{grid-column:auto}}
+</style>
+</head>
 <body>
 <!-- ==========================
             HEADER
@@ -2504,7 +2534,34 @@
 <span class="subject-more">수업 안내 보기 →</span>
 </button>
 </div>
+<button aria-controls="jjAllSubjectsModal" aria-expanded="false" class="jj-all-subjects-open" id="jjAllSubjectsOpen" type="button">
+<span>전체 과목 보기</span><span aria-hidden="true">＋</span>
+</button>
 </div></section>
+
+<!-- 모바일 전체 과목 선택 팝업 -->
+<div aria-hidden="true" class="jj-all-subjects-modal" id="jjAllSubjectsModal">
+  <div class="jj-all-subjects-backdrop" data-jj-subjects-close></div>
+  <section aria-labelledby="jjAllSubjectsTitle" aria-modal="true" class="jj-all-subjects-panel" role="dialog">
+    <div class="jj-all-subjects-head">
+      <div><span>ALL SUBJECTS</span><h2 id="jjAllSubjectsTitle">전체 과목을 확인하세요</h2><p>원하는 과목을 누르면 자세한 수업 안내가 열립니다.</p></div>
+      <button aria-label="전체 과목 팝업 닫기" class="jj-all-subjects-close" data-jj-subjects-close type="button">×</button>
+    </div>
+    <div class="jj-all-subjects-grid">
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="math" type="button"><b>∑</b><strong>수학</strong><span>개념·내신·심화</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="english" type="button"><b>A</b><strong>영어</strong><span>문법·독해·회화</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="korean" type="button"><b>가</b><strong>국어</strong><span>문해력·내신</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="science" type="button"><b>⚗</b><strong>과학</strong><span>개념·자료 분석</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="social" type="button"><b>사</b><strong>사회</strong><span>개념·자료 분석</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="history" type="button"><b>역</b><strong>역사</strong><span>시대 흐름·사건</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="essay" type="button"><b>논</b><strong>논술</strong><span>독해·요약·표현</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="coding" type="button"><b>⌨</b><strong>코딩</strong><span>Python·웹 제작</span></button>
+      <button class="jj-all-subject-item subject-detail-btn" data-subject="ged" type="button"><b>검</b><strong>검정고시</strong><span>기초·기출·합격 관리</span></button>
+      <button class="jj-all-subject-item wide subject-detail-btn" data-subject="custom" type="button"><b>✓</b><strong>맞춤 커리큘럼</strong><span>학생별 목표와 수준에 맞춘 수업 설계</span></button>
+    </div>
+    <a class="jj-all-subjects-consult" href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">과목 선택이 어렵다면 무료 상담받기</a>
+  </section>
+</div>
 <!-- ==========================
           PROCESS
   =========================== -->
@@ -7447,6 +7504,20 @@ if (window.netlifyIdentity) {
     if(!posts.length){grid.innerHTML='<p class="jj-blog-loading">등록된 교육정보가 없습니다.</p>';return;}
     grid.innerHTML=posts.map(p=>`<a class="jj-blog-home-card" href="post.html?slug=${encodeURIComponent(p.slug)}"><span class="jj-blog-tag">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p>${esc(p.excerpt)}</p><time datetime="${esc(p.date)}">${fmt(p.date)}</time></a>`).join('');
   }).catch(()=>{grid.innerHTML='<p class="jj-blog-loading">교육정보를 불러오지 못했습니다. 교육정보 페이지에서 확인해 주세요.</p>';});
+})();
+</script>
+
+<script id="jjAllSubjectsScript">
+(function(){
+  var modal=document.getElementById('jjAllSubjectsModal');
+  var openBtn=document.getElementById('jjAllSubjectsOpen');
+  if(!modal||!openBtn)return;
+  function openModal(){modal.classList.add('open');modal.setAttribute('aria-hidden','false');openBtn.setAttribute('aria-expanded','true');document.body.classList.add('jj-subjects-modal-open');var first=modal.querySelector('.jj-all-subject-item');if(first)setTimeout(function(){first.focus()},40)}
+  function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');openBtn.setAttribute('aria-expanded','false');document.body.classList.remove('jj-subjects-modal-open')}
+  openBtn.addEventListener('click',openModal);
+  modal.querySelectorAll('[data-jj-subjects-close]').forEach(function(el){el.addEventListener('click',closeModal)});
+  modal.querySelectorAll('.jj-all-subject-item').forEach(function(el){el.addEventListener('click',function(){closeModal()})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open')){closeModal();openBtn.focus()}});
 })();
 </script>
 </body>
