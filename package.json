@@ -1,0 +1,8 @@
+{
+  "name": "jangssam-premium",
+  "private": true,
+  "version": "13.0.0",
+  "scripts": {
+    "build": "node scripts/build-content.js"
+  }
+}

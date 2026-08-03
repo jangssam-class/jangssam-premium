@@ -1,0 +1,18 @@
+장쌤 Premium V13 관리자 포스팅 설정
+
+1. 프로젝트 전체를 GitHub jangssam-premium 저장소 최상단에 업로드하고 Commit changes를 누릅니다.
+2. Netlify 배포가 완료되면 Project configuration → Identity → Netlify Identity에서 Identity를 활성화합니다.
+3. Registration은 Invite only로 설정합니다.
+4. Identity → Services → Git Gateway에서 Enable Git Gateway를 누릅니다.
+5. Identity 사용자 관리에서 본인 이메일을 초대합니다.
+6. 초대 메일에서 비밀번호를 설정합니다.
+7. https://jangssam-premium.netlify.app/admin/ 에 접속해 로그인합니다.
+8. 교육정보 포스팅 → 전체 포스팅 관리에서 글을 추가/수정/삭제하고 Publish를 누릅니다.
+9. Publish 시 GitHub의 content/posts.json이 자동으로 커밋됩니다.
+10. Netlify가 자동으로 재배포하면서 글 상세 HTML, 메인 최신글, sitemap.xml, rss.xml을 자동 생성합니다.
+
+주의
+- 주소용 영문 이름(slug)은 중복되면 안 됩니다.
+- 공개 스위치를 끄면 홈페이지에서 제외됩니다.
+- 대표 이미지는 관리자에서 업로드할 수 있고 이미지/blog 폴더에 저장됩니다.
+- Netlify Identity와 Git Gateway 설정 전에는 /admin/에서 로그인·발행할 수 없습니다.
