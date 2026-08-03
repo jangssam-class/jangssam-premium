@@ -1,0 +1,12 @@
+장쌤 홈페이지 V11.0 적용 방법
+
+1. 이 압축파일을 풉니다.
+2. 내부 파일과 폴더 전체를 GitHub jangssam-premium 저장소 최상단에 업로드합니다.
+3. 같은 이름의 파일은 덮어쓰고 Commit changes를 누릅니다.
+4. Netlify 배포 완료 후 아래 주소를 확인합니다.
+   /regions/
+   /regions/seoul-tutoring.html
+   /sitemap.xml
+5. 네이버 서치어드바이저에서 sitemap.xml 수집이 갱신되도록 기다리거나 웹페이지 수집에서 /regions/를 요청합니다.
+
+V11 핵심: 지역별 독립 URL, 고유 title/description, 내부 링크 허브, 상담 CTA, sitemap 반영.
