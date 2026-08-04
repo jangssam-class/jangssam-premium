@@ -7313,11 +7313,9 @@ window.JJCapitalTutoring={open:open,close:close,setRegion:setRegion};
   #contact .why-title,#contact .why-intro,#contact .why-item:last-of-type{grid-column:1!important}
 }
 </style>
-<script>
-/* Netlify 초대 링크 처리만 담당합니다.
-   일반 홈페이지 로그인 상태에서는 관리자 페이지로 자동 이동하지 않습니다. */
+<script id="jjIdentityInviteOnly">
 if (window.netlifyIdentity) {
-  window.netlifyIdentity.on("init", function (user) {
+  window.netlifyIdentity.on("init", function(user) {
     if (!user && window.location.hash.includes("invite_token")) {
       window.netlifyIdentity.open("signup");
     }
@@ -7513,5 +7511,19 @@ body.jj-v72-lock{overflow:hidden!important}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open')){closeModal();openBtn.focus()}});
 })();
 </script>
+
+<style id="jjFinalPublishedPostsVisibility">
+/* 관리자에서 발행한 교육정보를 메인에서도 항상 확인할 수 있게 표시 */
+@media (max-width: 768px) {
+  #education-info {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  #education-info .jj-blog-home-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
 </body>
 </html>
