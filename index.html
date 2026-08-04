@@ -7314,11 +7314,14 @@ window.JJCapitalTutoring={open:open,close:close,setRegion:setRegion};
 }
 </style>
 <script>
+/* Netlify 초대 링크 처리만 담당합니다.
+   일반 홈페이지 로그인 상태에서는 관리자 페이지로 자동 이동하지 않습니다. */
 if (window.netlifyIdentity) {
-  window.netlifyIdentity.on("init", user => {
-    if (!user && window.location.hash.includes("invite_token")) { window.netlifyIdentity.open("signup"); }
+  window.netlifyIdentity.on("init", function (user) {
+    if (!user && window.location.hash.includes("invite_token")) {
+      window.netlifyIdentity.open("signup");
+    }
   });
-  window.netlifyIdentity.on("login", () => { window.location.href = "/admin/"; });
 }
 </script>
 <!-- V7.2 모바일 선생님·FAQ 실동작 팝업 -->
@@ -7481,16 +7484,6 @@ body.jj-v72-lock{overflow:hidden!important}
     if(home) closeAll(false);
   });
 })();
-</script><script>
-if (window.netlifyIdentity) {
-  window.netlifyIdentity.on("init", function(user) {
-    if (!user) {
-      window.netlifyIdentity.on("login", function() {
-        document.location.href = "/admin/";
-      });
-    }
-  });
-}
 </script>
 
 <script id="jjV14LatestPosts">
