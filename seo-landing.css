@@ -65,3 +65,15 @@
 .jj-land-footer{padding:34px 0;background:#071a33;color:rgba(255,255,255,.7)}
 .jj-land-footer a{color:#fff}
 @media(max-width:800px){.jj-land-grid{grid-template-columns:1fr}.jj-land-nav{display:none}.jj-land-hero{padding:68px 0}.jj-land-hero p{font-size:17px}}
+
+/* Ultimate 3.0 nationwide directory */
+.jj-region-directory{padding:88px 0;background:#fff}
+.jj-region-directory .jj-seo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.jj-region-directory .jj-seo-grid a{min-height:112px}
+.jj-region-meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.jj-region-meta span{padding:8px 12px;border-radius:999px;background:#eef5ff;color:#1d4ed8;font-size:13px;font-weight:750}
+.jj-region-notice{margin-top:24px;padding:18px 20px;border:1px solid #dbe7f7;border-radius:16px;background:#f8fbff;color:#526278;line-height:1.75}
+.jj-city-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.jj-city-list a{display:block;padding:17px;border:1px solid #e2e8f0;border-radius:15px;background:#fff;color:#0b2347;font-weight:800}
+@media(max-width:900px){.jj-region-directory .jj-seo-grid,.jj-city-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.jj-region-directory .jj-seo-grid,.jj-city-list{grid-template-columns:1fr}}

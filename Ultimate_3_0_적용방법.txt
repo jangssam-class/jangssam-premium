@@ -1,0 +1,37 @@
+장쌤 Premium Ultimate 3.0 전국 SEO 운영본
+
+구성
+- 기존 학년·과목 랜딩페이지: 10개
+- 전국 지역 디렉터리: 1개
+- 전국 17개 시도 허브: 17개
+- 17개 시도 × 핵심 4개 유형(수학·영어·국어·화상): 68개
+- 주요 도시 상세 페이지: 24개
+- 신규 전국 관련 페이지 합계: 110개
+- 전체 sitemap URL 수: 125개
+
+용량
+- 이미지 복제 없이 HTML과 공통 CSS를 공유하는 구조입니다.
+- 지역 페이지는 가볍고, 사이트 용량의 대부분은 기존 이미지가 차지합니다.
+
+적용 방법
+1. 압축을 풉니다.
+2. GitHub jangssam-premium 저장소 최상단에 내부 파일과 폴더 전체를 올립니다.
+3. 같은 이름은 덮어쓰고 Commit changes를 누릅니다.
+4. Netlify 최신 배포가 Published인지 확인합니다.
+5. 확인 주소
+   /nationwide/
+   /nationwide/seoul-math-tutoring.html
+   /nationwide/busan-english-tutoring.html
+   /cities/suwon-tutoring.html
+   /sitemap.xml
+
+네이버 서치어드바이저
+- 기존 sitemap.xml 등록은 삭제하지 않습니다.
+- 새 sitemap이 같은 주소에서 자동 갱신됩니다.
+- 수집 요청은 /nationwide/와 대표 지역 2~3개만 먼저 요청하세요.
+- 100개 페이지를 모두 수동 요청할 필요는 없습니다.
+
+주의
+- 검색 노출과 순위는 보장되지 않습니다.
+- 방문수업 가능 여부는 실제 교사 일정과 이동 거리에 따라 확인해야 합니다.
+- 실제로 서비스하지 않는 지역 또는 과목은 페이지를 삭제하거나 noindex 처리하세요.
