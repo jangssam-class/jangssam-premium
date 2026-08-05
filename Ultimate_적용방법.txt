@@ -1,0 +1,25 @@
+장쌤 Premium Ultimate 1.0 적용 방법
+
+1. 이 압축파일을 풉니다.
+2. GitHub jangssam-premium 저장소 최상단에 아래 항목을 업로드합니다.
+   - index.html
+   - seo-landing.css
+   - sitemap.xml
+   - VERSION.txt
+   - seo 폴더 전체
+3. 같은 이름의 기존 파일은 덮어쓰고 Commit changes를 누릅니다.
+4. Netlify에서 최신 커밋이 Published가 될 때까지 기다립니다.
+5. 아래 주소를 확인합니다.
+   - /
+   - /seo/math-tutoring.html
+   - /seo/online-tutoring.html
+   - /sitemap.xml
+6. 네이버 서치어드바이저에서 sitemap.xml은 기존 등록을 유지하면 됩니다.
+   새 사이트맵 내용은 같은 주소에서 자동으로 갱신됩니다.
+7. 새 랜딩 페이지 중 대표 2~3개만 웹페이지 수집 요청을 하세요.
+   모든 페이지를 매번 수동 요청할 필요는 없습니다.
+
+주의
+- 검색 상위노출은 보장되지 않습니다.
+- 동일 문구를 반복적으로 늘리는 방식이 아니라, 학년·과목별 독립 문서와 내부 링크 구조를 추가한 버전입니다.
+- 실제 상담 전화번호·사업자 주소·SNS가 확정되면 Organization 구조화 데이터에 추가하는 것이 좋습니다.
