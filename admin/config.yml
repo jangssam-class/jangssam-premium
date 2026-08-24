@@ -44,4 +44,19 @@ collections:
               - { label: "대표 이미지 설명", name: "imageAlt", widget: "string", required: false, hint: "이미지 내용을 자연스럽게 설명하세요." }
               - { label: "추천 글", name: "featured", widget: "boolean", default: false }
               - { label: "공개", name: "published", widget: "boolean", default: true }
+              - label: "AI 검색 핵심답변"
+                name: "aiSummary"
+                widget: "text"
+                required: false
+                hint: "학생·학부모 질문에 바로 답하는 2~4문장 요약입니다. 비워두면 목록 요약(excerpt)이 자동 사용됩니다."
+              - label: "AI/검색 자주 묻는 질문"
+                name: "faq"
+                widget: "list"
+                required: false
+                label_singular: "질문"
+                summary: "{{fields.question}}"
+                hint: "필요한 글에만 3~5개 정도 입력하세요. 입력한 경우 FAQ 구조화 데이터에도 자동 반영됩니다."
+                fields:
+                  - { label: "질문", name: "question", widget: "string" }
+                  - { label: "답변", name: "answer", widget: "text" }
               - { label: "본문", name: "body", widget: "markdown" }

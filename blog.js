@@ -19,19 +19,9 @@
   };
 
 
-  // 검색엔진/AI가 본문을 바로 읽을 수 있도록 정적 게시글 URL을 우선 사용합니다.
-  // 정적 HTML이 아직 없는 새 글은 기존 동적 post.html 방식으로 자동 fallback 됩니다.
-  const staticPostSlugs = new Set([
-    'coding-first-project',
-    'elementary-korean-reading',
-    'english-vocabulary-routine',
-    'ged-preparation',
-    'middle-math-study',
-    'science-concept-study'
-  ]);
-  const postUrl = (post) => staticPostSlugs.has(post.slug)
-    ? `posts/${encodeURIComponent(post.slug)}.html`
-    : `post.html?slug=${encodeURIComponent(post.slug)}`;
+  // 모든 공개 게시글은 Netlify 빌드 시 /posts/*.html 정적 페이지로 자동 생성됩니다.
+  // 따라서 새 글도 별도 코드 수정 없이 정적 URL을 바로 사용합니다.
+  const postUrl = (post) => `posts/${encodeURIComponent(post.slug)}.html`;
 
   const image = (post) => post.image
     ? `<div class="post-thumb"><img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy"></div>`
