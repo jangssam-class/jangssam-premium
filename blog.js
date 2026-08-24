@@ -18,12 +18,27 @@
       : new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   };
 
+
+  // 검색엔진/AI가 본문을 바로 읽을 수 있도록 정적 게시글 URL을 우선 사용합니다.
+  // 정적 HTML이 아직 없는 새 글은 기존 동적 post.html 방식으로 자동 fallback 됩니다.
+  const staticPostSlugs = new Set([
+    'coding-first-project',
+    'elementary-korean-reading',
+    'english-vocabulary-routine',
+    'ged-preparation',
+    'middle-math-study',
+    'science-concept-study'
+  ]);
+  const postUrl = (post) => staticPostSlugs.has(post.slug)
+    ? `posts/${encodeURIComponent(post.slug)}.html`
+    : `post.html?slug=${encodeURIComponent(post.slug)}`;
+
   const image = (post) => post.image
     ? `<div class="post-thumb"><img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy"></div>`
     : `<div class="post-thumb post-thumb-fallback"><span>${escapeHtml(post.category)}</span></div>`;
 
   const card = (post, featured = false) => `
-    <a class="post-card${featured ? ' featured-card' : ''}" href="post.html?slug=${encodeURIComponent(post.slug)}">
+    <a class="post-card${featured ? ' featured-card' : ''}" href="${postUrl(post)}">
       ${image(post)}
       <div class="post-card-body">
         <span class="post-category">${escapeHtml(post.category)}</span>

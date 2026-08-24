@@ -3,4 +3,11 @@ Allow: /
 Disallow: /admin/
 Disallow: /content/
 
+# ChatGPT 검색 및 사용자 요청 기반 웹 열람 허용
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 Sitemap: https://jangssam-premium.netlify.app/sitemap.xml

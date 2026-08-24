@@ -1,0 +1,22 @@
+장쌤 Premium AI/검색 노출 1차 개선 패치
+
+GitHub 저장소 최상위 경로에서 아래 4개 파일을 같은 이름으로 덮어쓰면 됩니다.
+- robots.txt
+- sitemap.xml
+- blog.js
+- index.html
+
+변경 내용
+1) OAI-SearchBot 명시 허용
+2) ChatGPT-User 명시 허용
+3) sitemap.xml에 정적 게시글 6개 등록
+4) sitemap.xml에 상담신청.html 등록
+5) 블로그 목록에서 정적 게시글 URL(/posts/*.html)을 우선 사용
+6) 메인 최신 교육정보에서도 정적 게시글 URL을 우선 사용
+7) 정적 파일이 아직 없는 새 게시글은 기존 post.html?slug=... 방식으로 자동 fallback
+
+덮어쓴 뒤 Netlify 배포 완료 후 ChatGPT에 다음 주소를 보내 검토 요청하세요.
+- https://jangssam-premium.netlify.app/robots.txt
+- https://jangssam-premium.netlify.app/sitemap.xml
+- https://jangssam-premium.netlify.app/blog.html
+- https://jangssam-premium.netlify.app/posts/middle-math-study.html
