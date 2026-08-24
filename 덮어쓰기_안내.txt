@@ -1,22 +1,27 @@
-장쌤 Premium AI/검색 노출 1차 개선 패치
+장쌤 Premium AI 검색 2차 개선 패치
 
-GitHub 저장소 최상위 경로에서 아래 4개 파일을 같은 이름으로 덮어쓰면 됩니다.
-- robots.txt
-- sitemap.xml
-- blog.js
-- index.html
+이번 패치는 '중학생 수학 공부법' 글을 AI 검색 테스트 페이지로 최적화합니다.
 
-변경 내용
-1) OAI-SearchBot 명시 허용
-2) ChatGPT-User 명시 허용
-3) sitemap.xml에 정적 게시글 6개 등록
-4) sitemap.xml에 상담신청.html 등록
-5) 블로그 목록에서 정적 게시글 URL(/posts/*.html)을 우선 사용
-6) 메인 최신 교육정보에서도 정적 게시글 URL을 우선 사용
-7) 정적 파일이 아직 없는 새 게시글은 기존 post.html?slug=... 방식으로 자동 fallback
+덮어쓸 파일
+1) content/posts.json
+2) scripts/build-content.js
+3) posts/middle-math-study.html
+4) sitemap.xml
+5) rss.xml
+6) index.html
 
-덮어쓴 뒤 Netlify 배포 완료 후 ChatGPT에 다음 주소를 보내 검토 요청하세요.
-- https://jangssam-premium.netlify.app/robots.txt
-- https://jangssam-premium.netlify.app/sitemap.xml
-- https://jangssam-premium.netlify.app/blog.html
-- https://jangssam-premium.netlify.app/posts/middle-math-study.html
+중요
+- ZIP 안의 폴더 구조를 그대로 유지해서 GitHub에 덮어써 주세요.
+- content/posts.json의 중복 middle-math-study 슬러그를 1개로 정리했습니다.
+- build-content.js에 중복 slug 자동 방지 기능을 추가했습니다.
+- 중학생 수학 글에 '한눈에 답하기'와 '자주 묻는 질문'을 추가했습니다.
+- Article + BreadcrumbList + FAQPage 구조화 데이터를 함께 출력합니다.
+- 기존 디자인과 상담 링크는 유지합니다.
+
+배포 후 확인 주소
+https://jangssam-premium.netlify.app/posts/middle-math-study.html
+
+확인할 항목
+- 제목 아래 기존 대표 이미지 정상 표시
+- 본문에 '한눈에 답하기' 표시
+- 글 아래쪽에 '자주 묻는 질문' 표시
