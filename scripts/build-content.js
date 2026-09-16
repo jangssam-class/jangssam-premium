@@ -124,6 +124,7 @@ function postHtml(p) {
 
 </body>
 </html>`;
+}
 const postsDir=path.join(root,'posts'); fs.mkdirSync(postsDir,{recursive:true});
 for(const file of fs.readdirSync(postsDir)){ if(file.endsWith('.html')) fs.unlinkSync(path.join(postsDir,file)); }
 for(const p of posts) fs.writeFileSync(path.join(postsDir,`${p.slug}.html`),postHtml(p),'utf8');
