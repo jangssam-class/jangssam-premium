@@ -49,8 +49,81 @@ function postHtml(p) {
   const schema={"@context":"https://schema.org","@graph":graph};
   const answerHtml=autoSummary?`<section class="ai-answer" aria-labelledby="quick-answer-title"><h2 id="quick-answer-title">한눈에 답하기</h2><p>${inline(autoSummary)}</p></section>`:'';
   const faqHtml=faqItems.length?`<section class="article-faq" aria-labelledby="faq-title"><h2 id="faq-title">자주 묻는 질문</h2>${faqItems.map(x=>`<h3>${esc(x.question)}</h3><p>${inline(x.answer)}</p>`).join('')}</section>`:'';
-  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)} | 장쌤의과외교실</title><meta name="description" content="${esc(p.excerpt)}"><meta name="robots" content="index,follow"><link rel="canonical" href="${url}"><meta property="og:type" content="article"><meta property="og:site_name" content="장쌤의과외교실"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="${esc(p.title)}"><meta property="og:description" content="${esc(p.excerpt)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image}"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="../blog.css"><link rel="icon" href="../이미지/favicon-32.png" type="image/png"><script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script></head><body class="post-page"><header class="blog-header"><div class="blog-header-inner"><a class="blog-logo" href="../index.html"><img alt="장쌤의과외교실 로고" src="../이미지/로고.png"><span>장쌤의과외교실</span></a><nav class="blog-nav"><a href="../blog.html">교육정보</a><a href="../지역별과외찾기.html">지역별 과외</a><a class="consult" href="../상담신청.html">상담 신청</a></nav></div></header><main class="article-main"><article class="article-shell"><header class="article-header"><span class="post-category">${esc(p.category)}</span><h1>${esc(p.title)}</h1><p class="article-excerpt">${esc(p.excerpt)}</p><div class="post-meta">${esc(p.date)} · 장쌤 교육정보</div></header>${p.image?`<figure class="article-image"><img src="${esc(p.image)}" alt="${esc(p.imageAlt||p.title)}"></figure>`:''}<div class="article-content">${answerHtml}${markdown(p.body)}${faqHtml}</div></article><aside class="article-cta"><strong>학생에게 맞는 학습 방향이 궁금하신가요?</strong><p>현재 학습 상태와 목표를 확인한 뒤 필요한 수업 방향을 차근차근 안내해드립니다.</p><a href="../상담신청.html">무료 상담 신청</a></aside><a class="back-link" href="../blog.html">교육정보 목록으로 돌아가기</a></main><footer class="blog-footer">© 2026 장쌤의과외교실. All rights reserved.</footer></body></html>`;
-}
+    return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${esc(p.title)} | 장쌤의과외교실</title>
+  <meta name="description" content="${esc(p.excerpt)}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="${url}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="장쌤의과외교실">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="${esc(p.title)}">
+  <meta property="og:description" content="${esc(p.excerpt)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${image}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../blog.css">
+  <link rel="icon" href="../이미지/favicon-32.png" type="image/png">
+  <script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script>
+</head>
+<body class="post-page">
+
+<header class="blog-header">
+  <div class="blog-header-inner">
+    <a class="blog-logo" href="../index.html">
+      <img alt="장쌤의과외교실 로고" src="../이미지/로고.png">
+      <span>장쌤의과외교실</span>
+    </a>
+
+    <nav class="blog-nav">
+      <a href="../blog.html">교육정보</a>
+      <a href="../지역별과외찾기.html">지역별 과외</a>
+      <a class="consult" href="../상담신청.html">상담 신청</a>
+    </nav>
+  </div>
+</header>
+
+<main class="article-main">
+  <article class="article-shell">
+
+    <header class="article-header">
+      <span class="post-category">${esc(p.category)}</span>
+      <h1>${esc(p.title)}</h1>
+      <p class="article-excerpt">${esc(p.excerpt)}</p>
+      <div class="post-meta">${esc(p.date)} · 장쌤 교육정보</div>
+    </header>
+
+    ${p.image?`<figure class="article-image">
+      <img src="${esc(p.image)}" alt="${esc(p.imageAlt||p.title)}">
+    </figure>`:''}
+
+    <div class="article-content">
+      ${answerHtml}
+      ${markdown(p.body)}
+      ${faqHtml}
+    </div>
+
+  </article>
+
+  <aside class="article-cta">
+    <strong>학생에게 맞는 학습 방향이 궁금하신가요?</strong>
+    <p>현재 학습 상태와 목표를 확인한 뒤 필요한 수업 방향을 차근차근 안내해드립니다.</p>
+    <a href="../상담신청.html">무료 상담 신청</a>
+  </aside>
+
+  <a class="back-link" href="../blog.html">교육정보 목록으로 돌아가기</a>
+</main>
+
+<footer class="blog-footer">
+  © 2026 장쌤의과외교실. All rights reserved.
+</footer>
+
+</body>
+</html>`;
 const postsDir=path.join(root,'posts'); fs.mkdirSync(postsDir,{recursive:true});
 for(const file of fs.readdirSync(postsDir)){ if(file.endsWith('.html')) fs.unlinkSync(path.join(postsDir,file)); }
 for(const p of posts) fs.writeFileSync(path.join(postsDir,`${p.slug}.html`),postHtml(p),'utf8');
