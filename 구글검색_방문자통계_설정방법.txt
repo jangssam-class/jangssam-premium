@@ -1,0 +1,51 @@
+장쌤 Premium 구글 검색·비공개 방문자 통계 설정방법
+======================================================
+
+[1] 이 ZIP 파일을 GitHub에 덮어쓰기
+
+기존 저장소의 파일을 모두 유지한 상태에서 이 ZIP 안의 파일을 덮어씁니다.
+Netlify가 자동으로 새 배포를 시작하고 Published가 표시될 때까지 기다립니다.
+
+
+[2] 관리자 통계 비밀번호 등록
+
+1. Netlify 로그인
+2. 장쌤 Premium 사이트 선택
+3. Site configuration → Environment variables 이동
+4. Add a variable 클릭
+5. Key: STATS_ADMIN_PASSWORD
+6. Value: 본인만 아는 12자 이상의 비밀번호
+7. 저장한 뒤 Deploys → Trigger deploy → Deploy site 클릭
+
+주의: 비밀번호는 홈페이지 파일이나 GitHub에 직접 적지 마세요.
+
+
+[3] 방문자 통계 확인
+
+주소:
+https://jangssam-premium.netlify.app/private-stats.html
+
+위 주소는 홈페이지 메뉴에 표시되지 않으며 검색 수집도 차단했습니다.
+통계는 이 기능을 배포한 시점부터 집계됩니다.
+
+
+[4] Google Search Console 연결
+
+1. https://search.google.com/search-console 접속
+2. 속성 추가 → URL 접두어 선택
+3. https://jangssam-premium.netlify.app 입력
+4. HTML 태그 인증 방식 선택
+5. 표시되는 google-site-verification 인증 코드를 복사
+6. 그 인증 코드를 ChatGPT에 보내면 index.html에 정확히 넣어드릴 수 있습니다.
+7. 인증 완료 후 Sitemap 메뉴에서 sitemap.xml 제출
+
+제출 주소:
+https://jangssam-premium.netlify.app/sitemap.xml
+
+
+[집계 기준]
+
+- 오늘 방문자: 같은 브라우저를 하루에 한 명으로 계산
+- 누적 방문자: 설치 이후 같은 브라우저를 한 명으로 계산
+- 페이지 조회: 방문자가 페이지를 열거나 이동한 횟수
+- 방문자의 이름, 전화번호, 이메일은 수집하지 않음

@@ -380,6 +380,8 @@ function postHtml(p) {
   <script type="application/ld+json">
 ${JSON.stringify(schema).replace(/</g, '\\u003c')}
   </script>
+
+  <script defer src="../analytics/visitor-tracker.js"></script>
 </head>
 
 <body class="post-page">

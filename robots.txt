@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /content/
+Disallow: /private-stats.html
 
 # ChatGPT 검색 및 사용자 요청 기반 웹 열람 허용
 User-agent: OAI-SearchBot

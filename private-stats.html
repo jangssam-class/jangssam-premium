@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>방문자 통계 | 장쌤 Premium</title>
+  <style>
+    :root { color-scheme: light; --blue:#1769e0; --navy:#102a52; --line:#dce6f2; --bg:#f4f7fb; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:Pretendard,"Noto Sans KR",Arial,sans-serif; background:var(--bg); color:#172033; }
+    button,input { font:inherit; }
+    .wrap { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:48px 0 72px; }
+    .brand { margin-bottom:24px; font-size:14px; font-weight:800; color:var(--blue); }
+    .panel { background:#fff; border:1px solid var(--line); border-radius:24px; padding:28px; box-shadow:0 18px 50px rgba(26,55,93,.08); }
+    h1 { margin:0 0 8px; font-size:clamp(27px,4vw,38px); color:var(--navy); }
+    .sub { margin:0 0 26px; color:#66758a; line-height:1.7; }
+    .login { max-width:460px; margin:10vh auto 0; }
+    label { display:block; margin-bottom:9px; font-weight:750; }
+    input { width:100%; height:52px; padding:0 15px; border:1px solid #c9d6e5; border-radius:13px; outline:none; }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(23,105,224,.12); }
+    .button { width:100%; height:52px; margin-top:12px; border:0; border-radius:13px; background:var(--blue); color:#fff; font-weight:800; cursor:pointer; }
+    .error { min-height:24px; margin:12px 0 0; color:#d13c3c; font-size:14px; line-height:1.6; }
+    .top { display:flex; gap:16px; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+    .logout { border:1px solid var(--line); border-radius:10px; background:#fff; padding:10px 13px; color:#536279; cursor:pointer; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .card { padding:22px; border:1px solid var(--line); border-radius:18px; background:#fff; }
+    .card span { display:block; margin-bottom:10px; color:#6d7b8f; font-size:14px; }
+    .card strong { font-size:32px; color:var(--navy); }
+    .history { margin-top:18px; overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:15px 12px; border-bottom:1px solid #edf1f6; text-align:right; }
+    th:first-child,td:first-child { text-align:left; }
+    th { color:#69778a; font-size:13px; }
+    .notice { margin:18px 4px 0; color:#748195; font-size:13px; line-height:1.7; }
+    [hidden] { display:none !important; }
+    @media (max-width:760px) { .cards{grid-template-columns:repeat(2,1fr)} .panel{padding:20px} .card strong{font-size:27px} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section id="loginView" class="panel login">
+      <div class="brand">장쌤 Premium · PRIVATE</div>
+      <h1>방문자 통계</h1>
+      <p class="sub">관리자 비밀번호를 입력하면 통계를 확인할 수 있습니다.</p>
+      <form id="loginForm">
+        <label for="password">관리자 비밀번호</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button" type="submit">통계 확인</button>
+        <p id="loginError" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="dashboardView" hidden>
+      <div class="top">
+        <div>
+          <div class="brand">장쌤 Premium · PRIVATE</div>
+          <h1>방문자 통계</h1>
+          <p class="sub">한국 시간 기준으로 집계됩니다.</p>
+        </div>
+        <button id="logoutButton" class="logout" type="button">로그아웃</button>
+      </div>
+
+      <div class="cards">
+        <div class="card"><span>오늘 방문자</span><strong id="todayVisitors">0</strong></div>
+        <div class="card"><span>오늘 페이지 조회</span><strong id="todayViews">0</strong></div>
+        <div class="card"><span>누적 방문자</span><strong id="totalVisitors">0</strong></div>
+        <div class="card"><span>누적 페이지 조회</span><strong id="totalViews">0</strong></div>
+      </div>
+
+      <div class="panel history">
+        <h2>최근 7일</h2>
+        <table>
+          <thead><tr><th>날짜</th><th>방문자</th><th>페이지 조회</th></tr></thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <p class="notice">통계는 이 기능을 배포한 시점부터 집계됩니다. 같은 브라우저는 하루에 한 명의 방문자로 계산하며, 페이지를 이동할 때마다 페이지 조회 수가 증가합니다.</p>
+    </section>
+  </main>
+
+  <script>
+    const endpoint = '/.netlify/functions/stats';
+    const loginView = document.getElementById('loginView');
+    const dashboardView = document.getElementById('dashboardView');
+    const loginError = document.getElementById('loginError');
+    const number = value => new Intl.NumberFormat('ko-KR').format(Number(value || 0));
+
+    function showLogin(message = '') {
+      dashboardView.hidden = true;
+      loginView.hidden = false;
+      loginError.textContent = message;
+    }
+
+    function showDashboard(data) {
+      loginView.hidden = true;
+      dashboardView.hidden = false;
+      document.getElementById('todayVisitors').textContent = number(data.today.visitors);
+      document.getElementById('todayViews').textContent = number(data.today.pageViews);
+      document.getElementById('totalVisitors').textContent = number(data.total.visitors);
+      document.getElementById('totalViews').textContent = number(data.total.pageViews);
+      document.getElementById('historyBody').innerHTML = data.history.slice().reverse().map(item =>
+        `<tr><td>${item.date}</td><td>${number(item.visitors)}</td><td>${number(item.pageViews)}</td></tr>`
+      ).join('');
+    }
+
+    async function loadStats() {
+      const response = await fetch(endpoint, { credentials: 'same-origin', cache: 'no-store' });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok) return showDashboard(data);
+      if (data.code === 'SETUP_REQUIRED') return showLogin('먼저 Netlify 환경변수에 관리자 비밀번호를 등록해주세요.');
+      showLogin();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      loginError.textContent = '확인 중입니다…';
+      const password = document.getElementById('password').value;
+      const response = await fetch(`${endpoint}?action=login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ password })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) return showLogin(data.message || '비밀번호를 확인해주세요.');
+      document.getElementById('password').value = '';
+      loadStats();
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+      await fetch(`${endpoint}?action=logout`, { method: 'POST', credentials: 'same-origin' });
+      showLogin();
+    });
+
+    loadStats().catch(() => showLogin('통계를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.'));
+  </script>
+</body>
+</html>

@@ -69,6 +69,7 @@ function postHtml(p) {
   <link rel="stylesheet" href="../blog.css">
   <link rel="icon" href="../이미지/favicon-32.png" type="image/png">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script>
+  <script defer src="../analytics/visitor-tracker.js"></script>
 </head>
 <body class="post-page">
 

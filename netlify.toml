@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = "."
+  functions = "netlify/functions"
 
 [[headers]]
   for = "/*"
@@ -24,3 +25,14 @@
   for = "/content/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/private-stats.html"
+  [headers.values]
+    Cache-Control = "no-store, max-age=0"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Cache-Control = "no-store, max-age=0"
