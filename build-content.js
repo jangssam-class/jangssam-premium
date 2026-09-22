@@ -3,23 +3,8 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const site = 'https://jangssam-premium.netlify.app';
 const dataPath = path.join(root, 'content', 'posts.json');
-if (!fs.existsSync(dataPath)) {
-  throw new Error('[게시글 오류] content/posts.json을 찾을 수 없습니다.');
-}
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
-if (!allPosts.length) {
-  throw new Error('[게시글 오류] content/posts.json에 게시글이 없습니다.');
-}
-for (const p of allPosts) {
-  const slug = String(p.slug || '').trim();
-  const bodyLength = String(p.body || '').trim().length;
-  console.log(`[본문 확인] ${slug || '(slug 없음)'} : ${bodyLength}자`);
-  if (p.published !== false && bodyLength === 0) {
-    throw new Error(`[게시글 보호] 공개 글 본문이 비어 있어 배포를 중단합니다: ${p.title || slug}`);
-  }
-}
-const rawPosts = allPosts.filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+const rawPosts = (data.posts || []).filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const seenSlugs = new Set();
 const duplicateSlugs = [];
 const posts = rawPosts.filter(p => {
@@ -29,6 +14,12 @@ const posts = rawPosts.filter(p => {
   seenSlugs.add(slug); return true;
 });
 if(duplicateSlugs.length) console.warn('[게시글 자동화 경고] 중복 slug 제외:', [...new Set(duplicateSlugs)].join(', '));
+// Safety guard: never silently publish a post whose main body is missing.
+const emptyBodyPosts = posts.filter(p => !String(p.body || '').trim());
+if(emptyBodyPosts.length){
+  console.error('[게시글 자동화 오류] 본문이 비어 있는 공개 게시글:', emptyBodyPosts.map(p => p.slug || p.title || '(slug 없음)').join(', '));
+  process.exit(1);
+}
 const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const xml = (v='') => esc(v);
 const inline = (text='') => esc(text).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
