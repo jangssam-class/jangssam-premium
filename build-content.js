@@ -2,36 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
 const site = 'https://jangssam-premium.netlify.app';
-const postsDataDir = path.join(root, 'content', 'posts');
-const legacyPostsPath = path.join(root, 'content', 'posts.json');
-const bodyBackupPath = path.join(root, 'content', 'posts-body-backup.json');
-const bodyBackup = fs.existsSync(bodyBackupPath) ? JSON.parse(fs.readFileSync(bodyBackupPath, 'utf8')) : {};
-let allPosts = [];
-if (fs.existsSync(postsDataDir)) {
-  const postFiles = fs.readdirSync(postsDataDir).filter(f => f.endsWith('.json'));
-  allPosts = postFiles.map(file => {
-    const full = path.join(postsDataDir, file);
-    const post = JSON.parse(fs.readFileSync(full, 'utf8'));
-    if (!post.slug) post.slug = path.basename(file, '.json');
-    return post;
-  });
-} else if (fs.existsSync(legacyPostsPath)) {
-  const legacy = JSON.parse(fs.readFileSync(legacyPostsPath, 'utf8'));
-  allPosts = Array.isArray(legacy) ? legacy : (Array.isArray(legacy.posts) ? legacy.posts : []);
-} else {
-  throw new Error('[게시글 오류] content/posts 폴더와 content/posts.json을 찾을 수 없습니다.');
+const dataPath = path.join(root, 'content', 'posts.json');
+if (!fs.existsSync(dataPath)) {
+  throw new Error('[게시글 오류] content/posts.json을 찾을 수 없습니다.');
 }
-allPosts = allPosts.map(post => {
-  const slug = String(post.slug || '').trim();
-  if (!String(post.body || '').trim() && slug && String(bodyBackup[slug] || '').trim()) {
-    post.body = bodyBackup[slug];
-    console.warn(`[본문 자동복구] ${post.title || slug}`);
+const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
+if (!allPosts.length) {
+  throw new Error('[게시글 오류] content/posts.json에 게시글이 없습니다.');
+}
+for (const p of allPosts) {
+  const slug = String(p.slug || '').trim();
+  const bodyLength = String(p.body || '').trim().length;
+  console.log(`[본문 확인] ${slug || '(slug 없음)'} : ${bodyLength}자`);
+  if (p.published !== false && bodyLength === 0) {
+    throw new Error(`[게시글 보호] 공개 글 본문이 비어 있어 배포를 중단합니다: ${p.title || slug}`);
   }
-  if (post.published !== false && !String(post.body || '').trim()) {
-    throw new Error(`[게시글 보호] 공개 글 본문이 비어 있어 배포를 중단합니다: ${post.title || slug}`);
-  }
-  return post;
-});
+}
 const rawPosts = allPosts.filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const seenSlugs = new Set();
 const duplicateSlugs = [];
