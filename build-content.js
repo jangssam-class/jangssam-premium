@@ -2,16 +2,19 @@ const fs = require('fs');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
 const site = 'https://jangssam-premium.netlify.app';
-const dataPath = path.join(root, 'content', 'posts.json');
-const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-const rawPosts = (data.posts || []).filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
-const emptyBodyPosts = rawPosts.filter(p => !String(p.body || '').trim());
-if (emptyBodyPosts.length) {
-  console.error('\n[안전장치] 본문이 비어 있는 공개 글이 있어 배포를 중단합니다.');
-  emptyBodyPosts.forEach(p => console.error(`- ${p.date || ''} ${p.title || p.slug || '(제목 없음)'}`));
-  console.error('기존 정상 사이트를 보호하기 위해 정적 게시글을 새로 생성하지 않았습니다. CMS에서 본문을 확인한 뒤 다시 저장하세요.\n');
-  process.exit(1);
-}
+const postsDataDir = path.join(root, 'content', 'posts');
+if (!fs.existsSync(postsDataDir)) throw new Error('[게시글 오류] content/posts 폴더가 없습니다.');
+const postFiles = fs.readdirSync(postsDataDir).filter(f => f.endsWith('.json'));
+const allPosts = postFiles.map(file => {
+  const full = path.join(postsDataDir, file);
+  const post = JSON.parse(fs.readFileSync(full, 'utf8'));
+  if (!post.slug) post.slug = path.basename(file, '.json');
+  if (post.published !== false && !String(post.body || '').trim()) {
+    throw new Error(`[게시글 보호] 공개 글 본문이 비어 있어 배포를 중단합니다: ${post.title || post.slug} (${file})`);
+  }
+  return post;
+});
+const rawPosts = allPosts.filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const seenSlugs = new Set();
 const duplicateSlugs = [];
 const posts = rawPosts.filter(p => {
