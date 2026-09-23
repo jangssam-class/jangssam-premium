@@ -2,33 +2,73 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>장쌤 Premium 관리자</title>
 
-  <title>장쌤 교육정보 관리자</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-  <script
-    src="https://identity.netlify.com/v1/netlify-identity-widget.js">
-  </script>
+  <style>
+    #ai-writer-link {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 999999;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: #172b2b;
+      color: #fff;
+      text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+
+    #ai-writer-link:hover {
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
+      #ai-writer-link {
+        right: 14px;
+        bottom: 14px;
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <a
+    id="ai-writer-link"
+    href="/admin/ai-writer.html"
+    target="_blank"
+    rel="noopener"
+  >
+    ✨ AI 포스팅 초안 만들기
+  </a>
+
   <script>
     if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", function (user) {
+      window.netlifyIdentity.on("init", user => {
         if (!user) {
-          window.netlifyIdentity.open("login");
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
         }
       });
 
-      window.netlifyIdentity.on("login", function () {
+      window.netlifyIdentity.on("login", () => {
         window.netlifyIdentity.close();
       });
     }
   </script>
 
-  <script
-    src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js">
-  </script>
+  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
 </body>
 </html>
