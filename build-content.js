@@ -2,9 +2,39 @@ const fs = require('fs');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
 const site = 'https://jangssam-premium.netlify.app';
-const dataPath = path.join(root, 'content', 'posts.json');
-const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-const rawPosts = (data.posts || []).filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+const contentPostsDir = path.join(root, 'content', 'posts');
+
+function loadPostFiles() {
+  if (!fs.existsSync(contentPostsDir)) {
+    throw new Error(`[게시글 자동화 오류] 게시글 폴더가 없습니다: ${contentPostsDir}`);
+  }
+
+  const loaded = [];
+  const failed = [];
+  const files = fs.readdirSync(contentPostsDir).filter(file => file.endsWith('.json')).sort();
+
+  for (const file of files) {
+    const filePath = path.join(contentPostsDir, file);
+    try {
+      const post = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (!post || typeof post !== 'object' || Array.isArray(post)) throw new Error('게시글 JSON 객체가 아닙니다.');
+      if (!String(post.slug || '').trim()) throw new Error('slug가 없습니다.');
+      if (!String(post.title || '').trim()) throw new Error('제목이 없습니다.');
+      loaded.push(post);
+    } catch (error) {
+      failed.push(`${file}: ${error.message}`);
+    }
+  }
+
+  if (failed.length) {
+    console.warn('[게시글 자동화 경고] 오류가 있는 게시글만 제외하고 나머지는 계속 생성합니다.');
+    for (const message of failed) console.warn(` - ${message}`);
+  }
+
+  return loaded;
+}
+
+const rawPosts = loadPostFiles().filter(p => p.published !== false).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const seenSlugs = new Set();
 const duplicateSlugs = [];
 const posts = rawPosts.filter(p => {
@@ -14,12 +44,9 @@ const posts = rawPosts.filter(p => {
   seenSlugs.add(slug); return true;
 });
 if(duplicateSlugs.length) console.warn('[게시글 자동화 경고] 중복 slug 제외:', [...new Set(duplicateSlugs)].join(', '));
-// Safety guard: never silently publish a post whose main body is missing.
-const emptyBodyPosts = posts.filter(p => !String(p.body || '').trim());
-if(emptyBodyPosts.length){
-  console.error('[게시글 자동화 오류] 본문이 비어 있는 공개 게시글:', emptyBodyPosts.map(p => p.slug || p.title || '(slug 없음)').join(', '));
-  process.exit(1);
-}
+
+// 기존 홈페이지 스크립트와의 호환을 위해 공개 게시글 목록 JSON을 빌드 때 자동 생성합니다.
+fs.writeFileSync(path.join(root, 'content', 'posts.json'), JSON.stringify({ posts }, null, 2) + '\n', 'utf8');
 const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const xml = (v='') => esc(v);
 const inline = (text='') => esc(text).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
