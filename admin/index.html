@@ -5,133 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <title>장쌤 Premium 관리자</title>
-
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <style>
-    #jangssam-ai-helper {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 2147483647;
-      width: min(390px, calc(100vw - 28px));
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    #jangssam-ai-toggle {
-      float: right;
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 18px;
-      background: #172b2b;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(0,0,0,.18);
-    }
-
-    #jangssam-ai-panel {
-      display: none;
-      clear: both;
-      margin-bottom: 10px;
-      padding: 18px;
-      border: 1px solid #dfe5e5;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 14px 40px rgba(0,0,0,.18);
-    }
-
-    #jangssam-ai-panel.open {
-      display: block;
-    }
-
-    #jangssam-ai-panel h3 {
-      margin: 0 0 6px;
-      color: #172b2b;
-      font-size: 18px;
-    }
-
-    #jangssam-ai-panel p {
-      margin: 0 0 14px;
-      color: #5b6666;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    #jangssam-ai-panel label {
-      display: block;
-      margin: 11px 0 5px;
-      color: #263535;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    #jangssam-ai-panel input,
-    #jangssam-ai-panel select {
-      box-sizing: border-box;
-      width: 100%;
-      min-height: 42px;
-      padding: 9px 11px;
-      border: 1px solid #cfd8d8;
-      border-radius: 8px;
-      background: #fff;
-      font: inherit;
-    }
-
-    #jangssam-ai-generate {
-      width: 100%;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 14px;
-      background: #172b2b;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    #jangssam-ai-generate:disabled {
-      opacity: .55;
-      cursor: wait;
-    }
-
-    #jangssam-ai-status {
-      margin-top: 10px;
-      font-size: 13px;
-      line-height: 1.45;
-      white-space: pre-wrap;
-    }
-
-    #jangssam-ai-status.ok { color: #0a6b44; }
-    #jangssam-ai-status.error { color: #b42318; }
-
-    @media (max-width: 640px) {
-      #jangssam-ai-helper {
-        right: 14px;
-        bottom: 14px;
-      }
-    }
+    #jangssam-ai-helper{position:fixed;right:22px;bottom:22px;z-index:2147483647;width:min(390px,calc(100vw - 28px));font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    #jangssam-ai-toggle{float:right;border:0;border-radius:12px;padding:14px 18px;background:#172b2b;color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    #jangssam-ai-panel{display:none;clear:both;margin-bottom:10px;padding:18px;border:1px solid #dfe5e5;border-radius:14px;background:#fff;box-shadow:0 14px 40px rgba(0,0,0,.18)}
+    #jangssam-ai-panel.open{display:block}
+    #jangssam-ai-panel h3{margin:0 0 6px;color:#172b2b;font-size:18px}
+    #jangssam-ai-panel p{margin:0 0 14px;color:#5b6666;font-size:13px;line-height:1.5}
+    #jangssam-ai-panel label{display:block;margin:11px 0 5px;color:#263535;font-size:13px;font-weight:700}
+    #jangssam-ai-panel input,#jangssam-ai-panel select{box-sizing:border-box;width:100%;min-height:42px;padding:9px 11px;border:1px solid #cfd8d8;border-radius:8px;background:#fff;font:inherit}
+    #jangssam-ai-generate{width:100%;margin-top:14px;border:0;border-radius:9px;padding:12px 14px;background:#172b2b;color:#fff;font-size:14px;font-weight:800;cursor:pointer}
+    #jangssam-ai-generate:disabled{opacity:.55;cursor:wait}
+    #jangssam-ai-status{margin-top:10px;font-size:13px;line-height:1.45;white-space:pre-wrap}
+    #jangssam-ai-status.ok{color:#0a6b44}
+    #jangssam-ai-status.error{color:#b42318}
+    @media(max-width:640px){#jangssam-ai-helper{right:14px;bottom:14px}}
   </style>
 </head>
-
 <body>
   <div id="jangssam-ai-helper">
     <div id="jangssam-ai-panel">
       <h3>✨ AI 포스팅 자동작성</h3>
-      <p>
-        먼저 ‘새 포스팅 항목’을 열고 주제를 입력하세요.
-        생성된 초안이 현재 작성 화면의 입력칸에 자동으로 들어갑니다.
-      </p>
+      <p>새 포스팅 작성 화면에서 주제를 입력하면 AI가 현재 입력칸에 초안을 채웁니다.</p>
 
       <label for="jangssam-ai-keyword">주제 / 핵심 키워드</label>
-      <input
-        id="jangssam-ai-keyword"
-        type="text"
-        maxlength="200"
-        placeholder="예: 중학생 수학 성적이 안 오르는 이유"
-      >
+      <input id="jangssam-ai-keyword" type="text" maxlength="200" placeholder="예: 중학생 수학 성적이 안 오르는 이유">
 
       <label for="jangssam-ai-audience">주요 독자</label>
       <select id="jangssam-ai-audience">
@@ -145,196 +45,249 @@
       <label for="jangssam-ai-category">카테고리</label>
       <select id="jangssam-ai-category">
         <option>자동 선택</option>
-        <option>수학</option>
-        <option>영어</option>
-        <option>국어</option>
-        <option>과학</option>
-        <option>검정고시</option>
-        <option>코딩</option>
-        <option>학습관리</option>
-        <option>교육소식</option>
+        <option>수학</option><option>영어</option><option>국어</option><option>과학</option>
+        <option>검정고시</option><option>코딩</option><option>학습관리</option><option>교육소식</option>
       </select>
 
-      <button id="jangssam-ai-generate" type="button">
-        AI 초안 생성 → 현재 포스팅에 자동입력
-      </button>
-
+      <button id="jangssam-ai-generate" type="button">AI 초안 생성 → 현재 포스팅에 자동입력</button>
       <div id="jangssam-ai-status"></div>
     </div>
-
-    <button id="jangssam-ai-toggle" type="button">
-      ✨ AI 자동작성
-    </button>
+    <button id="jangssam-ai-toggle" type="button">✨ AI 자동작성</button>
   </div>
 
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
+        if (!user) window.netlifyIdentity.on("login", () => { document.location.href="/admin/"; });
       });
-
-      window.netlifyIdentity.on("login", () => {
-        window.netlifyIdentity.close();
-      });
+      window.netlifyIdentity.on("login", () => window.netlifyIdentity.close());
     }
   </script>
 
   <script>
-    (() => {
-      const $ = id => document.getElementById(id);
+  (() => {
+    const byId = id => document.getElementById(id);
+    const panel = byId("jangssam-ai-panel");
+    const toggle = byId("jangssam-ai-toggle");
+    const generate = byId("jangssam-ai-generate");
+    const status = byId("jangssam-ai-status");
 
-      const panel = $("jangssam-ai-panel");
-      const toggle = $("jangssam-ai-toggle");
-      const generate = $("jangssam-ai-generate");
-      const status = $("jangssam-ai-status");
+    toggle.addEventListener("click", () => panel.classList.toggle("open"));
 
-      toggle.addEventListener("click", () => {
-        panel.classList.toggle("open");
-      });
+    function setStatus(msg, type="") {
+      status.textContent = msg;
+      status.className = type;
+    }
 
-      function setStatus(message, type = "") {
-        status.textContent = message;
-        status.className = type;
+    function norm(s) {
+      return String(s || "").replace(/\s+/g, " ").trim().toLowerCase();
+    }
+
+    function labels() {
+      return Array.from(document.querySelectorAll("label"));
+    }
+
+    function controlFromLabel(label) {
+      if (label.htmlFor) {
+        const el = document.getElementById(label.htmlFor);
+        if (el) return el;
       }
+      const nested = label.querySelector("input,textarea,select,[contenteditable='true']");
+      if (nested) return nested;
+      const parent = label.parentElement;
+      if (!parent) return null;
+      return parent.querySelector("input,textarea,select,[contenteditable='true']");
+    }
 
-      function getEntry() {
-        try {
-          const state = window.CMS && window.CMS.getState
-            ? window.CMS.getState()
-            : null;
-
-          if (!state) return null;
-
-          const entry = state.getIn
-            ? state.getIn(["entryDraft", "entry"])
-            : null;
-
-          return entry || null;
-        } catch {
-          return null;
-        }
-      }
-
-      function getCurrentData() {
-        const entry = getEntry();
-
-        if (!entry) return {};
-
-        try {
-          const data = entry.get ? entry.get("data") : null;
-          return data && data.toJS ? data.toJS() : {};
-        } catch {
-          return {};
+    function findControl(labelTexts) {
+      const wanted = labelTexts.map(norm);
+      for (const label of labels()) {
+        const text = norm(label.innerText || label.textContent);
+        if (wanted.some(w => text === w || text.startsWith(w))) {
+          const el = controlFromLabel(label);
+          if (el) return el;
         }
       }
 
-      function applyDraft(draft) {
-        if (
-          !window.CMS ||
-          !window.CMS.store ||
-          !window.CMS.actions ||
-          typeof window.CMS.actions.updateEntryDraft !== "function"
-        ) {
-          throw new Error("CMS 작성 화면을 찾지 못했습니다.");
-        }
+      // Decap widgets often expose field names through aria-label/name/id.
+      const all = Array.from(document.querySelectorAll("input,textarea,select,[contenteditable='true']"));
+      for (const el of all) {
+        const hay = norm([
+          el.getAttribute("aria-label"),
+          el.getAttribute("name"),
+          el.getAttribute("id"),
+          el.getAttribute("placeholder")
+        ].filter(Boolean).join(" "));
+        if (wanted.some(w => hay.includes(w))) return el;
+      }
+      return null;
+    }
 
-        const current = getCurrentData();
+    function nativeSetter(el, value) {
+      const proto =
+        el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype :
+        el instanceof HTMLSelectElement ? HTMLSelectElement.prototype :
+        HTMLInputElement.prototype;
+      const desc = Object.getOwnPropertyDescriptor(proto, "value");
+      if (desc && desc.set) desc.set.call(el, value);
+      else el.value = value;
+    }
 
-        if (!getEntry()) {
-          throw new Error("먼저 ‘새 포스팅 항목’을 열어주세요.");
-        }
+    function fire(el) {
+      el.dispatchEvent(new Event("input", { bubbles:true }));
+      el.dispatchEvent(new Event("change", { bubbles:true }));
+      el.dispatchEvent(new Event("blur", { bubbles:true }));
+    }
 
-        const next = {
-          ...current,
-          title: draft.title || current.title || "",
-          slug: draft.slug || current.slug || "",
-          category: draft.category || current.category || "학습관리",
-          excerpt: draft.excerpt || current.excerpt || "",
-          aiSummary: draft.aiSummary || current.aiSummary || "",
-          imageAlt: draft.imageAlt || current.imageAlt || "",
-          body: draft.body || current.body || "",
-          faq: Array.isArray(draft.faq) ? draft.faq : (current.faq || []),
-          published: current.published !== undefined ? current.published : true,
-          featured: current.featured !== undefined ? current.featured : false
-        };
+    function setControl(el, value) {
+      if (!el || value === undefined || value === null) return false;
 
-        window.CMS.store.dispatch(
-          window.CMS.actions.updateEntryDraft({ data: next })
-        );
-
-        return draft.imagePrompt || "";
+      if (el.matches("[contenteditable='true']")) {
+        el.focus();
+        el.textContent = String(value);
+        el.dispatchEvent(new InputEvent("input", { bubbles:true, inputType:"insertText", data:String(value) }));
+        el.dispatchEvent(new Event("change", { bubbles:true }));
+        return true;
       }
 
-      generate.addEventListener("click", async () => {
-        const keyword = $("jangssam-ai-keyword").value.trim();
-        const audience = $("jangssam-ai-audience").value;
-        const category = $("jangssam-ai-category").value;
+      if (el.tagName === "SELECT") {
+        const wanted = norm(value);
+        const option = Array.from(el.options).find(o => norm(o.value) === wanted || norm(o.textContent) === wanted);
+        nativeSetter(el, option ? option.value : String(value));
+        fire(el);
+        return true;
+      }
 
-        if (!keyword) {
-          setStatus("주제/키워드를 먼저 입력해주세요.", "error");
-          return;
+      nativeSetter(el, String(value));
+      fire(el);
+      return true;
+    }
+
+    function setByLabel(names, value) {
+      return setControl(findControl(names), value);
+    }
+
+    function setDateToday() {
+      const el = findControl(["작성일", "date"]);
+      if (!el) return false;
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return setControl(el, `${y}-${m}-${day}`);
+    }
+
+    function addFaqItems(faq) {
+      if (!Array.isArray(faq) || !faq.length) return 0;
+
+      // Decap list widget: find the FAQ section by visible text and its add button.
+      const textNodes = Array.from(document.querySelectorAll("label,h1,h2,h3,h4,div,span"));
+      let faqRoot = null;
+      for (const node of textNodes) {
+        const t = norm(node.textContent);
+        if (t === "ai/검색 자주 묻는 질문" || t === "자주 묻는 질문" || t === "faq") {
+          faqRoot = node.parentElement;
+          break;
         }
+      }
+      if (!faqRoot) return 0;
 
-        if (!getEntry()) {
-          setStatus(
-            "먼저 관리자 화면에서 ‘새 포스팅 항목’을 눌러 작성 화면을 열어주세요.",
-            "error"
-          );
-          return;
-        }
+      let scope = faqRoot;
+      for (let i=0; i<4 && scope; i++, scope=scope.parentElement) {
+        const buttons = Array.from(scope.querySelectorAll("button"));
+        const add = buttons.find(b => /추가|add/i.test(b.textContent || b.getAttribute("aria-label") || ""));
+        if (!add) continue;
 
-        generate.disabled = true;
-        setStatus("AI가 초안을 작성하고 있습니다…");
+        let done = 0;
+        for (const item of faq) {
+          add.click();
 
-        try {
-          const response = await fetch("/.netlify/functions/ai-post-draft", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              keyword,
-              audience,
-              category
-            })
-          });
-
-          const result = await response.json();
-
-          if (!response.ok || !result.ok || !result.draft) {
-            throw new Error(
-              result.error || "AI 초안 생성에 실패했습니다."
-            );
+          // Newly created controls are normally appended in this scope.
+          const qs = Array.from(scope.querySelectorAll("input,textarea"));
+          const emptyInputs = qs.filter(x => !x.value);
+          if (emptyInputs.length >= 2) {
+            setControl(emptyInputs[emptyInputs.length-2], item.question || "");
+            setControl(emptyInputs[emptyInputs.length-1], item.answer || "");
+            done++;
           }
-
-          const imagePrompt = applyDraft(result.draft);
-
-          setStatus(
-            "자동입력 완료! 각 항목을 확인한 뒤 발행하세요." +
-            (imagePrompt
-              ? "\n\n대표 이미지 제작 참고:\n" + imagePrompt
-              : ""),
-            "ok"
-          );
-
-          panel.classList.remove("open");
-          setTimeout(() => {
-            alert(
-              "AI 초안이 현재 포스팅 입력칸에 들어갔습니다.\\n" +
-              "내용을 검토한 뒤 발행해주세요."
-            );
-          }, 100);
-        } catch (error) {
-          setStatus(error.message, "error");
-        } finally {
-          generate.disabled = false;
         }
-      });
-    })();
+        return done;
+      }
+      return 0;
+    }
+
+    function applyDraft(draft) {
+      const results = [];
+
+      results.push(setByLabel(["주소용 영문 이름","slug"], draft.slug));
+      results.push(setByLabel(["제목","title"], draft.title));
+      results.push(setDateToday());
+      results.push(setByLabel(["카테고리","category"], draft.category));
+      results.push(setByLabel(["목록 요약","excerpt"], draft.excerpt));
+      results.push(setByLabel(["대표 이미지 설명","imagealt","image alt"], draft.imageAlt));
+      results.push(setByLabel(["ai 검색 핵심답변","ai 핵심답변","aisummary"], draft.aiSummary));
+      results.push(setByLabel(["본문","body"], draft.body));
+
+      const faqCount = addFaqItems(draft.faq);
+
+      const filled = results.filter(Boolean).length;
+      if (filled < 4) {
+        throw new Error("작성 화면의 입력칸을 충분히 찾지 못했습니다. 관리자 화면 구조를 다시 확인해야 합니다.");
+      }
+
+      return { filled, faqCount };
+    }
+
+    generate.addEventListener("click", async () => {
+      const keyword = byId("jangssam-ai-keyword").value.trim();
+      const audience = byId("jangssam-ai-audience").value;
+      const category = byId("jangssam-ai-category").value;
+
+      if (!keyword) {
+        setStatus("주제/키워드를 입력해주세요.", "error");
+        return;
+      }
+
+      // A new post editor is considered open if core form labels are present.
+      if (!findControl(["제목","title"]) || !findControl(["주소용 영문 이름","slug"])) {
+        setStatus("먼저 ‘새 포스팅 항목’을 눌러 작성 화면을 열어주세요.", "error");
+        return;
+      }
+
+      generate.disabled = true;
+      setStatus("AI가 초안을 작성하고 있습니다…");
+
+      try {
+        const response = await fetch("/.netlify/functions/ai-post-draft", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body:JSON.stringify({ keyword, audience, category })
+        });
+
+        let result;
+        try { result = await response.json(); }
+        catch { throw new Error("AI 서버 응답을 읽지 못했습니다."); }
+
+        if (!response.ok || !result.ok || !result.draft) {
+          throw new Error(result.error || "AI 초안 생성에 실패했습니다.");
+        }
+
+        const applied = applyDraft(result.draft);
+
+        setStatus(
+          `자동입력 완료: ${applied.filled}개 기본 항목` +
+          (applied.faqCount ? ` + FAQ ${applied.faqCount}개` : "") +
+          "\n내용을 확인한 뒤 발행해주세요." +
+          (result.draft.imagePrompt ? "\n\n대표 이미지 참고:\n" + result.draft.imagePrompt : ""),
+          "ok"
+        );
+      } catch (e) {
+        setStatus(e.message || String(e), "error");
+      } finally {
+        generate.disabled = false;
+      }
+    });
+  })();
   </script>
 
   <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
