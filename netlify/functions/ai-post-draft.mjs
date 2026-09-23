@@ -1,4 +1,4 @@
-const OPENAI_URL = “https://api.openai.com/v1/responses”;
+const OPENAI_URL = "https://api.openai.com/v1/responses";
 
 const schema = { type: “object”, additionalProperties: false,
 properties: { title: { type: “string” }, slug: { type: “string” },
