@@ -54,4 +54,4 @@ collections:
         fields:
           - { label: "질문", name: "question", widget: "string" }
           - { label: "답변", name: "answer", widget: "text" }
-      - { label: "본문", name: "body", widget: "markdown" }
+      - { label: "본문", name: "body", widget: "text", hint: "일반 텍스트로 작성합니다. Markdown 특수기호 없이 입력하세요." }

@@ -142,6 +142,13 @@
     function setControl(el, value) {
       if (!el || value === undefined || value === null) return false;
 
+      if (el.type === "checkbox") {
+        const checked = Boolean(value);
+        if (el.checked !== checked) el.click();
+        fire(el);
+        return true;
+      }
+
       if (el.matches("[contenteditable='true']")) {
         el.focus();
         el.textContent = String(value);
@@ -177,10 +184,11 @@
       return setControl(el, `${y}-${m}-${day}`);
     }
 
-    function addFaqItems(faq) {
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+    async function addFaqItems(faq) {
       if (!Array.isArray(faq) || !faq.length) return 0;
 
-      // Decap list widget: find the FAQ section by visible text and its add button.
       const textNodes = Array.from(document.querySelectorAll("label,h1,h2,h3,h4,div,span"));
       let faqRoot = null;
       for (const node of textNodes) {
@@ -193,30 +201,34 @@
       if (!faqRoot) return 0;
 
       let scope = faqRoot;
-      for (let i=0; i<4 && scope; i++, scope=scope.parentElement) {
-        const buttons = Array.from(scope.querySelectorAll("button"));
-        const add = buttons.find(b => /추가|add/i.test(b.textContent || b.getAttribute("aria-label") || ""));
-        if (!add) continue;
-
-        let done = 0;
-        for (const item of faq) {
-          add.click();
-
-          // Newly created controls are normally appended in this scope.
-          const qs = Array.from(scope.querySelectorAll("input,textarea"));
-          const emptyInputs = qs.filter(x => !x.value);
-          if (emptyInputs.length >= 2) {
-            setControl(emptyInputs[emptyInputs.length-2], item.question || "");
-            setControl(emptyInputs[emptyInputs.length-1], item.answer || "");
-            done++;
-          }
-        }
-        return done;
+      let add = null;
+      for (let i=0; i<6 && scope; i++, scope=scope.parentElement) {
+        add = Array.from(scope.querySelectorAll("button")).find(b =>
+          /질문 추가|추가|add/i.test(b.textContent || b.getAttribute("aria-label") || "")
+        );
+        if (add) break;
       }
-      return 0;
+      if (!add || !scope) return 0;
+
+      let done = 0;
+      for (const item of faq.slice(0, 5)) {
+        add.click();
+        await sleep(180);
+
+        const controls = Array.from(scope.querySelectorAll("input,textarea"));
+        const empty = controls.filter(el => !String(el.value || "").trim());
+        if (empty.length >= 2) {
+          const q = empty[empty.length - 2];
+          const a = empty[empty.length - 1];
+          setControl(q, item.question || "");
+          setControl(a, item.answer || "");
+          done++;
+        }
+      }
+      return done;
     }
 
-    function applyDraft(draft) {
+    async function applyDraft(draft) {
       const results = [];
 
       results.push(setByLabel(["주소용 영문 이름","slug"], draft.slug));
@@ -225,14 +237,18 @@
       results.push(setByLabel(["카테고리","category"], draft.category));
       results.push(setByLabel(["목록 요약","excerpt"], draft.excerpt));
       results.push(setByLabel(["대표 이미지 설명","imagealt","image alt"], draft.imageAlt));
+      results.push(setByLabel(["추천 글","featured"], draft.featured ?? true));
+      results.push(setByLabel(["공개","published"], draft.published ?? true));
       results.push(setByLabel(["ai 검색 핵심답변","ai 핵심답변","aisummary"], draft.aiSummary));
       results.push(setByLabel(["본문","body"], draft.body));
 
-      const faqCount = addFaqItems(draft.faq);
+      await sleep(120);
+      const faqCount = await addFaqItems(draft.faq);
 
       const filled = results.filter(Boolean).length;
-      if (filled < 4) {
-        throw new Error("작성 화면의 입력칸을 충분히 찾지 못했습니다. 관리자 화면 구조를 다시 확인해야 합니다.");
+      const bodyOk = Boolean(findControl(["본문","body"])) && String(draft.body || "").trim().length >= 2000;
+      if (filled < 8 || !bodyOk) {
+        throw new Error("일부 입력칸 또는 본문 자동입력 검증에 실패했습니다. 발행하지 말고 다시 생성해주세요.");
       }
 
       return { filled, faqCount };
@@ -272,11 +288,12 @@
           throw new Error(result.error || "AI 초안 생성에 실패했습니다.");
         }
 
-        const applied = applyDraft(result.draft);
+        const applied = await applyDraft(result.draft);
 
         setStatus(
           `자동입력 완료: ${applied.filled}개 기본 항목` +
-          (applied.faqCount ? ` + FAQ ${applied.faqCount}개` : "") +
+          ` + FAQ ${applied.faqCount}개` +
+          (applied.faqCount < 5 ? "\n주의: FAQ 일부가 자동입력되지 않았습니다. 발행 전 확인해주세요." : "") +
           "\n내용을 확인한 뒤 발행해주세요." +
           (result.draft.imagePrompt ? "\n\n대표 이미지 참고:\n" + result.draft.imagePrompt : ""),
           "ok"
