@@ -30,7 +30,7 @@ const schema = {
     },
     faq: {
       type: "array",
-      minItems: 3,
+      minItems: 5,
       maxItems: 5,
       items: {
         type: "object",
@@ -96,6 +96,29 @@ function extractOutputText(data) {
   }
 
   return chunks.join("").trim();
+}
+
+
+function validateDraft(draft) {
+  const errors = [];
+  const body = String(draft?.body || "").trim();
+
+  if (body.length < 2200) errors.push(`본문 ${body.length}자`);
+  if (!Array.isArray(draft?.faq) || draft.faq.length !== 5) {
+    errors.push("FAQ 5개 아님");
+  } else {
+    draft.faq.forEach((item, i) => {
+      if (!String(item?.question || "").trim()) errors.push(`FAQ ${i + 1} 질문 비어 있음`);
+      if (!String(item?.answer || "").trim()) errors.push(`FAQ ${i + 1} 답변 비어 있음`);
+    });
+  }
+
+  for (const key of ["title","slug","category","excerpt","aiSummary","imageAlt","body"]) {
+    if (!String(draft?.[key] || "").trim()) errors.push(`${key} 비어 있음`);
+  }
+
+  if (/(\*\*|##|---|\\\\)/.test(body)) errors.push("본문에 금지된 Markdown 기호 포함");
+  return errors;
 }
 
 export async function handler(event) {
@@ -305,6 +328,14 @@ ${requestedCategory}
       /^-|-$/g,
       ""
     );
+
+  const validationErrors = validateDraft(draft);
+  if (validationErrors.length) {
+    return json(422, {
+      error: "AI 초안이 게시 기준을 충족하지 못했습니다. 다시 생성해주세요.",
+      detail: validationErrors
+    });
+  }
 
   return json(200, {
     ok: true,
