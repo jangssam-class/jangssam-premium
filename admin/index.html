@@ -201,40 +201,85 @@
     }
 
     function faqSection() {
-      const candidates = Array.from(document.querySelectorAll("label,div,span,h2,h3,h4")).filter(visible);
-      const title = candidates.find(el => {
+      const nodes = Array.from(document.querySelectorAll("label,div,span,h2,h3,h4")).filter(visible);
+      const title = nodes.find(el => {
         const t = clean(el.textContent);
-        return t === "ai/검색 자주 묻는 질문" || t === "자주 묻는 질문";
+        return t.includes("ai/검색 자주 묻는 질문") || t.includes("자주 묻는 질문");
       });
       if (!title) return null;
-      let scope = title.parentElement;
-      for (let i = 0; scope && i < 6; i++, scope = scope.parentElement) {
+
+      // Decap의 list 위젯은 제목/목록/추가 버튼이 여러 겹의 div에 들어갈 수 있다.
+      // 제목에서 위로 올라가며 FAQ 추가 버튼 또는 list 영역을 함께 포함하는 가장 가까운 범위를 찾는다.
+      let scope = title;
+      for (let i = 0; scope && i < 10; i++, scope = scope.parentElement) {
+        const text = clean(scope.textContent);
+        if (!text.includes("자주 묻는 질문")) continue;
         const buttons = Array.from(scope.querySelectorAll("button")).filter(visible);
-        if (buttons.some(b => /질문\s*추가|추가|add/i.test(b.textContent || b.getAttribute("aria-label") || ""))) return scope;
+        if (buttons.some(b => /질문\s*추가|항목\s*추가|추가|add/i.test(clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""))))) {
+          return scope;
+        }
       }
       return null;
     }
 
+    function faqAddButton(scope) {
+      return Array.from(scope.querySelectorAll("button")).filter(visible).find(b => {
+        const t = clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""));
+        return /질문\s*추가|항목\s*추가|추가|add/i.test(t);
+      }) || null;
+    }
+
+    function faqPairs(scope) {
+      // 먼저 라벨로 정확히 찾고, Decap 버전에 따라 라벨 연결이 없으면
+      // FAQ 영역의 input + textarea 순서로 안전하게 보완한다.
+      const controls = editableControls(scope).filter(el =>
+        (el.tagName === "INPUT" || el.tagName === "TEXTAREA") &&
+        el.type !== "checkbox" && el.type !== "radio" && el.type !== "file"
+      );
+
+      const qs = controls.filter(el => labelTextFor(el).includes("질문"));
+      const as = controls.filter(el => labelTextFor(el).includes("답변"));
+      if (qs.length && as.length) {
+        return Array.from({ length: Math.min(qs.length, as.length) }, (_, i) => [qs[i], as[i]]);
+      }
+
+      const inputs = controls.filter(el => el.tagName === "INPUT");
+      const textareas = controls.filter(el => el.tagName === "TEXTAREA");
+      return Array.from({ length: Math.min(inputs.length, textareas.length) }, (_, i) => [inputs[i], textareas[i]]);
+    }
+
     async function fillFaq(items) {
       if (!Array.isArray(items) || !items.length) return 0;
+      const wanted = items.slice(0, 5);
       const scope = faqSection();
-      if (!scope) return 0;
-      const addButton = Array.from(scope.querySelectorAll("button")).find(b => visible(b) && /질문\s*추가|추가|add/i.test(b.textContent || b.getAttribute("aria-label") || ""));
-      if (!addButton) return 0;
+      if (!scope) throw new Error("FAQ 입력 영역을 찾지 못했습니다.");
+
+      let pairs = faqPairs(scope);
+      while (pairs.length < wanted.length) {
+        const addButton = faqAddButton(scope);
+        if (!addButton) throw new Error("FAQ의 질문 추가 버튼을 찾지 못했습니다.");
+        const before = pairs.length;
+        addButton.click();
+        // Decap/React가 새 list item을 실제 DOM에 만든 뒤 입력한다.
+        for (let wait = 0; wait < 12; wait++) {
+          await sleep(100);
+          pairs = faqPairs(scope);
+          if (pairs.length > before) break;
+        }
+        if (pairs.length <= before) throw new Error("FAQ 질문 항목 생성에 실패했습니다.");
+      }
 
       let done = 0;
-      for (const item of items.slice(0, 5)) {
-        addButton.click();
-        await sleep(120);
-        const controls = editableControls(scope).filter(el => el.tagName === "INPUT" || el.tagName === "TEXTAREA");
-        const qCandidates = controls.filter(el => labelTextFor(el).includes("질문"));
-        const aCandidates = controls.filter(el => labelTextFor(el).includes("답변"));
-        const q = qCandidates[qCandidates.length - 1];
-        const a = aCandidates[aCandidates.length - 1];
+      for (let i = 0; i < wanted.length; i++) {
+        const [q, a] = pairs[i] || [];
         if (!q || !a) break;
-        setNativeValue(q, item.question || "");
-        setNativeValue(a, item.answer || "");
-        done++;
+        setNativeValue(q, wanted[i].question || "");
+        setNativeValue(a, wanted[i].answer || "");
+        await sleep(40);
+
+        const qv = String(q.value ?? q.textContent ?? "").trim();
+        const av = String(a.value ?? a.textContent ?? "").trim();
+        if (qv && av) done++;
       }
       return done;
     }
