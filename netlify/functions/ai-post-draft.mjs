@@ -205,7 +205,7 @@ Markdown 문법은 절대 사용하지 않는다. 특히 ##, **, ---, 백슬래�
 
 10. 본문의 소제목은 "1. 소제목", "2. 소제목"처럼 일반 숫자와 문장으로 작성한다.
 
-11. 본문은 최소 2,200자 이상으로 충분히 구체적으로 작성한다.
+11. body는 반드시 공백 포함 2,500자 이상 3,500자 이하로 충분히 구체적으로 작성한다.
 단순 반복으로 분량을 늘리지 않는다.
 
 12. 학습 수준에 따른 차이가 중요한 주제라면
@@ -215,8 +215,7 @@ Markdown 문법은 절대 사용하지 않는다. 특히 ##, **, ---, 백슬래�
 13. 근거 없이 성적 향상이나
 검색 노출을 보장하지 않는다.
 
-14. FAQ는 학생과 학부모가 실제로
-검색할 가능성이 높은 질문을 정확히 5개 작성한다.
+14. FAQ는 학생과 학부모가 실제로 검색할 가능성이 높은 질문을 정확히 5개 작성한다. 각 답변은 2~4문장으로 작성한다.
 
 15. imageAlt는 대표 이미지 내용을
 자연스럽게 설명한다.
@@ -243,97 +242,94 @@ ${requestedCategory}
 교육정보 포스팅 초안을 작성해줘.
 `;
 
-  let response;
-
-  try {
-    response = await fetch(
-      OPENAI_URL,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: process.env.OPENAI_MODEL || "gpt-5.4-mini",
-          instructions,
-          input: userPrompt,
-          text: {
-            format: {
-              type: "json_schema",
-              name: "jangssam_post_draft",
-              strict: true,
-              schema
+  async function generateDraft(extraInstruction = "") {
+    let response;
+    try {
+      response = await fetch(
+        OPENAI_URL,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: process.env.OPENAI_MODEL || "gpt-5.4-mini",
+            instructions: instructions + extraInstruction,
+            input: userPrompt,
+            max_output_tokens: 12000,
+            text: {
+              format: {
+                type: "json_schema",
+                name: "jangssam_post_draft",
+                strict: true,
+                schema
+              }
             }
-          }
-        })
-      }
-    );
-  } catch (error) {
-    return json(502, {
-      error: "OpenAI API에 연결하지 못했습니다.",
-      detail: error.message
-    });
-  }
+          })
+        }
+      );
+    } catch (error) {
+      throw new Error("OpenAI API에 연결하지 못했습니다: " + error.message);
+    }
 
-  let data;
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("OpenAI API 응답을 읽지 못했습니다.");
+    }
 
-  try {
-    data = await response.json();
-  } catch {
-    return json(502, {
-      error: "OpenAI API 응답을 읽지 못했습니다."
-    });
-  }
+    if (!response.ok) {
+      throw new Error(data?.error?.message || "OpenAI API 요청에 실패했습니다.");
+    }
 
-  if (!response.ok) {
-    return json(response.status, {
-      error:
-        data?.error?.message ||
-        "OpenAI API 요청에 실패했습니다."
-    });
-  }
+    const outputText = extractOutputText(data);
+    if (!outputText) throw new Error("AI가 초안 데이터를 반환하지 않았습니다.");
 
-  const outputText = extractOutputText(data);
+    let draft;
+    try {
+      draft = JSON.parse(outputText);
+    } catch {
+      throw new Error("AI 초안 JSON을 해석하지 못했습니다.");
+    }
 
-  if (!outputText) {
-    return json(502, {
-      error: "AI가 초안 데이터를 반환하지 않았습니다."
-    });
+    draft.slug = String(draft.slug || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    return draft;
   }
 
   let draft;
+  let errors = [];
 
   try {
-    draft = JSON.parse(outputText);
-  } catch {
-    return json(502, {
-      error: "AI 초안 JSON을 해석하지 못했습니다."
-    });
+    draft = await generateDraft();
+    errors = validateDraft(draft);
+
+    if (errors.length) {
+      draft = await generateDraft(`
+첫 번째 초안이 게시 기준을 충족하지 못했다.
+이번에는 반드시 다음을 지켜라.
+- body는 공백 포함 2,500자 이상 작성
+- FAQ는 정확히 5개
+- FAQ 질문과 답변은 모두 비우지 않음
+- Markdown 기호 ##, **, ---, 백슬래시 사용 금지
+- 같은 문장을 반복해서 분량을 채우지 않음
+`);
+      errors = validateDraft(draft);
+    }
+  } catch (error) {
+    return json(502, { error: error.message });
   }
 
-  draft.slug = String(
-    draft.slug || ""
-  )
-    .toLowerCase()
-    .replace(
-      /[^a-z0-9-]+/g,
-      "-"
-    )
-    .replace(
-      /-+/g,
-      "-"
-    )
-    .replace(
-      /^-|-$/g,
-      ""
-    );
-
-  const validationErrors = validateDraft(draft);
-  if (validationErrors.length) {
+  if (errors.length) {
     return json(422, {
-      error: "AI 초안이 게시 기준을 충족하지 못했습니다. 다시 생성해주세요.",
-      detail: validationErrors
+      error: "AI 초안이 게시 기준을 충족하지 못해 자동입력을 중단했습니다.",
+      detail: errors
     });
   }
 
