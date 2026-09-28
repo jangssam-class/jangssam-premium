@@ -25,6 +25,12 @@ const schema = {
     imagePrompt: {
       type: "string"
     },
+    featured: {
+      type: "boolean"
+    },
+    published: {
+      type: "boolean"
+    },
     body: {
       type: "string"
     },
@@ -58,6 +64,8 @@ const schema = {
     "aiSummary",
     "imageAlt",
     "imagePrompt",
+    "featured",
+    "published",
     "body",
     "faq"
   ]
@@ -177,12 +185,15 @@ export async function handler(event) {
 8. aiSummary는 학생이나 학부모의 질문에
 바로 답하는 핵심답변 2~4문장으로 작성한다.
 
-9. body는 Markdown 형식으로 작성한다.
+9. body는 관리자 입력칸에 그대로 붙여넣을 수 있는 일반 텍스트로 작성한다.
+Markdown 문법을 절대 사용하지 않는다.
+#, ##, 별표 강조, 밑줄 강조, 인용기호, 구분선, 백슬래시 같은 서식용 특수기호를 사용하지 않는다.
 
-10. 본문에는 읽기 쉬운 소제목을 사용한다.
+10. 본문 소제목은 반드시 "1. 소제목", "2. 소제목"처럼 일반 숫자와 문장으로만 작성한다.
+각 소제목 앞뒤에는 빈 줄을 넣어 읽기 쉽게 구성한다.
 
-11. 본문은 약 2,000자 이상의
-충분히 구체적인 교육 콘텐츠로 작성한다.
+11. 본문은 공백 포함 최소 2,200자 이상, 권장 2,500~3,500자로 작성한다.
+도입부, 5~8개의 구체적인 소제목, 마무리 문단을 포함한다.
 단순 반복으로 분량을 늘리지 않는다.
 
 12. 학습 수준에 따른 차이가 중요한 주제라면
@@ -192,8 +203,8 @@ export async function handler(event) {
 13. 근거 없이 성적 향상이나
 검색 노출을 보장하지 않는다.
 
-14. FAQ는 학생과 학부모가 실제로
-검색할 가능성이 높은 질문 3~5개를 작성한다.
+14. FAQ는 학생과 학부모가 실제로 검색할 가능성이 높은 질문을 정확히 5개 작성한다.
+각 답변은 2~4문장으로 구체적으로 작성한다.
 
 15. imageAlt는 대표 이미지 내용을
 자연스럽게 설명한다.
@@ -205,6 +216,8 @@ export async function handler(event) {
 관리자용 정보는 이미지에 포함하지 않는다.
 
 18. 개인 연락처나 상담 링크를 임의로 만들지 않는다.
+
+19. featured는 true, published는 true로 반환한다.
 `;
 
   const userPrompt = `
