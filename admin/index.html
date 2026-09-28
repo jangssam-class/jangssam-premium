@@ -208,14 +208,10 @@
       });
       if (!title) return null;
 
-      // Decap의 list 위젯은 제목/목록/추가 버튼이 여러 겹의 div에 들어갈 수 있다.
-      // 제목에서 위로 올라가며 FAQ 추가 버튼 또는 list 영역을 함께 포함하는 가장 가까운 범위를 찾는다.
       let scope = title;
-      for (let i = 0; scope && i < 10; i++, scope = scope.parentElement) {
-        const text = clean(scope.textContent);
-        if (!text.includes("자주 묻는 질문")) continue;
+      for (let i = 0; scope && i < 12; i++, scope = scope.parentElement) {
         const buttons = Array.from(scope.querySelectorAll("button")).filter(visible);
-        if (buttons.some(b => /질문\s*추가|항목\s*추가|추가|add/i.test(clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""))))) {
+        if (buttons.some(b => /질문\s*추가|항목\s*추가|add/i.test(clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""))))) {
           return scope;
         }
       }
@@ -225,91 +221,83 @@
     function faqAddButton(scope) {
       return Array.from(scope.querySelectorAll("button")).filter(visible).find(b => {
         const t = clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""));
-        return /질문\s*추가|항목\s*추가|추가|add/i.test(t);
+        return /질문\s*추가|항목\s*추가|add/i.test(t);
       }) || null;
     }
 
     function faqPairs(scope) {
-      // 먼저 라벨로 정확히 찾고, Decap 버전에 따라 라벨 연결이 없으면
-      // FAQ 영역의 input + textarea 순서로 안전하게 보완한다.
-      const controls = editableControls(scope).filter(el =>
-        (el.tagName === "INPUT" || el.tagName === "TEXTAREA") &&
-        el.type !== "checkbox" && el.type !== "radio" && el.type !== "file"
-      );
-
-      const qs = controls.filter(el => labelTextFor(el).includes("질문"));
-      const as = controls.filter(el => labelTextFor(el).includes("답변"));
-      if (qs.length && as.length) {
-        return Array.from({ length: Math.min(qs.length, as.length) }, (_, i) => [qs[i], as[i]]);
+      if (!scope) return [];
+      // 현재 Decap FAQ 카드에서는 질문/답변이 모두 textarea로 렌더링된다.
+      // FAQ 영역 안의 보이는 textarea를 DOM 순서대로 2개씩 묶는다.
+      const areas = Array.from(scope.querySelectorAll("textarea")).filter(visible);
+      const pairs = [];
+      for (let i = 0; i + 1 < areas.length; i += 2) {
+        pairs.push([areas[i], areas[i + 1]]);
       }
+      return pairs;
+    }
 
-      const inputs = controls.filter(el => el.tagName === "INPUT");
-      const textareas = controls.filter(el => el.tagName === "TEXTAREA");
-      return Array.from({ length: Math.min(inputs.length, textareas.length) }, (_, i) => [inputs[i], textareas[i]]);
+    async function waitForFaqCount(count, timeout = 4000) {
+      const started = Date.now();
+      while (Date.now() - started < timeout) {
+        const scope = faqSection();
+        if (scope && faqPairs(scope).length >= count) return true;
+        await sleep(100);
+      }
+      return false;
     }
 
     async function fillFaq(items) {
-      if (!Array.isArray(items) || !items.length) return 0;
-      const wanted = items.slice(0, 5);
+      if (!Array.isArray(items) || items.length !== 5) {
+        throw new Error("AI FAQ가 정확히 5개가 아닙니다.");
+      }
 
-      // Decap의 list 위젯은 항목을 추가할 때 React가 FAQ 영역 DOM 자체를 다시 만든다.
-      // 따라서 이전 scope/button 참조를 재사용하지 않고 매 단계마다 현재 DOM을 다시 찾는다.
-      for (let i = 0; i < wanted.length; i++) {
+      // React가 list item 추가 때 DOM을 다시 그리므로 매 단계마다 FAQ 영역을 다시 찾는다.
+      for (let target = 1; target <= 5; target++) {
         let scope = faqSection();
         if (!scope) throw new Error("FAQ 입력 영역을 찾지 못했습니다.");
 
         let pairs = faqPairs(scope);
-        if (pairs.length <= i) {
-          const before = pairs.length;
+        if (pairs.length < target) {
           const addButton = faqAddButton(scope);
           if (!addButton) throw new Error("FAQ의 질문 추가 버튼을 찾지 못했습니다.");
           addButton.click();
-
-          let created = false;
-          for (let wait = 0; wait < 20; wait++) {
-            await sleep(100);
-            scope = faqSection();
-            if (!scope) continue;
-            pairs = faqPairs(scope);
-            if (pairs.length > before) {
-              created = true;
-              break;
-            }
+          if (!(await waitForFaqCount(target))) {
+            throw new Error(`FAQ ${target}번 입력칸 생성에 실패했습니다.`);
           }
-          if (!created) throw new Error(`FAQ ${i + 1}번 항목 생성에 실패했습니다.`);
         }
+      }
 
-        // 항목 생성 직후에도 React가 한 번 더 렌더링할 수 있으므로 최신 DOM을 다시 잡는다.
-        await sleep(80);
-        scope = faqSection();
-        pairs = scope ? faqPairs(scope) : [];
-        const pair = pairs[i];
+      for (let i = 0; i < 5; i++) {
+        let scope = faqSection();
+        let pairs = faqPairs(scope);
+        let pair = pairs[i];
         if (!pair) throw new Error(`FAQ ${i + 1}번 입력칸을 찾지 못했습니다.`);
 
-        const [q, a] = pair;
-        setNativeValue(q, wanted[i].question || "");
-        await sleep(30);
+        setNativeValue(pair[0], items[i].question);
+        await sleep(120);
 
-        // 질문 입력으로도 list item이 다시 렌더링될 수 있어 답변 칸을 다시 찾는다.
+        // 질문 입력 후 React rerender 가능성이 있어 다시 조회한다.
         scope = faqSection();
-        pairs = scope ? faqPairs(scope) : [];
-        const refreshed = pairs[i];
-        if (!refreshed) throw new Error(`FAQ ${i + 1}번 답변칸을 찾지 못했습니다.`);
-        setNativeValue(refreshed[1], wanted[i].answer || "");
-        await sleep(80);
+        pairs = faqPairs(scope);
+        pair = pairs[i];
+        if (!pair) throw new Error(`FAQ ${i + 1}번 답변칸을 찾지 못했습니다.`);
+
+        setNativeValue(pair[1], items[i].answer);
+        await sleep(150);
       }
 
-      // 최종 검증도 현재 DOM 기준으로 수행한다.
-      const finalScope = faqSection();
-      const finalPairs = finalScope ? faqPairs(finalScope) : [];
+      // 실제 화면 값으로 5개 모두 검증한다.
+      const scope = faqSection();
+      const pairs = faqPairs(scope);
       let done = 0;
-      for (let i = 0; i < wanted.length; i++) {
-        const [q, a] = finalPairs[i] || [];
-        if (!q || !a) continue;
-        const qv = String(q.value ?? q.textContent ?? "").trim();
-        const av = String(a.value ?? a.textContent ?? "").trim();
+      for (let i = 0; i < 5; i++) {
+        const [q, a] = pairs[i] || [];
+        const qv = String(q?.value || "").trim();
+        const av = String(a?.value || "").trim();
         if (qv && av) done++;
       }
+      if (done !== 5) throw new Error(`FAQ 질문·답변 입력 검증 실패 (${done}/5)`);
       return done;
     }
 
@@ -335,8 +323,8 @@
       const bodyValue = bodyEl ? String(bodyEl.value ?? bodyEl.textContent ?? "").trim() : "";
 
       if (missing.length) throw new Error("자동입력하지 못한 항목: " + missing.join(", "));
-      if (bodyValue.length < 1500) throw new Error("본문 자동입력 검증에 실패했습니다. 게시하지 말고 다시 시도해주세요.");
-      if (faqCount < 3) throw new Error(`FAQ 자동입력 검증에 실패했습니다. (${faqCount}개 입력)`);
+      if (bodyValue.length < 2200) throw new Error(`본문이 ${bodyValue.length}자로 너무 짧습니다. 최소 2,200자가 필요합니다.`);
+      if (faqCount !== 5) throw new Error(`FAQ 자동입력 검증에 실패했습니다. (${faqCount}/5)`);
 
       return { basicCount: Object.keys(checks).length, faqCount, bodyLength: bodyValue.length };
     }
