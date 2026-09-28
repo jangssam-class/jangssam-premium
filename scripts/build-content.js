@@ -14,6 +14,12 @@ const posts = rawPosts.filter(p => {
   seenSlugs.add(slug); return true;
 });
 if(duplicateSlugs.length) console.warn('[게시글 자동화 경고] 중복 slug 제외:', [...new Set(duplicateSlugs)].join(', '));
+// Safety guard: never silently publish a post whose main body is missing.
+const emptyBodyPosts = posts.filter(p => !String(p.body || '').trim());
+if(emptyBodyPosts.length){
+  console.error('[게시글 자동화 오류] 본문이 비어 있는 공개 게시글:', emptyBodyPosts.map(p => p.slug || p.title || '(slug 없음)').join(', '));
+  process.exit(1);
+}
 const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const xml = (v='') => esc(v);
 const inline = (text='') => esc(text).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
@@ -43,7 +49,12 @@ function postHtml(p) {
   const image=p.image ? (p.image.startsWith('http')?p.image:`${site}${p.image.startsWith('/')?'':'/'}${p.image}`) : `${site}/이미지/seo-share.png`;
   const articleSchema={"@type":"Article",headline:p.title,description:p.excerpt,datePublished:p.date,dateModified:p.modified||p.date,mainEntityOfPage:url,image:[image],author:{"@type":"Organization",name:"장쌤의과외교실"},publisher:{"@type":"EducationalOrganization",name:"장쌤의과외교실","logo":{"@type":"ImageObject","url":`${site}/이미지/로고.png`}}};
   const breadcrumbSchema={"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"홈",item:site+"/"},{"@type":"ListItem",position:2,name:"교육정보",item:site+"/blog.html"},{"@type":"ListItem",position:3,name:p.title,item:url}]};
-  const faqItems=Array.isArray(p.faq)?p.faq.filter(x=>x&&x.question&&x.answer):[];
+  const fixedFaqItems=[1,2,3,4,5].map(i=>({
+    question:String(p[`faq${i}Question`]||'').trim(),
+    answer:String(p[`faq${i}Answer`]||'').trim()
+  })).filter(x=>x.question&&x.answer);
+  const legacyFaqItems=Array.isArray(p.faq)?p.faq.filter(x=>x&&x.question&&x.answer):[];
+  const faqItems=fixedFaqItems.length?fixedFaqItems:legacyFaqItems;
   const graph=[articleSchema,breadcrumbSchema];
   if(faqItems.length) graph.push({"@type":"FAQPage",mainEntity:faqItems.map(x=>({"@type":"Question",name:x.question,acceptedAnswer:{"@type":"Answer",text:x.answer}}))});
   const schema={"@context":"https://schema.org","@graph":graph};
