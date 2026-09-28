@@ -200,108 +200,15 @@
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
     }
 
-    function faqSection() {
-      const nodes = Array.from(document.querySelectorAll("label,div,span,h2,h3,h4")).filter(visible);
-      const title = nodes.find(el => {
-        const t = clean(el.textContent);
-        return t.includes("ai/검색 자주 묻는 질문") || t.includes("자주 묻는 질문");
-      });
-      if (!title) return null;
-
-      let scope = title;
-      for (let i = 0; scope && i < 12; i++, scope = scope.parentElement) {
-        const buttons = Array.from(scope.querySelectorAll("button")).filter(visible);
-        if (buttons.some(b => /질문\s*추가|항목\s*추가|add/i.test(clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""))))) {
-          return scope;
-        }
+    async function applyDraft(draft) {
+      if (!draft || typeof draft !== "object") throw new Error("AI 초안 데이터가 없습니다.");
+      if (String(draft.body || "").trim().length < 2200) {
+        throw new Error(`AI 본문이 ${String(draft.body || "").trim().length}자로 너무 짧습니다.`);
       }
-      return null;
-    }
-
-    function faqAddButton(scope) {
-      return Array.from(scope.querySelectorAll("button")).filter(visible).find(b => {
-        const t = clean((b.textContent || "") + " " + (b.getAttribute("aria-label") || ""));
-        return /질문\s*추가|항목\s*추가|add/i.test(t);
-      }) || null;
-    }
-
-    function faqPairs(scope) {
-      if (!scope) return [];
-      // 현재 Decap FAQ 카드에서는 질문/답변이 모두 textarea로 렌더링된다.
-      // FAQ 영역 안의 보이는 textarea를 DOM 순서대로 2개씩 묶는다.
-      const areas = Array.from(scope.querySelectorAll("textarea")).filter(visible);
-      const pairs = [];
-      for (let i = 0; i + 1 < areas.length; i += 2) {
-        pairs.push([areas[i], areas[i + 1]]);
-      }
-      return pairs;
-    }
-
-    async function waitForFaqCount(count, timeout = 4000) {
-      const started = Date.now();
-      while (Date.now() - started < timeout) {
-        const scope = faqSection();
-        if (scope && faqPairs(scope).length >= count) return true;
-        await sleep(100);
-      }
-      return false;
-    }
-
-    async function fillFaq(items) {
-      if (!Array.isArray(items) || items.length !== 5) {
+      if (!Array.isArray(draft.faq) || draft.faq.length !== 5) {
         throw new Error("AI FAQ가 정확히 5개가 아닙니다.");
       }
 
-      // React가 list item 추가 때 DOM을 다시 그리므로 매 단계마다 FAQ 영역을 다시 찾는다.
-      for (let target = 1; target <= 5; target++) {
-        let scope = faqSection();
-        if (!scope) throw new Error("FAQ 입력 영역을 찾지 못했습니다.");
-
-        let pairs = faqPairs(scope);
-        if (pairs.length < target) {
-          const addButton = faqAddButton(scope);
-          if (!addButton) throw new Error("FAQ의 질문 추가 버튼을 찾지 못했습니다.");
-          addButton.click();
-          if (!(await waitForFaqCount(target))) {
-            throw new Error(`FAQ ${target}번 입력칸 생성에 실패했습니다.`);
-          }
-        }
-      }
-
-      for (let i = 0; i < 5; i++) {
-        let scope = faqSection();
-        let pairs = faqPairs(scope);
-        let pair = pairs[i];
-        if (!pair) throw new Error(`FAQ ${i + 1}번 입력칸을 찾지 못했습니다.`);
-
-        setNativeValue(pair[0], items[i].question);
-        await sleep(120);
-
-        // 질문 입력 후 React rerender 가능성이 있어 다시 조회한다.
-        scope = faqSection();
-        pairs = faqPairs(scope);
-        pair = pairs[i];
-        if (!pair) throw new Error(`FAQ ${i + 1}번 답변칸을 찾지 못했습니다.`);
-
-        setNativeValue(pair[1], items[i].answer);
-        await sleep(150);
-      }
-
-      // 실제 화면 값으로 5개 모두 검증한다.
-      const scope = faqSection();
-      const pairs = faqPairs(scope);
-      let done = 0;
-      for (let i = 0; i < 5; i++) {
-        const [q, a] = pairs[i] || [];
-        const qv = String(q?.value || "").trim();
-        const av = String(a?.value || "").trim();
-        if (qv && av) done++;
-      }
-      if (done !== 5) throw new Error(`FAQ 질문·답변 입력 검증 실패 (${done}/5)`);
-      return done;
-    }
-
-    async function applyDraft(draft) {
       const checks = {
         slug: setField(["주소용 영문 이름", "slug"], draft.slug),
         title: setField(["제목", "title"], draft.title),
@@ -310,23 +217,39 @@
         excerpt: setField(["목록 요약", "excerpt"], draft.excerpt),
         imageAlt: setField(["대표 이미지 설명", "imagealt", "image alt"], draft.imageAlt),
         aiSummary: setField(["ai 검색 핵심답변", "ai 핵심답변", "aisummary"], draft.aiSummary),
+        faq1Question: setField(["FAQ 1 질문", "faq1question"], draft.faq[0].question),
+        faq1Answer: setField(["FAQ 1 답변", "faq1answer"], draft.faq[0].answer),
+        faq2Question: setField(["FAQ 2 질문", "faq2question"], draft.faq[1].question),
+        faq2Answer: setField(["FAQ 2 답변", "faq2answer"], draft.faq[1].answer),
+        faq3Question: setField(["FAQ 3 질문", "faq3question"], draft.faq[2].question),
+        faq3Answer: setField(["FAQ 3 답변", "faq3answer"], draft.faq[2].answer),
+        faq4Question: setField(["FAQ 4 질문", "faq4question"], draft.faq[3].question),
+        faq4Answer: setField(["FAQ 4 답변", "faq4answer"], draft.faq[3].answer),
+        faq5Question: setField(["FAQ 5 질문", "faq5question"], draft.faq[4].question),
+        faq5Answer: setField(["FAQ 5 답변", "faq5answer"], draft.faq[4].answer),
         body: setField(["본문", "body"], draft.body)
       };
 
       clickBooleanField(["추천 글", "featured"], true);
       clickBooleanField(["공개", "published"], true);
-      const faqCount = await fillFaq(draft.faq);
-      await sleep(100);
+      await sleep(250);
 
       const missing = Object.entries(checks).filter(([, ok]) => !ok).map(([key]) => key);
+      if (missing.length) throw new Error("자동입력하지 못한 항목: " + missing.join(", "));
+
       const bodyEl = findField(["본문", "body"]);
       const bodyValue = bodyEl ? String(bodyEl.value ?? bodyEl.textContent ?? "").trim() : "";
+      if (bodyValue.length < 2200) throw new Error(`본문 입력 검증 실패 (${bodyValue.length}자)`);
 
-      if (missing.length) throw new Error("자동입력하지 못한 항목: " + missing.join(", "));
-      if (bodyValue.length < 2200) throw new Error(`본문이 ${bodyValue.length}자로 너무 짧습니다. 최소 2,200자가 필요합니다.`);
-      if (faqCount !== 5) throw new Error(`FAQ 자동입력 검증에 실패했습니다. (${faqCount}/5)`);
+      let faqDone = 0;
+      for (let i = 1; i <= 5; i++) {
+        const q = findField([`FAQ ${i} 질문`, `faq${i}question`]);
+        const a = findField([`FAQ ${i} 답변`, `faq${i}answer`]);
+        if (String(q?.value || "").trim() && String(a?.value || "").trim()) faqDone++;
+      }
+      if (faqDone !== 5) throw new Error(`FAQ 입력 검증 실패 (${faqDone}/5)`);
 
-      return { basicCount: Object.keys(checks).length, faqCount, bodyLength: bodyValue.length };
+      return { basicCount: Object.keys(checks).length, faqCount: faqDone, bodyLength: bodyValue.length };
     }
 
     generate.addEventListener("click", async () => {
@@ -353,7 +276,7 @@
 
         const applied = await applyDraft(result.draft);
         setStatus(
-          `자동입력 완료\n기본 항목 ${applied.basicCount}개 + FAQ ${applied.faqCount}개 + 본문 ${applied.bodyLength.toLocaleString()}자\n\n내용을 확인한 뒤 게시해주세요.` +
+          `자동입력 완료\nFAQ ${applied.faqCount}개 + 본문 ${applied.bodyLength.toLocaleString()}자\n\n내용을 확인한 뒤 게시해주세요.` +
           (result.draft.imagePrompt ? `\n\n대표 이미지 참고:\n${result.draft.imagePrompt}` : ""),
           "ok"
         );
