@@ -8901,3 +8901,74 @@ body.modal-open {
 
 /* V5.1 교육정보 홈 */
 .jj-blog-home{padding:92px 20px;background:#f7f9fc}.jj-blog-home-inner{max-width:1180px;margin:0 auto}.jj-blog-home-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:32px}.jj-blog-eyebrow{display:block;margin-bottom:10px;color:#2d63d7;font-weight:800;font-size:13px;letter-spacing:.12em}.jj-blog-home h2{margin:0 0 12px;font-size:clamp(30px,4vw,44px);color:#17213a}.jj-blog-home-head p{margin:0;color:#667085;line-height:1.7}.jj-blog-more{display:inline-flex;align-items:center;justify-content:center;min-width:150px;padding:13px 18px;border-radius:999px;background:#17213a;color:#fff!important;text-decoration:none;font-weight:700}.jj-blog-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.jj-blog-home-card{display:flex;flex-direction:column;min-height:250px;padding:28px;border:1px solid #e5eaf2;border-radius:22px;background:#fff;text-decoration:none!important;box-shadow:0 12px 35px rgba(29,45,80,.06);transition:.25s}.jj-blog-home-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(29,45,80,.12)}.jj-blog-tag{align-self:flex-start;padding:6px 11px;border-radius:999px;background:#edf3ff;color:#2d63d7;font-size:13px;font-weight:800}.jj-blog-home-card h3{margin:18px 0 12px;color:#17213a;font-size:21px;line-height:1.45}.jj-blog-home-card p{margin:0 0 22px;color:#667085;line-height:1.7}.jj-blog-home-card time{margin-top:auto;color:#98a2b3;font-size:14px}@media(max-width:850px){.jj-blog-home{padding:64px 18px}.jj-blog-home-head{align-items:flex-start;flex-direction:column}.jj-blog-home-grid{grid-template-columns:1fr}.jj-blog-more{width:100%}.jj-blog-home-card{min-height:auto}}
+
+
+/* ============================================================
+   JANGSSAM PREMIUM | 2026 MODERN BLUE & PASTEL DESIGN
+   Visual-only override: preserves HTML, JS, CMS, forms and links.
+   ============================================================ */
+:root {
+  --main: #1263ff;
+  --main-dark: #0748d8;
+  --sub: #61b5ff;
+  --text: #10213d;
+  --gray: #667891;
+  --light: #f5f9ff;
+  --white: #ffffff;
+  --border: #e4ecf7;
+  --shadow: 0 18px 48px rgba(29, 71, 135, .10);
+  --radius: 24px;
+}
+body { color:#10213d; background:#fbfdff; }
+.header { background:rgba(255,255,255,.95); border-bottom:1px solid #e8eef8; box-shadow:0 5px 25px rgba(15,50,110,.05); }
+.logo strong,.navbar a:hover,.navbar a.current { color:#1263ff; }
+.navbar a::after { background:#1263ff; }
+.call-btn,.header-call-btn { background:linear-gradient(120deg,#1166ff,#5856ff); color:#fff; box-shadow:0 8px 24px rgba(20,96,250,.18); }
+.call-btn:hover { background:linear-gradient(120deg,#0754e9,#4642ed); }
+.hero { background:radial-gradient(circle at 12% 12%,rgba(111,180,255,.28),transparent 42%),linear-gradient(115deg,#edf6ff 0%,#ffffff 55%,#eff0ff 100%); }
+.hero::before { background:#b7d7ff; }
+.hero::after { background:#ddd5ff; }
+.hero h1,.section-title h2 { color:#10213d; }
+.hero h1 strong,.hero-badge,.section-title span,.about-content .section-subtitle { color:#1263ff; }
+.hero-badge { background:#e4f0ff; border:1px solid #cde3ff; }
+.hero-image img,.about-image img { border-radius:30px; box-shadow:0 22px 60px rgba(28,71,137,.15); }
+.image-bg { background:linear-gradient(135deg,#61b5ff,#7461ff); }
+.primary,.btn.primary { background:linear-gradient(110deg,#1263ff,#5b58ff); color:#fff; }
+.primary:hover,.btn.primary:hover { background:linear-gradient(110deg,#0748d8,#4844e8); }
+.btn,.feature-card,.subject-card,.stat-box,.faq-item,.contact-right,.jj-blog-home-card { border-radius:22px; }
+.feature-card,.subject-card,.jj-blog-home-card { border:1px solid #e9eef9; box-shadow:0 12px 32px rgba(31,72,139,.08); }
+.feature-card:hover,.subject-card:hover,.jj-blog-home-card:hover { box-shadow:0 22px 48px rgba(29,93,214,.16); }
+.feature-card:nth-child(6n+1),.subject-card:nth-child(6n+1) { background:linear-gradient(150deg,#e8f4ff,#f8fbff); }
+.feature-card:nth-child(6n+2),.subject-card:nth-child(6n+2) { background:linear-gradient(150deg,#ffebee,#fffafb); }
+.feature-card:nth-child(6n+3),.subject-card:nth-child(6n+3) { background:linear-gradient(150deg,#e2fbef,#f9fffc); }
+.feature-card:nth-child(6n+4),.subject-card:nth-child(6n+4) { background:linear-gradient(150deg,#f0eaff,#fcfaff); }
+.feature-card:nth-child(6n+5),.subject-card:nth-child(6n+5) { background:linear-gradient(150deg,#e2fbff,#f9feff); }
+.feature-card:nth-child(6n+6),.subject-card:nth-child(6n+6) { background:linear-gradient(150deg,#fff4dc,#fffdf7); }
+.feature-icon,.number { background:linear-gradient(135deg,#148aff,#6257ff); box-shadow:0 12px 26px rgba(46,107,245,.19); }
+.feature-card:nth-child(6n+2) .feature-icon { background:linear-gradient(135deg,#ff728a,#ff525d); }
+.feature-card:nth-child(6n+3) .feature-icon { background:linear-gradient(135deg,#2bd9a2,#12b978); }
+.feature-card:nth-child(6n+4) .feature-icon { background:linear-gradient(135deg,#aa6bff,#7b46f8); }
+.feature-card:nth-child(6n+5) .feature-icon { background:linear-gradient(135deg,#22c9e8,#0f9fdd); }
+.feature-card:nth-child(6n+6) .feature-icon { background:linear-gradient(135deg,#ffbb4b,#ff9a17); }
+.subject { background:linear-gradient(180deg,#f7faff,#eef5ff); }
+.subject-card i { color:#1263ff; }
+.subject-card:nth-child(6n+2) i { color:#ff5d70; }
+.subject-card:nth-child(6n+3) i { color:#12bb7d; }
+.subject-card:nth-child(6n+4) i { color:#8950ff; }
+.subject-card:nth-child(6n+5) i { color:#0ba8d9; }
+.subject-card:nth-child(6n+6) i { color:#ffab21; }
+.subject-card.premium { background:linear-gradient(125deg,#1263ff,#6356f5); color:#fff; }
+.subject-card.premium i,.subject-card.premium p { color:#fff; }
+.stats { background:linear-gradient(120deg,#0e59e8 0%,#2569f5 48%,#6957f4 100%); }
+.online-promo,.online-class { background:linear-gradient(160deg,#f3f9ff,#f7f5ff); }
+.contact { background:linear-gradient(145deg,#f2f8ff,#ffffff); }
+.contact-cta,.online-cta-btn { background:linear-gradient(115deg,#1263ff,#6258f7); color:#fff; }
+.jj-blog-home { background:linear-gradient(180deg,#ffffff,#f7faff); }
+.jj-blog-tag { background:#e9f2ff; color:#1263ff; }
+.footer { border-top:1px solid #dce8fa; }
+input:focus,textarea:focus,select:focus { outline-color:#1263ff; }
+@media(max-width:768px) {
+  .hero { background:linear-gradient(150deg,#eaf4ff,#ffffff 60%,#f0edff); }
+  .feature-card,.subject-card,.jj-blog-home-card { border-radius:18px; }
+  .header { background:rgba(255,255,255,.97); }
+}
