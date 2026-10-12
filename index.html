@@ -2041,6 +2041,43 @@ body.jj-subjects-modal-open{overflow:hidden}
     }
   ]
 }</script>  <script defer src="/analytics/visitor-tracker.js"></script>
+<style id="jd-2026-full-homepage-design">
+/* Homepage design: modifies actual #home; all remaining sections/scripts retained */
+html{scroll-behavior:smooth}body{background:#f8fbff!important}
+#home.jd-home{display:block!important;min-height:0!important;padding:20px 0 32px!important;margin:0!important;background:#f8fbff!important;overflow:visible!important;position:relative!important;isolation:isolate}
+#home.jd-home::before,#home.jd-home::after{display:none!important}
+#home.jd-home .jd-wrap{width:min(1400px,calc(100% - 48px));max-width:1400px;margin:0 auto;display:block!important}
+#home.jd-home *{box-sizing:border-box}
+#home.jd-home .jd-banner{position:relative;display:grid;grid-template-columns:53% 47%;min-height:390px;overflow:hidden;border-radius:23px;background:linear-gradient(112deg,#d2e5ff 0%,#eef6ff 48%,#c3d8ff 100%);box-shadow:0 10px 30px #1c478318}
+#home.jd-home .jd-banner:after{content:"";position:absolute;right:-5%;bottom:-47%;width:76%;height:70%;border-radius:50%;background:linear-gradient(90deg,#32c2ff8c,#a349ff9c);filter:blur(36px);pointer-events:none}
+#home.jd-home .jd-banner-copy{padding:38px 0 35px 8%;z-index:2;position:relative}
+#home.jd-home .jd-pill{display:inline-block;background:#ffffffb8;color:#1664e9;border-radius:30px;padding:7px 14px;font-size:13px;font-weight:800}
+#home.jd-home h1{font-size:clamp(29px,3.15vw,47px)!important;line-height:1.3!important;letter-spacing:-1.6px!important;color:#0b2143!important;margin:17px 0 14px!important;font-weight:900!important;text-shadow:none!important}
+#home.jd-home h1 em{font-style:normal;color:#1669ff!important}
+#home.jd-home .jd-banner-copy>p{font-size:16px!important;line-height:1.8!important;color:#3d506c!important;margin:0 0 22px!important;max-width:none!important}
+#home.jd-home .jd-badges{display:flex;gap:8px;flex-wrap:wrap}
+#home.jd-home .jd-badges span{display:flex;flex-direction:column;gap:4px;border-radius:12px;padding:11px 12px;background:#ffffffc9;box-shadow:0 4px 14px #2a509012}
+#home.jd-home .jd-badges b{font-size:12px;color:#152744}#home.jd-home .jd-badges small{font-size:11px;color:#62758e}
+#home.jd-home .jd-banner-visual{position:relative;min-height:390px;overflow:hidden}
+#home.jd-home .jd-banner-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;mask-image:linear-gradient(90deg,transparent 0%,#000 20%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 20%)}
+#home.jd-home .jd-banner-visual>span{position:absolute;right:25px;bottom:35px;z-index:3;color:white;text-shadow:0 2px 12px #1a2d4e;font-size:20px;font-weight:800;line-height:1.5;transform:rotate(-6deg)}
+#home.jd-home .jd-subjects{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:18px 0}
+#home.jd-home .jd-sub{min-height:146px;padding:17px 15px 12px;display:flex;flex-direction:column;gap:5px;position:relative;border-radius:16px;text-decoration:none!important;color:#102341!important;box-shadow:0 5px 17px #23466a10;transition:transform .2s}
+#home.jd-home .jd-sub:hover{transform:translateY(-4px)}#home.jd-home .jd-sub .jd-ico{font-size:25px;line-height:1.2}#home.jd-home .jd-sub strong{font-size:20px;font-weight:900}#home.jd-home .jd-sub small{font-size:12px;color:#4d5c70;line-height:1.5}#home.jd-home .jd-sub>b{margin-top:auto;color:#146aff;font-size:19px}
+#home.jd-home .jd-english{background:#dceeff}#home.jd-home .jd-math{background:#ffe4e7}#home.jd-home .jd-korean{background:#dcf9e9}#home.jd-home .jd-science{background:#ede2ff}#home.jd-home .jd-coding{background:#d9f7fc}#home.jd-home .jd-ged{background:#fff0d5}
+#home.jd-home .jd-values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;background:white;border-radius:15px;padding:17px 24px;box-shadow:0 6px 18px #204e7b0b;margin-bottom:24px}
+#home.jd-home .jd-values>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:19px}#home.jd-home .jd-values strong{font-size:14px;color:#1a2c47}#home.jd-home .jd-values small{font-size:11px;color:#718098;width:100%;padding-left:31px}
+#home.jd-home .jd-main-grid{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:20px;align-items:stretch}
+#home.jd-home .jd-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}#home.jd-home .jd-section-head h2{font-size:24px!important;margin:0!important;color:#112647!important}#home.jd-home .jd-section-head a{font-size:13px;color:#647d9a;text-decoration:none}
+#home.jd-home .jd-posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#home.jd-home .jd-post{display:block;background:white;border-radius:13px;overflow:hidden;box-shadow:0 5px 15px #24497713;border:1px solid #e9eff9;text-decoration:none!important;color:#142744!important}
+#home.jd-home .jd-post-image{height:128px;background-size:cover;background-position:center;background-color:#dbe9ff;padding:9px}#home.jd-home .jd-post-image span{display:inline-block;border-radius:30px;padding:5px 11px;background:#3b8df8;color:white;font-size:11px;font-weight:800}
+#home.jd-home .jd-post-info{padding:12px}#home.jd-home .jd-post-info strong{font-size:14px;line-height:1.55;min-height:45px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}#home.jd-home .jd-post-info small{display:block;margin-top:11px;color:#8a99ad;font-size:11px}
+#home.jd-home .jd-contact{background:white;border:1px solid #e9eff9;border-radius:16px;padding:16px;box-shadow:0 5px 15px #24497713;align-self:end}#home.jd-home .jd-contact h2{font-size:17px!important;margin:0 0 6px!important;color:#102341!important}#home.jd-home .jd-contact p{font-size:12px!important;color:#748399!important;margin:0 0 14px!important}
+#home.jd-home .jd-contact>a{display:block;padding:12px 7px;margin:8px 0;border-radius:9px;text-align:center;font-size:13px;font-weight:850;text-decoration:none!important}#home.jd-home .jd-phone{background:#0cc785;color:white!important}#home.jd-home .jd-kakao{background:#ffe037;color:#231d0b!important}#home.jd-home .jd-naver{background:#1367f8;color:white!important}#home.jd-home .jd-contact>small{display:block;color:#8797aa;font-size:11px;margin-top:10px}
+#home.jd-home .jd-cta{margin-top:20px;padding:19px 25px;border-radius:16px;background:linear-gradient(105deg,#327bff,#8051f3,#5987ff);display:flex;align-items:center;justify-content:space-between;gap:16px;color:white!important}#home.jd-home .jd-cta strong{font-size:19px;font-weight:850;color:white!important}#home.jd-home .jd-cta p{font-size:12px!important;margin:5px 0 0!important;color:white!important}#home.jd-home .jd-cta>a{border-radius:35px;padding:13px 18px;background:white;color:#1365ee!important;font-size:14px;font-weight:800;text-decoration:none!important;white-space:nowrap}
+@media(max-width:1050px){#home.jd-home .jd-subjects{grid-template-columns:repeat(3,minmax(0,1fr))}#home.jd-home .jd-main-grid{grid-template-columns:1fr}#home.jd-home .jd-banner-copy{padding-left:5%}#home.jd-home .jd-banner-copy>p{font-size:14px!important}}
+@media(max-width:650px){#home.jd-home{padding:10px 0 25px!important}#home.jd-home .jd-wrap{width:calc(100% - 24px)}#home.jd-home .jd-banner{grid-template-columns:1fr}#home.jd-home .jd-banner-copy{padding:24px 19px 16px}#home.jd-home h1{font-size:28px!important;letter-spacing:-1px!important}#home.jd-home .jd-banner-copy>p{font-size:13px!important}#home.jd-home .jd-banner-visual{min-height:210px}#home.jd-home .jd-banner-visual img{mask-image:none;-webkit-mask-image:none}#home.jd-home .jd-banner-visual>span{font-size:13px;bottom:13px}#home.jd-home .jd-badges span{padding:7px}#home.jd-home .jd-badges b{font-size:10px}#home.jd-home .jd-badges small{font-size:9px}#home.jd-home .jd-subjects{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#home.jd-home .jd-sub{min-height:134px;padding:12px}#home.jd-home .jd-sub strong{font-size:18px}#home.jd-home .jd-values{grid-template-columns:1fr;padding:15px}#home.jd-home .jd-posts{grid-template-columns:1fr}#home.jd-home .jd-post{display:grid;grid-template-columns:120px 1fr}#home.jd-home .jd-post-image{height:110px}#home.jd-home .jd-cta{flex-direction:column;align-items:flex-start}#home.jd-home .jd-cta strong{font-size:17px}}
+</style>
 </head>
 <body>
 <!-- ==========================
@@ -2162,60 +2199,14 @@ body.jj-subjects-modal-open{overflow:hidden}
 <!-- ==========================
             HERO
     =========================== -->
-<section class="hero" id="home">
-<div class="hero-bg"></div>
-<div class="container">
-<div class="hero-grid">
-<!-- 왼쪽 문구 영역 -->
-<div class="hero-left">
-<span class="hero-badge">학생의 공부 습관까지 함께 관리하는 1:1 수업</span>
-<h1>공부를 시키는 과외가 아니라<br/><strong>스스로 공부하는 힘을</strong><br/>만드는 수업</h1>
-<p class="hero-description">학생의 현재 수준을 진단하고, 이해가 막히는 지점부터 다시 잡습니다. 수업·숙제·복습·학부모 피드백까지 한 흐름으로 이어지는 관리형 수업입니다.</p>
-<div aria-label="주요 수업 안내" class="jj-ultimate-keywords">
-<span>초등과외</span><span>중등과외</span><span>고등과외</span>
-<span>수학과외</span><span>영어과외</span><span>국어과외</span>
-<span>과학과외</span><span>코딩과외</span><span>검정고시</span><span>전국 화상과외</span>
-</div>
-
-<div class="hero-buttons">
-<a class="btn primary" data-direct-consult="true" href="https://naver.me/xPY0a7X1" rel="noopener noreferrer" target="_blank">우리 아이 수업 방향 상담받기</a>
-<a aria-controls="curriculumModal" aria-expanded="false" class="btn light" href="#" id="curriculumBtn" onclick="window.JJCurriculum.open(); return false;" role="button">실제 수업 방식 보기</a>
-</div>
-<div class="hero-review">
-<span class="hero-review-stars">
-                            ★★★★★
-                        </span>
-<div class="hero-review-text">
-<strong>학생의 변화가 수업의 기준입니다</strong><small>진도보다 이해, 설명보다 스스로 풀어내는 힘을 중요하게 봅니다.</small>
-</div>
-</div>
-<div class="hero-stats">
-<div class="hero-stat-item"><h2>01</h2><p>현재 수준 진단</p></div><div class="hero-stat-item"><h2>02</h2><p>개인별 수업 설계</p></div><div class="hero-stat-item"><h2>03</h2><p>숙제·복습 피드백</p></div>
-</div>
-</div>
-<!-- 오른쪽 이미지 영역 -->
-<div class="hero-right">
-<div class="hero-photo-card">
-<img alt="선생님과 함께 공부하는 학생" src="이미지/학생.png"/>
-<div class="hero-photo-label label-top">
-                            1:1 맞춤 지도
-                        </div>
-<div class="hero-photo-label label-bottom">
-                            꼼꼼한 학습 관리
-                        </div>
-</div>
-<div class="hero-features">
-<button class="feature-item hero-info-btn" data-info="question" type="button">
-                            실시간 질문 가능
-                        </button>
-<button class="feature-item hero-info-btn" data-info="personal" type="button">
-                            1:1 맞춤 수업
-                        </button>
-<button class="feature-item hero-info-btn" data-info="online" type="button">
-                            온라인 수업
-                        </button>
-</div>
-</div></div></div></section>
+<section class="hero jd-home" id="home" aria-label="장쌤의 과외교실 홈">
+<div class="jd-wrap">
+ <div class="jd-banner"><div class="jd-banner-copy"><span class="jd-pill">✦ 1:1 맞춤 과외 · 초중고 · 검정고시</span><h1>아이의 가능성을 키우는<br>맞춤형 과외, <em>장쌤</em>과 함께!</h1><p>초·중·고·검정고시까지<br>학생 한 명, 한 명의 목표에 맞춘 1:1 맞춤 학습으로<br>성적 향상과 실력 성장을 함께합니다.</p><div class="jd-badges"><span><b>👥 1:1 맞춤 수업</b><small>학생별 학습 설계</small></span><span><b>📈 체계적인 커리큘럼</b><small>기초부터 실력까지</small></span><span><b>🏆 초중고·검정고시</b><small>모든 과정 전문</small></span></div></div><div class="jd-banner-visual"><img src="이미지/학생.png" alt="공부하는 학생"><span>오늘의 공부가<br>더 큰 내일을 만듭니다 ♡</span></div></div>
+ <div class="jd-subjects"><a class="jd-sub jd-english" href="#subject" aria-label="영어 과목 안내"><span class="jd-ico">📘</span><strong>영어</strong><small>기초부터 수능까지</small><b>→</b></a><a class="jd-sub jd-math" href="#subject" aria-label="수학 과목 안내"><span class="jd-ico">▦</span><strong>수학</strong><small>개념부터 문제풀이까지</small><b>→</b></a><a class="jd-sub jd-korean" href="#subject" aria-label="국어 과목 안내"><span class="jd-ico">📖</span><strong>국어</strong><small>독해력·문학·문법까지</small><b>→</b></a><a class="jd-sub jd-science" href="#subject" aria-label="과학 과목 안내"><span class="jd-ico">⚗</span><strong>과학</strong><small>개념 이해와 탐구</small><b>→</b></a><a class="jd-sub jd-coding" href="#subject" aria-label="코딩 과목 안내"><span class="jd-ico">⌘</span><strong>코딩</strong><small>처음부터 만드는 실전 프로젝트</small><b>→</b></a><a class="jd-sub jd-ged" href="#subject" aria-label="검정고시 과목 안내"><span class="jd-ico">🎓</span><strong>검정고시</strong><small>합격을 위한 단계별 맞춤 학습</small><b>→</b></a></div>
+ <div class="jd-values"><div>🎯 <strong>학생 맞춤 학습 설계</strong><small>현재 수준 진단 후 최적의 학습 방법 제시</small></div><div>📋 <strong>꾸준한 학습 관리</strong><small>숙제·복습·학부모 피드백까지 체계적으로</small></div><div>📈 <strong>실력 향상과 성적 관리</strong><small>단기 성적 향상과 장기적인 학습습관 형성</small></div></div>
+ <div class="jd-main-grid"><div class="jd-articles"><div class="jd-section-head"><h2>🔥 최신 포스팅</h2><a href="blog.html">더보기 →</a></div><div class="jd-posts"><a class="jd-post" href="posts/middle-school-math-error-note-two-weeks.html"><div class="jd-post-image" style="background-image:url('이미지/blog/61b6aab2-f554-4de8-ab9d-7a0db1d6ca05.png')"><span>수학</span></div><div class="jd-post-info"><strong>중학생 수학 시험 2주 전, 오답노트는 어떻게 활용해야 할까?</strong><small>자세히 보기 →</small></div></a><a class="jd-post" href="posts/middle-school-exam-study-2weeks.html"><div class="jd-post-image" style="background-image:url('이미지/blog/8d874d65-74b9-4b98-a6c2-6e10f141d2cb.png')"><span>학습관리</span></div><div class="jd-post-info"><strong>중학생 시험공부, 시험 2주 전부터 어떻게 준비해야 할까?</strong><small>자세히 보기 →</small></div></a><a class="jd-post" href="posts/csat-exam-day-strategy.html"><div class="jd-post-image" style="background-image:url('이미지/blog/chatgpt-image-2026년-9월-16일-오전-09_23_02.png')"><span>학습관리</span></div><div class="jd-post-info"><strong>수능 당일 시간관리와 시험장에서 꼭 기억해야 할 것</strong><small>자세히 보기 →</small></div></a></div></div><aside class="jd-contact"><h2>💬 지금 바로 상담해보세요!</h2><p>학습 고민, 장쌤이 함께 해결해드립니다.</p><a class="jd-phone" href="tel:01097680911">☎　전화 상담하기　→</a><a class="jd-kakao" href="https://open.kakao.com/o/szfrvFPh" target="_blank" rel="noopener noreferrer">💬　카카오톡 상담하기　→</a><a class="jd-naver" href="https://naver.me/xPY0a7X1" target="_blank" rel="noopener noreferrer">N　네이버 폼 상담하기　→</a><small>상담 가능 시간　평일·주말 09:00 ~ 22:00</small></aside></div>
+ <div class="jd-cta"><div><strong>지금, 우리 아이에게 맞는 학습 방향을 무료로 상담해보세요!</strong><p>현재 학습 고민을 상담하시면 맞춤 학습 방향을 안내해드립니다.</p></div><a href="https://naver.me/xPY0a7X1" target="_blank" rel="noopener noreferrer">무료 상담 신청하기　→</a></div>
+ </div></section>
 <section aria-label="장쌤 수업의 차이" class="jj-brand-story" id="brandStory">
 <div class="jj-brand-story-inner">
 <div class="jj-brand-heading">
