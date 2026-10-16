@@ -252,12 +252,12 @@ const won = n => Number(n).toLocaleString('ko-KR')+'원';
 function guideHtml(g) {
   const related = posts.filter(p => classifyPost(p)?.key === g.key).slice(0,8);
   const title = `${g.grade} ${g.subject} 과외 안내 | 방문·화상 수업 비교 | 장쌤의과외교실`;
-  const desc = `${g.grade} ${g.subject} 과외를 알아보는 학부모를 위한 학습 방향, 방문·화상 수업 비교와 주 2회 수업료 안내.`;
+  const desc = `장쌤 Premium(장쌤의과외교실) ${g.grade} ${g.subject} 1:1 방문과외·화상과외 상담. 전국 상담 가능, 방문 수업은 지역별 선생님 배정 가능 여부 확인 후 안내. 주 2회 월 수업료와 수업 방식 비교.`;
   const url = `${site}/tutoring/${g.key}.html`;
   const rows = (tuition[g.grade]||[]).map((pair,i) => `<tr><th scope="row">주 2회 ${[60,90,120][i]}분</th><td>${won(pair[0])}</td><td>${won(pair[1])}</td></tr>`).join('\n');
   const links = related.length ? related.map(p => `<article class="related-card"><span class="related-tag">${esc(p.category || '교육정보')}</span><h3><a href="../posts/${encodeURIComponent(p.slug)}.html">${esc(p.title)}</a></h3><p>${esc(String(p.excerpt || plainText(p.body)).slice(0,125))}</p><a class="related-more" href="../posts/${encodeURIComponent(p.slug)}.html" aria-label="${esc(p.title)} 자세히 보기">게시물 읽기 →</a></article>`).join('\n') : '<p>이 과목과 학년에 해당하는 교육정보를 준비하고 있습니다.</p>';
   const graph = {'@context':'https://schema.org','@graph':[
-    {'@type':'Service',name:`${g.grade} ${g.subject} 과외`,description:desc,provider:{'@type':'Organization',name:'장쌤의과외교실',url:site},url,serviceType:'방문 및 화상 과외'},
+    {'@type':'Service',name:`${g.grade} ${g.subject} 과외`,description:desc,provider:{'@type':'Organization',name:'장쌤의과외교실',alternateName:'장쌤 Premium',url:site},url,serviceType:'방문 및 화상 과외'},
     {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'홈',item:site+'/'},{'@type':'ListItem',position:2,name:'과외 안내',item:site+'/'},{'@type':'ListItem',position:3,name:`${g.grade} ${g.subject} 과외`,item:url}]}
   ]};
   return `<!DOCTYPE html>
@@ -302,10 +302,11 @@ function guideHtml(g) {
     <h1>${esc(g.grade)} ${esc(g.subject)} 과외, 어떻게 선택할까요?</h1>
     <p>${esc(g.grade)} ${esc(g.subject)} 학습에서는 ${esc(g.focus)}을(를) 확인하는 것이 중요합니다. 방문과 화상 수업을 비교하고 아이에게 맞는 학습 계획을 세워 보세요.</p>
   </section>
+  <section><h2>장쌤 Premium 방문과외·화상과외 운영 안내</h2><p>장쌤 Premium(장쌤의과외교실)은 전국에서 ${esc(g.grade)} ${esc(g.subject)} 과외 상담을 받습니다. 방문과외는 학생의 거주 지역, 과목, 수업 일정에 따라 선생님 배정 가능 여부를 확인한 뒤 안내합니다. 화상과외는 지역에 관계없이 상담할 수 있습니다.</p><p>방문 선생님 배정이 어려운 지역도 있을 수 있으므로 상담 시 거주 지역과 희망 시간을 알려주세요. 수업 방식과 비용을 확인한 뒤 선택할 수 있습니다.</p></section>
   <section><h2>학습 방향과 선택 기준</h2><p>${esc(g.advice)}</p><p>현재 학습 수준, 수업 목표, 질문 습관과 피드백 방식을 함께 살펴보는 것이 좋습니다.</p></section>
   <section><h2>방문 과외와 화상 과외 비교</h2><p><strong>방문 과외</strong>는 같은 공간에서 풀이 과정을 확인하고 지도받는 방식입니다.</p><p><strong>화상 과외</strong>는 이동 없이 온라인으로 수업하며 화면 공유 등으로 학습 내용을 확인하는 방식입니다.</p><p>어느 방식이 더 적합한지는 학생의 학습 습관과 가정 환경에 따라 달라집니다.</p></section>
   <section><h2>${esc(g.grade)} 주 2회 수업료</h2><div class="table-wrap"><table><thead><tr><th scope="col">수업시간</th><th scope="col">방문</th><th scope="col">화상</th></tr></thead><tbody>${rows}</tbody></table></div><p>※ 월 수업료 기준입니다. 고등학생 표는 1~2학년 기준이며 고3 금액은 별도 확인이 필요합니다.</p></section>
-  <section><h2>학부모가 자주 묻는 질문</h2><details><summary>주 2회 수업으로 충분한가요?</summary><p>수업 외 복습 시간과 현재 학습 수준에 따라 달라집니다. 수업 횟수뿐 아니라 학습 계획을 함께 확인해 보세요.</p></details><details><summary>60분과 90분 중 어떤 수업이 적합할까요?</summary><p>집중 지속 시간과 다루어야 할 내용의 양에 따라 선택하는 것이 좋습니다.</p></details><details><summary>방문과 화상 중 무엇이 좋을까요?</summary><p>학습 습관과 피드백 방식, 수업 환경을 비교해 결정해 보세요.</p></details></section>
+  <section><h2>학부모가 자주 묻는 질문</h2><details><summary>전국 어디서나 방문과외를 받을 수 있나요?</summary><p>전국에서 상담할 수 있지만 방문 수업은 지역별 선생님 배정 가능 여부와 일정에 따라 달라집니다. 상담 후 가능 여부를 안내합니다.</p></details><details><summary>방문과외 배정이 어려우면 어떻게 하나요?</summary><p>화상과외를 함께 비교해 볼 수 있습니다. 학생의 학습 환경과 수업 목표를 고려해 상담합니다.</p></details><details><summary>주 2회 수업으로 충분한가요?</summary><p>수업 외 복습 시간과 현재 학습 수준에 따라 달라집니다. 수업 횟수뿐 아니라 학습 계획을 함께 확인해 보세요.</p></details><details><summary>60분과 90분 중 어떤 수업이 적합할까요?</summary><p>집중 지속 시간과 다루어야 할 내용의 양에 따라 선택하는 것이 좋습니다.</p></details><details><summary>방문과 화상 중 무엇이 좋을까요?</summary><p>학습 습관과 피드백 방식, 수업 환경을 비교해 결정해 보세요.</p></details></section>
   <section><h2>관련 교육정보</h2><p>관련 학년과 과목으로 분류된 실제 교육정보를 확인할 수 있습니다.</p><div class="related-grid">${links}</div></section>
   <section class="region-guide"><h2>지역별 과외 안내</h2><p>지역별 안내에서 상담 지역을 확인할 수 있습니다. 방문 수업 가능 여부는 주소와 일정에 따라 달라질 수 있으며, 화상 수업도 비교해 보세요.</p><div class="region-guide-links">${regionFromGuideLinks}</div></section>
   <section class="cta"><h2>우리 아이 학습 방향 상담</h2><p>학습 상황을 바탕으로 적합한 수업 방향을 안내합니다.</p><a href="../상담신청.html">상담 신청하기</a></section>
@@ -348,6 +349,15 @@ for (const [, slug] of activeRegions) {
   const file = path.join(regionDir, `${slug}-tutoring.html`);
   let html = fs.readFileSync(file, 'utf8');
   const markers = /<!-- TUTORING_GUIDES_START -->[\s\S]*?<!-- TUTORING_GUIDES_END -->/;
+  // 실제 운영 방식만 지역 페이지에 안내하며 지역별 상시 배정을 보장하지 않습니다.
+  const regionName = regionGuides.find(([, key]) => key === slug)?.[0] || '해당';
+  const localExample = slug === 'busan' ? '<p>부산 해운대구에서 중학생 수학 과외를 알아보는 경우에도 방문과 화상 수업을 함께 상담할 수 있습니다. 해운대구 방문 선생님 배정 가능 여부는 상담 시 확인합니다.</p>' : '';
+  const localBlock = `<!-- JJ_LOCAL_SERVICE_START -->
+<section class="jj-local-service"><div class="wrap"><h2>${esc(regionName)} 방문과외·화상과외 상담 안내</h2><p>장쌤 Premium(장쌤의과외교실)은 ${esc(regionName)} 지역의 초등학생·중학생·고등학생을 대상으로 수학·영어·국어·과학·코딩 1:1 과외 상담을 진행합니다. 방문과외는 거주 지역, 과목, 일정에 따라 선생님 배정 가능 여부를 확인한 뒤 안내하며, 화상과외도 함께 상담할 수 있습니다.</p>${localExample}<p>상담 시 학년·과목·거주 지역·희망 수업 시간을 알려주시면 수업 방식과 월 수업료를 안내합니다.</p><p><a href="../상담신청.html">장쌤 Premium 과외 상담 신청 →</a></p></div></section>
+<!-- JJ_LOCAL_SERVICE_END -->`;
+  const localMarkers = /<!-- JJ_LOCAL_SERVICE_START -->[\s\S]*?<!-- JJ_LOCAL_SERVICE_END -->/;
+  if (localMarkers.test(html)) html = html.replace(localMarkers, localBlock);
+  else if (html.includes('<section class="cta">')) html = html.replace('<section class="cta">', localBlock + '\n<section class="cta">');
   if (markers.test(html)) html = html.replace(markers, regionBlock);
   else if (html.includes('<section class="cta">')) html = html.replace('<section class="cta">', regionBlock + '\n<section class="cta">');
   else throw new Error(`[지역 연결 오류] 삽입 위치를 찾을 수 없습니다: ${file}`);
@@ -358,6 +368,13 @@ for (const [, slug] of activeRegions) {
 const indexPath=path.join(root,'index.html'); let index=fs.readFileSync(indexPath,'utf8');
 const cards=posts.slice(0,3).map(p=>`<a class="jj-blog-home-card" href="posts/${encodeURIComponent(p.slug)}.html"><span class="jj-blog-tag">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p>${esc(p.excerpt)}</p><time datetime="${esc(p.date)}">${esc(p.date.replace(/-/g,'.'))}</time></a>`).join('\n');
 index=index.replace(/<!-- CMS_HOME_POSTS_START -->[\s\S]*?<!-- CMS_HOME_POSTS_END -->/,`<!-- CMS_HOME_POSTS_START -->\n<div class="jj-blog-home-grid">\n${cards}\n</div>\n<!-- CMS_HOME_POSTS_END -->`);
+// 공식 브랜드명과 서비스 범위를 실제 본문에도 일관되게 명시합니다.
+const brandBlock = `<!-- JJ_OFFICIAL_SERVICE_START -->
+<section aria-labelledby="jj-official-service-title" style="padding:42px 20px;background:#f5f8fd;color:#173357"><div style="max-width:1080px;margin:auto"><h2 id="jj-official-service-title" style="font-size:clamp(23px,3vw,30px);margin:0 0 15px">장쌤 Premium 공식 과외 안내</h2><p>장쌤 Premium(장쌤의과외교실)은 초등학생·중학생·고등학생을 위한 1:1 방문과외와 화상과외 상담을 제공합니다. 전국에서 상담할 수 있으며, 방문과외는 거주 지역·과목·일정에 따른 선생님 배정 가능 여부를 확인한 뒤 안내합니다.</p><p>수학·영어·국어·과학·코딩 수업을 알아보는 학부모님은 <a href="/tutoring/middle-math.html">중학생 수학 과외 안내</a>, <a href="/regions/busan-tutoring.html">부산 과외 안내</a> 및 <a href="/상담신청.html">상담 신청</a>을 이용할 수 있습니다.</p><p style="font-size:14px">공식 홈페이지: <a href="https://jangssam-premium.netlify.app/">jangssam-premium.netlify.app</a></p></div></section>
+<!-- JJ_OFFICIAL_SERVICE_END -->`;
+const brandMarkers = /<!-- JJ_OFFICIAL_SERVICE_START -->[\s\S]*?<!-- JJ_OFFICIAL_SERVICE_END -->/;
+if (brandMarkers.test(index)) index = index.replace(brandMarkers, brandBlock);
+else if (index.includes('</main>')) index = index.replace('</main>', brandBlock + '\n</main>');
 fs.writeFileSync(indexPath,index,'utf8');
 // sitemap
 const staticUrls=[...indexedGuides.map(g => `/tutoring/${g.key}.html`),'/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
