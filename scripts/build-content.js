@@ -50,11 +50,12 @@ function learningLinks(p) {
   const grade = /검정고시/.test(label) ? '검정고시' : /고3|수능|고등/.test(label) ? '고등학생' : /중학|중등/.test(label) ? '중학생' : /초등/.test(label) ? '초등학생' : '학생';
   const subject = /수학|계산|오답/.test(label) ? '수학' : /영어|단어/.test(label) ? '영어' : /국어|독해/.test(label) ? '국어' : /과학/.test(label) ? '과학' : /코딩/.test(label) ? '코딩' : '학습';
   const title = `${grade} ${subject} 과외 안내`;
+  const subjectHref = grade === '중학생' && subject === '수학' ? '../tutoring/middle-math.html' : '../index.html#subject';
   return `<section class="learning-links" aria-labelledby="learning-links-heading">
     <h2 id="learning-links-heading">관련 과외·수업 안내</h2>
     <p>이 글의 공부 방법을 실제 수업에 적용하고 싶다면, 수업 방식과 비용을 비교한 뒤 상담을 통해 학습 방향을 확인해 보세요.</p>
     <ul>
-      <li><a href="../index.html#subject">${esc(title)} 및 과목별 안내</a></li>
+      <li><a href="${subjectHref}">${esc(title)} 및 과목별 안내</a></li>
       <li><a href="../index.html#contact">수업료·상담 안내 확인</a></li>
       <li><a href="../지역별과외찾기.html">지역별 과외 안내</a></li>
     </ul>
@@ -175,7 +176,7 @@ const cards=posts.slice(0,3).map(p=>`<a class="jj-blog-home-card" href="posts/${
 index=index.replace(/<!-- CMS_HOME_POSTS_START -->[\s\S]*?<!-- CMS_HOME_POSTS_END -->/,`<!-- CMS_HOME_POSTS_START -->\n<div class="jj-blog-home-grid">\n${cards}\n</div>\n<!-- CMS_HOME_POSTS_END -->`);
 fs.writeFileSync(indexPath,index,'utf8');
 // sitemap
-const staticUrls=['/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
+const staticUrls=['/tutoring/middle-math.html','/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
 const urls=[...staticUrls.map(u=>({loc:site+u,lastmod:new Date().toISOString().slice(0,10)})),...posts.map(p=>({loc:`${site}/posts/${encodeURIComponent(p.slug)}.html`,lastmod:p.modified||p.date}))];
 fs.writeFileSync(path.join(root,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(u=>`  <url><loc>${xml(u.loc)}</loc><lastmod>${xml(u.lastmod)}</lastmod></url>`).join('\n')+'\n</urlset>\n','utf8');
 // RSS
