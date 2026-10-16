@@ -222,6 +222,24 @@ const tuition = {
   '중학생': [[296000,268000],[444000,402000],[592000,536000]],
   '고등학생': [[336000,308000],[504000,462000],[672000,616000]]
 };
+// 지역 페이지는 기존에 운영 중인 광역 안내 페이지에만 연결합니다.
+// 학년·과목별 페이지를 지역별로 복제하지 않으며 방문 가능 여부는 상담으로 확인합니다.
+const regionGuides = [
+  ['서울', 'seoul'], ['경기', 'gyeonggi'], ['인천', 'incheon'],
+  ['부산', 'busan'], ['대구', 'daegu'], ['대전', 'daejeon'],
+  ['광주', 'gwangju'], ['울산', 'ulsan']
+];
+const regionDir = path.join(root, 'regions');
+const activeRegions = regionGuides.filter(([, slug]) =>
+  fs.existsSync(path.join(regionDir, `${slug}-tutoring.html`))
+);
+const regionToGuideLinks = tutoringGuides.map(g =>
+  `<a href="../tutoring/${g.key}.html">${esc(g.grade)} ${esc(g.subject)} 과외 안내</a>`
+).join('\n');
+const regionFromGuideLinks = activeRegions.map(([name, slug]) =>
+  `<a href="../regions/${slug}-tutoring.html">${esc(name)} 지역 과외 안내</a>`
+).join('\n');
+
 const won = n => Number(n).toLocaleString('ko-KR')+'원';
 function guideHtml(g) {
   const related = posts.filter(p => classifyPost(p)?.key === g.key).slice(0,8);
@@ -262,6 +280,7 @@ function guideHtml(g) {
     .related-card p{font-size:14px;color:#465d7c;line-height:1.65}
     .related-tag{font-size:12px;font-weight:700;color:#2858a0}
     .related-more{display:inline-block;margin-top:4px;font-size:14px;font-weight:700}
+    .region-guide-links{display:flex;flex-wrap:wrap;gap:10px}.region-guide-links a{display:inline-block;padding:9px 13px;background:#edf3ff;border:1px solid #dce5f3;border-radius:10px;text-decoration:none;font-weight:700}
     .cta{background:#183f80;color:white;text-align:center}.cta a{display:inline-block;background:white;color:#173b78;border-radius:12px;padding:12px 25px;font-weight:800;text-decoration:none}
     @media(max-width:600px){section{padding:20px}h2{font-size:20px}}
   </style>
@@ -280,6 +299,7 @@ function guideHtml(g) {
   <section><h2>${esc(g.grade)} 주 2회 수업료</h2><div class="table-wrap"><table><thead><tr><th scope="col">수업시간</th><th scope="col">방문</th><th scope="col">화상</th></tr></thead><tbody>${rows}</tbody></table></div><p>※ 월 수업료 기준입니다. 고등학생 표는 1~2학년 기준이며 고3 금액은 별도 확인이 필요합니다.</p></section>
   <section><h2>학부모가 자주 묻는 질문</h2><details><summary>주 2회 수업으로 충분한가요?</summary><p>수업 외 복습 시간과 현재 학습 수준에 따라 달라집니다. 수업 횟수뿐 아니라 학습 계획을 함께 확인해 보세요.</p></details><details><summary>60분과 90분 중 어떤 수업이 적합할까요?</summary><p>집중 지속 시간과 다루어야 할 내용의 양에 따라 선택하는 것이 좋습니다.</p></details><details><summary>방문과 화상 중 무엇이 좋을까요?</summary><p>학습 습관과 피드백 방식, 수업 환경을 비교해 결정해 보세요.</p></details></section>
   <section><h2>관련 교육정보</h2><p>관련 학년과 과목으로 분류된 실제 교육정보를 확인할 수 있습니다.</p><div class="related-grid">${links}</div></section>
+  <section class="region-guide"><h2>지역별 과외 안내</h2><p>지역별 안내에서 상담 지역을 확인할 수 있습니다. 방문 수업 가능 여부는 주소와 일정에 따라 달라질 수 있으며, 화상 수업도 비교해 보세요.</p><div class="region-guide-links">${regionFromGuideLinks}</div></section>
   <section class="cta"><h2>우리 아이 학습 방향 상담</h2><p>학습 상황을 바탕으로 적합한 수업 방향을 안내합니다.</p><a href="../상담신청.html">상담 신청하기</a></section>
 </main>
 </body>
@@ -288,6 +308,27 @@ function guideHtml(g) {
 for (const g of tutoringGuides) {
   fs.writeFileSync(path.join(guideDir,`${g.key}.html`),guideHtml(g),'utf8');
 }
+// 기존 지역별 페이지에 학년·과목 안내 연결을 자동 삽입합니다.
+// 재빌드 시 중복 삽입되지 않도록 주석 마커 사이의 영역을 교체합니다.
+const regionBlock = `<!-- TUTORING_GUIDES_START -->
+<section class="grade-subject-guide" aria-labelledby="grade-subject-guide-heading">
+  <div class="wrap">
+    <div class="section-head"><h2 id="grade-subject-guide-heading">학년·과목별 과외 안내</h2>
+      <p>학습 목표와 수업 방식, 월 수업료를 비교할 수 있습니다. 실제 방문 수업 가능 여부는 상담을 통해 확인해 주세요.</p></div>
+    <div class="region-links">${regionToGuideLinks}</div>
+  </div>
+</section>
+<!-- TUTORING_GUIDES_END -->`;
+for (const [, slug] of activeRegions) {
+  const file = path.join(regionDir, `${slug}-tutoring.html`);
+  let html = fs.readFileSync(file, 'utf8');
+  const markers = /<!-- TUTORING_GUIDES_START -->[\s\S]*?<!-- TUTORING_GUIDES_END -->/;
+  if (markers.test(html)) html = html.replace(markers, regionBlock);
+  else if (html.includes('<section class="cta">')) html = html.replace('<section class="cta">', regionBlock + '\n<section class="cta">');
+  else throw new Error(`[지역 연결 오류] 삽입 위치를 찾을 수 없습니다: ${file}`);
+  fs.writeFileSync(file, html, 'utf8');
+}
+
 // homepage latest cards
 const indexPath=path.join(root,'index.html'); let index=fs.readFileSync(indexPath,'utf8');
 const cards=posts.slice(0,3).map(p=>`<a class="jj-blog-home-card" href="posts/${encodeURIComponent(p.slug)}.html"><span class="jj-blog-tag">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p>${esc(p.excerpt)}</p><time datetime="${esc(p.date)}">${esc(p.date.replace(/-/g,'.'))}</time></a>`).join('\n');
