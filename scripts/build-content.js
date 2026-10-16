@@ -88,7 +88,8 @@ for (const p of posts) {
   if (g) guideCounts.set(g.key, guideCounts.get(g.key)+1);
 }
 // 관련 글이 없는 조합은 얇은 페이지를 대량 생성하지 않습니다. 기존 4개 주소는 유지합니다.
-const tutoringGuides = allGuides.filter(g => guideCounts.get(g.key)>0 || legacyGuideKeys.has(g.key));
+const tutoringGuides = allGuides; // 3개 학년 × 5개 과목: 안내 메뉴 누락 없이 모두 생성
+const indexedGuides = allGuides.filter(g => guideCounts.get(g.key)>0 || legacyGuideKeys.has(g.key));
 function learningLinks(p) {
   const guide = classifyPost(p);
   const guideLink = guide
@@ -233,9 +234,16 @@ const regionDir = path.join(root, 'regions');
 const activeRegions = regionGuides.filter(([, slug]) =>
   fs.existsSync(path.join(regionDir, `${slug}-tutoring.html`))
 );
-const regionToGuideLinks = tutoringGuides.map(g =>
-  `<a href="../tutoring/${g.key}.html">${esc(g.grade)} ${esc(g.subject)} 과외 안내</a>`
-).join('\n');
+const regionToGuideLinks = gradeDefs.map(grade => {
+  const cards = subjectDefs.map(subject => {
+    const guide = allGuides.find(g => g.key === `${grade.key}-${subject.key}`);
+    const count = guideCounts.get(guide.key) || 0;
+    return `<a class="jj-subject-link" href="../tutoring/${guide.key}.html" aria-label="${esc(grade.label)} ${esc(subject.label)} 과외 안내">` +
+      `<span class="jj-subject-name">${esc(subject.label)}</span>` +
+      `<span class="jj-subject-meta">${count ? `관련 교육정보 ${count}개` : '수업 안내 보기'}</span></a>`;
+  }).join('\n');
+  return `<div class="jj-grade-group"><h3>${esc(grade.label)}</h3><div class="jj-subject-grid">${cards}</div></div>`;
+}).join('\n');
 const regionFromGuideLinks = activeRegions.map(([name, slug]) =>
   `<a href="../regions/${slug}-tutoring.html">${esc(name)} 지역 과외 안내</a>`
 ).join('\n');
@@ -259,7 +267,7 @@ function guideHtml(g) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(desc)}">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="${guideCounts.get(g.key)>0 || legacyGuideKeys.has(g.key) ? 'index,follow' : 'noindex,follow'}">
   <link rel="canonical" href="${url}">
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(desc)}">
@@ -311,11 +319,28 @@ for (const g of tutoringGuides) {
 // 기존 지역별 페이지에 학년·과목 안내 연결을 자동 삽입합니다.
 // 재빌드 시 중복 삽입되지 않도록 주석 마커 사이의 영역을 교체합니다.
 const regionBlock = `<!-- TUTORING_GUIDES_START -->
-<section class="grade-subject-guide" aria-labelledby="grade-subject-guide-heading">
+<section class="grade-subject-guide jj-guide-section" aria-labelledby="grade-subject-guide-heading">
+  <style>
+    .jj-guide-section{background:#fff;padding:62px 0 68px}
+    .jj-guide-section .jj-guide-heading{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap;margin-bottom:27px}
+    .jj-guide-section .jj-guide-heading h2{font-size:clamp(25px,3vw,32px);line-height:1.3;letter-spacing:-.04em;margin:0;flex-shrink:0;color:#102c54}
+    .jj-guide-section .jj-guide-heading p{font-size:14px;line-height:1.6;color:#60738e;margin:0;white-space:nowrap}
+    .jj-guide-section .jj-grade-group{margin-top:18px;padding:23px 26px 27px;background:#f6f9ff;border:1px solid #e1e9f5;border-radius:20px}
+    .jj-guide-section .jj-grade-group h3{font-size:19px;color:#143c79;margin:0 0 17px;letter-spacing:-.025em}
+    .jj-guide-section .jj-subject-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .jj-guide-section .jj-subject-link{min-width:0;display:flex;flex-direction:column;gap:6px;padding:19px 16px;border-radius:14px;background:white;border:1px solid #dce6f4;text-decoration:none;color:#18385f;transition:background .15s,border-color .15s,transform .15s}
+    .jj-guide-section .jj-subject-link:hover,.jj-guide-section .jj-subject-link:focus-visible{background:#eef5ff;border-color:#7fa7ed;transform:translateY(-2px)}
+    .jj-guide-section .jj-subject-name{font-weight:800;font-size:17px}
+    .jj-guide-section .jj-subject-meta{font-size:12px;color:#61758f;line-height:1.5}
+    @media(max-width:900px){.jj-guide-section .jj-guide-heading p{white-space:normal}.jj-guide-section .jj-subject-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:560px){.jj-guide-section{padding:42px 0}.jj-guide-section .jj-guide-heading{gap:8px}.jj-guide-section .jj-guide-heading h2{width:100%}.jj-guide-section .jj-grade-group{padding:19px 15px}.jj-guide-section .jj-subject-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.jj-guide-section .jj-subject-link{padding:15px 12px}.jj-guide-section .jj-subject-name{font-size:16px}}
+  </style>
   <div class="wrap">
-    <div class="section-head"><h2 id="grade-subject-guide-heading">학년·과목별 과외 안내</h2>
-      <p>학습 목표와 수업 방식, 월 수업료를 비교할 수 있습니다. 실제 방문 수업 가능 여부는 상담을 통해 확인해 주세요.</p></div>
-    <div class="region-links">${regionToGuideLinks}</div>
+    <div class="jj-guide-heading">
+      <h2 id="grade-subject-guide-heading">학년·과목별 과외 안내</h2>
+      <p>학습 목표·수업 방식·월 수업료를 한눈에 비교하세요. 방문 수업 가능 여부는 상담 시 확인할 수 있습니다.</p>
+    </div>
+    <div class="jj-grade-groups">${regionToGuideLinks}</div>
   </div>
 </section>
 <!-- TUTORING_GUIDES_END -->`;
@@ -335,7 +360,7 @@ const cards=posts.slice(0,3).map(p=>`<a class="jj-blog-home-card" href="posts/${
 index=index.replace(/<!-- CMS_HOME_POSTS_START -->[\s\S]*?<!-- CMS_HOME_POSTS_END -->/,`<!-- CMS_HOME_POSTS_START -->\n<div class="jj-blog-home-grid">\n${cards}\n</div>\n<!-- CMS_HOME_POSTS_END -->`);
 fs.writeFileSync(indexPath,index,'utf8');
 // sitemap
-const staticUrls=[...tutoringGuides.map(g => `/tutoring/${g.key}.html`),'/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
+const staticUrls=[...indexedGuides.map(g => `/tutoring/${g.key}.html`),'/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
 const urls=[...staticUrls.map(u=>({loc:site+u,lastmod:new Date().toISOString().slice(0,10)})),...posts.map(p=>({loc:`${site}/posts/${encodeURIComponent(p.slug)}.html`,lastmod:p.modified||p.date}))];
 fs.writeFileSync(path.join(root,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(u=>`  <url><loc>${xml(u.loc)}</loc><lastmod>${xml(u.lastmod)}</lastmod></url>`).join('\n')+'\n</urlset>\n','utf8');
 // RSS
