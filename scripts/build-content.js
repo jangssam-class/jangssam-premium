@@ -262,12 +262,13 @@ function guideHtml(g) {
   <p>장쌤 Premium 중학생 수학 과외는 주 2회 기준으로 회당 60분, 90분, 120분 수업료를 안내합니다. 중학교 2학년도 아래 중학생 수학 과외 요금표를 참고할 수 있습니다.</p>
   <p><strong>회당 60분(월 8회): 방문 ${won(tuition[g.grade][0][0])}, 화상 ${won(tuition[g.grade][0][1])}.</strong> <strong>회당 90분(월 8회): 방문 ${won(tuition[g.grade][1][0])}, 화상 ${won(tuition[g.grade][1][1])}.</strong> <strong>회당 120분(월 8회): 방문 ${won(tuition[g.grade][2][0])}, 화상 ${won(tuition[g.grade][2][1])}.</strong></p>
   <p>90분 기준 방문과외는 월 12시간에 ${won(tuition[g.grade][1][0])}, 화상과외는 월 12시간에 ${won(tuition[g.grade][1][1])}입니다. 다른 업체와 비교할 때는 월 금액뿐 아니라 회당 수업시간과 월 총수업시간도 함께 확인해 주세요.</p>
-  <h3>부산 해운대구 등 지역별 중학생 수학 과외 상담</h3>
-  <p>부산을 포함한 전국에서 중학생 수학 과외 상담을 진행합니다. 부산 해운대구 등 방문과외는 거주 지역과 희망 시간에 따라 선생님 배정 가능 여부를 상담 후 확인합니다. 화상과외는 지역에 관계없이 상담할 수 있습니다. <a href="../regions/busan-tutoring.html">부산 과외 안내</a> · <a href="../상담신청.html">상담 신청</a></p>
+  <h3>전국 중학생 수학 과외 상담 · 지역별 안내</h3>
+  <p>서울·경기·인천·부산 등 전국에서 중학생 수학 1:1 방문과외와 화상과외 상담을 진행합니다. 방문과외는 거주 지역, 희망 일정, 과목에 따라 담당 선생님 배정 가능 여부를 확인한 후 안내하며, 화상과외는 지역과 관계없이 상담할 수 있습니다.</p>
+  <p>지역별 상담 안내: ${regionFromGuideLinks}. <a href="../상담신청.html">장쌤 Premium 과외 상담 신청</a></p>
   <h3>중학생 수학 과외 비용 관련 질문</h3>
   <details><summary>중학교 2학년 수학 과외는 한 달에 얼마인가요?</summary><p>주 2회, 월 8회 기준 회당 60분은 방문 ${won(tuition[g.grade][0][0])}·화상 ${won(tuition[g.grade][0][1])}, 회당 90분은 방문 ${won(tuition[g.grade][1][0])}·화상 ${won(tuition[g.grade][1][1])}입니다. 실제 적용 조건은 상담 시 확인해 주세요.</p></details>
   <details><summary>중학생 수학 방문과외와 화상과외는 90분 기준 얼마 차이 나나요?</summary><p>주 2회, 회당 90분 기준 방문 ${won(tuition[g.grade][1][0])}, 화상 ${won(tuition[g.grade][1][1])}으로 월 ${won(tuition[g.grade][1][0]-tuition[g.grade][1][1])} 차이입니다.</p></details>
-  <details><summary>부산에서도 중2 수학 방문과외 상담이 가능한가요?</summary><p>부산 지역 방문과외 상담이 가능합니다. 실제 방문 수업 가능 여부는 거주 지역·과목·일정에 따른 선생님 배정 상황을 확인한 뒤 안내합니다. 화상과외는 전국에서 상담할 수 있습니다.</p></details>
+  <details><summary>서울·경기·인천·부산 등 전국에서도 중2 수학 방문과외 상담이 가능한가요?</summary><p>전국에서 중학생 수학 과외 상담을 진행합니다. 방문 수업은 거주 지역·과목·희망 일정에 따른 선생님 배정 가능 여부를 확인한 후 안내합니다. 화상과외는 지역과 관계없이 상담할 수 있습니다.</p></details>
   </section>` : '';
   const links = related.length ? related.map(p => `<article class="related-card"><span class="related-tag">${esc(p.category || '교육정보')}</span><h3><a href="../posts/${encodeURIComponent(p.slug)}.html">${esc(p.title)}</a></h3><p>${esc(String(p.excerpt || plainText(p.body)).slice(0,125))}</p><a class="related-more" href="../posts/${encodeURIComponent(p.slug)}.html" aria-label="${esc(p.title)} 자세히 보기">게시물 읽기 →</a></article>`).join('\n') : '<p>이 과목과 학년에 해당하는 교육정보를 준비하고 있습니다.</p>';
   const graph = {'@context':'https://schema.org','@graph':[
@@ -366,7 +367,7 @@ for (const [, slug] of activeRegions) {
   const markers = /<!-- TUTORING_GUIDES_START -->[\s\S]*?<!-- TUTORING_GUIDES_END -->/;
   // 실제 운영 방식만 지역 페이지에 안내하며 지역별 상시 배정을 보장하지 않습니다.
   const regionName = regionGuides.find(([, key]) => key === slug)?.[0] || '해당';
-  const localExample = slug === 'busan' ? '<p>부산 해운대구에서 중학생 수학 과외를 알아보는 경우에도 방문과 화상 수업을 함께 상담할 수 있습니다. 해운대구 방문 선생님 배정 가능 여부는 상담 시 확인합니다.</p>' : '';
+  const localExample = `<p>${esc(regionName)}에서 중학생 수학 과외를 알아보는 학부모님은 <a href="../tutoring/middle-math.html">중학생 수학 방문·화상과외 수업료 비교</a>를 확인해 보세요. 주 2회 기준 수업시간별 월 수업료를 안내하며, 방문 수업은 해당 지역의 선생님 배정 가능 여부를 상담 후 확인합니다.</p>`;
   const localBlock = `<!-- JJ_LOCAL_SERVICE_START -->
 <section class="jj-local-service"><div class="wrap"><h2>${esc(regionName)} 방문과외·화상과외 상담 안내</h2><p>장쌤 Premium(장쌤의과외교실)은 ${esc(regionName)} 지역의 초등학생·중학생·고등학생을 대상으로 수학·영어·국어·과학·코딩 1:1 과외 상담을 진행합니다. 방문과외는 거주 지역, 과목, 일정에 따라 선생님 배정 가능 여부를 확인한 뒤 안내하며, 화상과외도 함께 상담할 수 있습니다.</p>${localExample}<p>상담 시 학년·과목·거주 지역·희망 수업 시간을 알려주시면 수업 방식과 월 수업료를 안내합니다.</p><p><a href="../상담신청.html">장쌤 Premium 과외 상담 신청 →</a></p></div></section>
 <!-- JJ_LOCAL_SERVICE_END -->`;
