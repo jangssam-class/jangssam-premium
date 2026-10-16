@@ -46,18 +46,49 @@ function plainText(md='') {
 // GEO/AEO: 기존 콘텐츠에 실제 서비스 페이지와 탐색 경로를 연결합니다.
 // 신규 게시글에도 빌드할 때 자동 적용됩니다. 기존 본문/FAQ는 변경하지 않습니다.
 // 전용 안내 페이지는 포스팅 개수와 무관하게 학년·과목별로 공유합니다.
-const tutoringGuides = [
-  {key:'middle-math', grade:'중학생', subject:'수학', focus:'개념 이해와 오답 분석', advice:'개념을 설명할 수 있는지 확인하고 계산 실수와 개념 부족을 구분해 복습합니다.'},
-  {key:'middle-english', grade:'중학생', subject:'영어', focus:'교과서 본문과 문법의 연결', advice:'교과서 문장 구조를 이해하고 어휘·문법을 실제 문장에 적용하는 연습을 합니다.'},
-  {key:'elementary-math', grade:'초등학생', subject:'수학', focus:'연산 정확도와 기초 개념', advice:'연산 과정과 문제 이해를 점검하고 틀린 이유를 말로 설명하도록 지도합니다.'},
-  {key:'high-english', grade:'고등학생', subject:'영어', focus:'독해 근거와 어휘·구문', advice:'지문을 해석하는 근거를 확인하고 어휘·구문·문제 풀이 과정을 구분해 점검합니다.'}
+const gradeDefs = [
+  {key:'elementary', label:'초등학생', pattern:/초등|초[1-6](?!\d)/},
+  {key:'middle', label:'중학생', pattern:/중학생|중등|중[1-3](?!\d)/},
+  {key:'high', label:'고등학생', pattern:/고등학생|고등|고[1-3](?!\d)|수능/}
 ];
+const subjectDefs = [
+  {key:'math', label:'수학', pattern:/수학|연산|계산/,
+   focus:'개념 이해와 풀이 과정 점검', advice:'학생이 풀이 과정을 설명하도록 하고, 계산 실수와 개념 부족을 구분해 복습합니다.'},
+  {key:'english', label:'영어', pattern:/영어|영단어|어휘|문법/,
+   focus:'어휘·문법·독해의 연결', advice:'어휘와 문장 구조를 확인하고, 학습한 내용을 독해와 표현에 적용하는 과정을 점검합니다.'},
+  {key:'korean', label:'국어', pattern:/국어|독해력|문해력/,
+   focus:'글의 핵심과 근거를 파악하는 독해', advice:'글의 중심 생각과 근거를 찾고, 학생이 자신의 말로 내용을 정리하도록 돕습니다.'},
+  {key:'science', label:'과학', pattern:/과학|물리|화학|생명과학|지구과학/,
+   focus:'과학 개념과 현상의 연결', advice:'용어를 암기하는 데 그치지 않고, 개념을 실제 현상과 문제 상황에 연결합니다.'},
+  {key:'coding', label:'코딩', pattern:/코딩|프로그래밍|파이썬|스크래치/,
+   focus:'작은 프로젝트를 통한 문제 해결', advice:'기초 문법을 익힌 뒤 간단한 프로젝트를 만들며 오류를 찾고 수정하는 과정을 연습합니다.'}
+];
+const gradeFocus = {
+  elementary:'기초 개념과 학습 습관을 차근차근 점검합니다.',
+  middle:'학교 진도와 취약 개념, 복습 계획을 함께 확인합니다.',
+  high:'학교 내신과 학습 목표에 맞춰 개념·적용·복습을 점검합니다.'
+};
+const allGuides = gradeDefs.flatMap(grade => subjectDefs.map(subject => ({
+  key:`${grade.key}-${subject.key}`, grade:grade.label, subject:subject.label,
+  focus:subject.focus, advice:`${gradeFocus[grade.key]} ${subject.advice}`
+})));
+const legacyGuideKeys = new Set(['middle-math','middle-english','elementary-math','high-english']);
 function classifyPost(p) {
-  const label = String(p.title || '') + ' ' + String(p.category || '');
-  const grade = /검정고시/.test(label) ? '검정고시' : /고3|수능|고등/.test(label) ? '고등학생' : /중학|중등/.test(label) ? '중학생' : /초등/.test(label) ? '초등학생' : '';
-  const subject = /수학|계산|오답/.test(label) ? '수학' : /영어|단어/.test(label) ? '영어' : /국어|독해/.test(label) ? '국어' : /과학/.test(label) ? '과학' : /코딩/.test(label) ? '코딩' : '';
-  return tutoringGuides.find(g => g.grade === grade && g.subject === subject) || null;
+  // 본문이 아니라 제목을 기준으로 분류합니다. 카테고리 '학습관리'만으로 과목을 추측하지 않습니다.
+  const title = String(p.title || '');
+  if (/검정고시/.test(title)) return null; // 검정고시는 별도 서비스 기준 검증 후 확대
+  const grade = gradeDefs.find(g => g.pattern.test(title));
+  const subjects = subjectDefs.filter(s => s.pattern.test(title));
+  if (!grade || subjects.length !== 1) return null;
+  return allGuides.find(g => g.key === `${grade.key}-${subjects[0].key}`) || null;
 }
+const guideCounts = new Map(allGuides.map(g => [g.key,0]));
+for (const p of posts) {
+  const g = classifyPost(p);
+  if (g) guideCounts.set(g.key, guideCounts.get(g.key)+1);
+}
+// 관련 글이 없는 조합은 얇은 페이지를 대량 생성하지 않습니다. 기존 4개 주소는 유지합니다.
+const tutoringGuides = allGuides.filter(g => guideCounts.get(g.key)>0 || legacyGuideKeys.has(g.key));
 function learningLinks(p) {
   const guide = classifyPost(p);
   const guideLink = guide
@@ -193,12 +224,12 @@ const tuition = {
 };
 const won = n => Number(n).toLocaleString('ko-KR')+'원';
 function guideHtml(g) {
-  const related = posts.filter(p => classifyPost(p)?.key === g.key).slice(0,6);
+  const related = posts.filter(p => classifyPost(p)?.key === g.key).slice(0,8);
   const title = `${g.grade} ${g.subject} 과외 안내 | 방문·화상 수업 비교 | 장쌤의과외교실`;
   const desc = `${g.grade} ${g.subject} 과외를 알아보는 학부모를 위한 학습 방향, 방문·화상 수업 비교와 주 2회 수업료 안내.`;
   const url = `${site}/tutoring/${g.key}.html`;
   const rows = (tuition[g.grade]||[]).map((pair,i) => `<tr><th scope="row">주 2회 ${[60,90,120][i]}분</th><td>${won(pair[0])}</td><td>${won(pair[1])}</td></tr>`).join('\n');
-  const links = related.length ? related.map(p => `<li><a href="../posts/${encodeURIComponent(p.slug)}.html">${esc(p.title)}</a></li>`).join('\n') : '<li>관련 교육정보를 준비하고 있습니다.</li>';
+  const links = related.length ? related.map(p => `<article class="related-card"><span class="related-tag">${esc(p.category || '교육정보')}</span><h3><a href="../posts/${encodeURIComponent(p.slug)}.html">${esc(p.title)}</a></h3><p>${esc(String(p.excerpt || plainText(p.body)).slice(0,125))}</p><a class="related-more" href="../posts/${encodeURIComponent(p.slug)}.html" aria-label="${esc(p.title)} 자세히 보기">게시물 읽기 →</a></article>`).join('\n') : '<p>이 과목과 학년에 해당하는 교육정보를 준비하고 있습니다.</p>';
   const graph = {'@context':'https://schema.org','@graph':[
     {'@type':'Service',name:`${g.grade} ${g.subject} 과외`,description:desc,provider:{'@type':'Organization',name:'장쌤의과외교실',url:site},url,serviceType:'방문 및 화상 과외'},
     {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'홈',item:site+'/'},{'@type':'ListItem',position:2,name:'과외 안내',item:site+'/'},{'@type':'ListItem',position:3,name:`${g.grade} ${g.subject} 과외`,item:url}]}
@@ -224,7 +255,14 @@ function guideHtml(g) {
     h1{font-size:clamp(27px,4vw,37px);line-height:1.35}h2{font-size:23px;margin:0 0 12px}p{margin:8px 0 14px}
     .hero{background:linear-gradient(125deg,#163d7c,#285fd0);color:white}.hero p{color:#edf4ff}
     .table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:420px}th,td{border-bottom:1px solid #e1e8f3;padding:13px;text-align:left}thead{background:#edf3ff}
-    ul{padding-left:23px}li{margin:9px 0}.cta{background:#183f80;color:white;text-align:center}.cta a{display:inline-block;background:white;color:#173b78;border-radius:12px;padding:12px 25px;font-weight:800;text-decoration:none}
+    ul{padding-left:23px}li{margin:9px 0}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+    .related-card{padding:20px;border:1px solid #dce5f3;border-radius:14px;background:#f8fbff}
+    .related-card h3{font-size:18px;line-height:1.5;margin:8px 0}
+    .related-card p{font-size:14px;color:#465d7c;line-height:1.65}
+    .related-tag{font-size:12px;font-weight:700;color:#2858a0}
+    .related-more{display:inline-block;margin-top:4px;font-size:14px;font-weight:700}
+    .cta{background:#183f80;color:white;text-align:center}.cta a{display:inline-block;background:white;color:#173b78;border-radius:12px;padding:12px 25px;font-weight:800;text-decoration:none}
     @media(max-width:600px){section{padding:20px}h2{font-size:20px}}
   </style>
   <script defer src="../analytics/visitor-tracker.js"></script>
@@ -241,7 +279,7 @@ function guideHtml(g) {
   <section><h2>방문 과외와 화상 과외 비교</h2><p><strong>방문 과외</strong>는 같은 공간에서 풀이 과정을 확인하고 지도받는 방식입니다.</p><p><strong>화상 과외</strong>는 이동 없이 온라인으로 수업하며 화면 공유 등으로 학습 내용을 확인하는 방식입니다.</p><p>어느 방식이 더 적합한지는 학생의 학습 습관과 가정 환경에 따라 달라집니다.</p></section>
   <section><h2>${esc(g.grade)} 주 2회 수업료</h2><div class="table-wrap"><table><thead><tr><th scope="col">수업시간</th><th scope="col">방문</th><th scope="col">화상</th></tr></thead><tbody>${rows}</tbody></table></div><p>※ 월 수업료 기준입니다. 고등학생 표는 1~2학년 기준이며 고3 금액은 별도 확인이 필요합니다.</p></section>
   <section><h2>학부모가 자주 묻는 질문</h2><details><summary>주 2회 수업으로 충분한가요?</summary><p>수업 외 복습 시간과 현재 학습 수준에 따라 달라집니다. 수업 횟수뿐 아니라 학습 계획을 함께 확인해 보세요.</p></details><details><summary>60분과 90분 중 어떤 수업이 적합할까요?</summary><p>집중 지속 시간과 다루어야 할 내용의 양에 따라 선택하는 것이 좋습니다.</p></details><details><summary>방문과 화상 중 무엇이 좋을까요?</summary><p>학습 습관과 피드백 방식, 수업 환경을 비교해 결정해 보세요.</p></details></section>
-  <section><h2>관련 교육정보</h2><p>실제 장쌤 교육정보 게시물로 바로 이동합니다.</p><ul>${links}</ul></section>
+  <section><h2>관련 교육정보</h2><p>관련 학년과 과목으로 분류된 실제 교육정보를 확인할 수 있습니다.</p><div class="related-grid">${links}</div></section>
   <section class="cta"><h2>우리 아이 학습 방향 상담</h2><p>학습 상황을 바탕으로 적합한 수업 방향을 안내합니다.</p><a href="../상담신청.html">상담 신청하기</a></section>
 </main>
 </body>
@@ -262,4 +300,4 @@ fs.writeFileSync(path.join(root,'sitemap.xml'),'<?xml version="1.0" encoding="UT
 // RSS
 const items=posts.slice(0,30).map(p=>`<item><title>${xml(p.title)}</title><link>${site}/posts/${encodeURIComponent(p.slug)}.html</link><guid>${site}/posts/${encodeURIComponent(p.slug)}.html</guid><pubDate>${new Date(`${p.date}T00:00:00+09:00`).toUTCString()}</pubDate><description>${xml(p.excerpt)}</description><category>${xml(p.category)}</category></item>`).join('\n');
 fs.writeFileSync(path.join(root,'rss.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>장쌤의과외교실 교육정보</title><link>${site}/blog.html</link><description>학생과 학부모를 위한 공부법과 교육정보</description><language>ko</language>${items}</channel></rss>\n`,'utf8');
-console.log(`[게시글 자동화 완료] 정적 게시글 ${posts.length}개 + sitemap.xml + rss.xml + 메인 최신글 생성 완료.`);
+console.log(`[게시글 자동화 완료] 게시글 ${posts.length}개, 과외 안내 ${tutoringGuides.length}개 생성, sitemap.xml + rss.xml 갱신.`);
