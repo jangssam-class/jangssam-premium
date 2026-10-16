@@ -43,6 +43,23 @@ function plainText(md='') {
     .replace(/\s+/g,' ')
     .trim();
 }
+// GEO/AEO: 기존 콘텐츠에 실제 서비스 페이지와 탐색 경로를 연결합니다.
+// 신규 게시글에도 빌드할 때 자동 적용됩니다. 기존 본문/FAQ는 변경하지 않습니다.
+function learningLinks(p) {
+  const label = String(p.title || '') + ' ' + String(p.category || '');
+  const grade = /검정고시/.test(label) ? '검정고시' : /고3|수능|고등/.test(label) ? '고등학생' : /중학|중등/.test(label) ? '중학생' : /초등/.test(label) ? '초등학생' : '학생';
+  const subject = /수학|계산|오답/.test(label) ? '수학' : /영어|단어/.test(label) ? '영어' : /국어|독해/.test(label) ? '국어' : /과학/.test(label) ? '과학' : /코딩/.test(label) ? '코딩' : '학습';
+  const title = `${grade} ${subject} 과외 안내`;
+  return `<section class="learning-links" aria-labelledby="learning-links-heading">
+    <h2 id="learning-links-heading">관련 과외·수업 안내</h2>
+    <p>이 글의 공부 방법을 실제 수업에 적용하고 싶다면, 수업 방식과 비용을 비교한 뒤 상담을 통해 학습 방향을 확인해 보세요.</p>
+    <ul>
+      <li><a href="../index.html#subject">${esc(title)} 및 과목별 안내</a></li>
+      <li><a href="../index.html#contact">수업료·상담 안내 확인</a></li>
+      <li><a href="../지역별과외찾기.html">지역별 과외 안내</a></li>
+    </ul>
+  </section>`;
+}
 function postHtml(p) {
   const autoSummary = String(p.aiSummary || p.excerpt || plainText(p.body).slice(0,220)).trim();
   const url=`${site}/posts/${encodeURIComponent(p.slug)}.html`;
@@ -78,6 +95,16 @@ function postHtml(p) {
   <meta property="og:image" content="${image}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../blog.css">
+  <style>
+  .post-breadcrumb{font-size:13px;line-height:1.7;color:#64748b;margin-bottom:20px;overflow-wrap:anywhere}
+  .post-breadcrumb a{color:#2867bd;text-decoration:none}
+  .learning-links{margin-top:35px;padding:24px;border:1px solid #dce7f6;border-radius:16px;background:#f5f9ff}
+  .learning-links h2{margin:0 0 12px;font-size:21px;color:#153d76}
+  .learning-links p{margin:0 0 12px;line-height:1.7}
+  .learning-links ul{margin:0;padding-left:22px;line-height:2}
+  .learning-links a{color:#155ac4;font-weight:700}
+  @media(max-width:600px){.learning-links{padding:18px}.learning-links h2{font-size:18px}}
+  </style>
   <link rel="icon" href="../이미지/favicon-32.png" type="image/png">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script>
   <script defer src="../analytics/visitor-tracker.js"></script>
@@ -101,6 +128,7 @@ function postHtml(p) {
 
 <main class="article-main">
   <article class="article-shell">
+    <nav class="post-breadcrumb" aria-label="현재 위치"><a href="../index.html">장쌤의 과외교실</a> &gt; <a href="../blog.html">교육정보</a> &gt; <span>${esc(p.title)}</span></nav>
 
     <header class="article-header">
       <span class="post-category">${esc(p.category)}</span>
@@ -117,6 +145,7 @@ function postHtml(p) {
       ${answerHtml}
       ${markdown(p.body)}
       ${faqHtml}
+      ${learningLinks(p)}
     </div>
 
   </article>
