@@ -180,7 +180,7 @@ function postHtml(p) {
       <span class="post-category">${esc(p.category)}</span>
       <h1>${esc(p.title)}</h1>
       <p class="article-excerpt">${esc(p.excerpt)}</p>
-      <div class="post-meta">${esc(p.date)} · 장쌤 교육정보</div>
+      <div class="post-meta">${esc(p.date)} · 장쌤의과외교실</div>
     </header>
 
     ${p.image?`<figure class="article-image">
@@ -395,6 +395,15 @@ fs.writeFileSync(indexPath,index,'utf8');
 // sitemap
 const staticUrls=[...indexedGuides.map(g => `/tutoring/${g.key}.html`),'/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
 const urls=[...staticUrls.map(u=>({loc:site+u,lastmod:new Date().toISOString().slice(0,10)})),...posts.map(p=>({loc:`${site}/posts/${encodeURIComponent(p.slug)}.html`,lastmod:p.modified||p.date}))];
+// Sitemap에 존재하지 않는 정적 페이지나 중복 주소가 섞이지 않도록 빌드 시 검사합니다.
+const seenUrls = new Set();
+for (const entry of urls) {
+  if (seenUrls.has(entry.loc)) throw new Error(`[사이트맵 검사 실패] 중복 URL: ${entry.loc}`);
+  seenUrls.add(entry.loc);
+  const pathname = decodeURIComponent(new URL(entry.loc).pathname);
+  const local = pathname.endsWith('/') ? path.join(root, pathname, 'index.html') : path.join(root, pathname);
+  if (!fs.existsSync(local)) throw new Error(`[사이트맵 검사 실패] 파일이 없는 URL: ${entry.loc}`);
+}
 fs.writeFileSync(path.join(root,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(u=>`  <url><loc>${xml(u.loc)}</loc><lastmod>${xml(u.lastmod)}</lastmod></url>`).join('\n')+'\n</urlset>\n','utf8');
 // RSS
 const items=posts.slice(0,30).map(p=>`<item><title>${xml(p.title)}</title><link>${site}/posts/${encodeURIComponent(p.slug)}.html</link><guid>${site}/posts/${encodeURIComponent(p.slug)}.html</guid><pubDate>${new Date(`${p.date}T00:00:00+09:00`).toUTCString()}</pubDate><description>${xml(p.excerpt)}</description><category>${xml(p.category)}</category></item>`).join('\n');
