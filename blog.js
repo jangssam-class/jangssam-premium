@@ -34,7 +34,7 @@
         <span class="post-category">${escapeHtml(post.category)}</span>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <div class="post-meta">${formatDate(post.date)} · 장쌤 교육정보</div>
+        <div class="post-meta">${formatDate(post.date)} · 장쌤의과외교실</div>
       </div>
     </a>`;
 
