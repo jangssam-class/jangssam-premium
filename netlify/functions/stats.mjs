@@ -120,8 +120,37 @@ export default async (request) => {
     pageViews: Number(daily[index].pageViews || 0)
   }));
 
+  const sources = ['네이버', '구글', 'ChatGPT', 'Perplexity', 'Gemini', '외부 사이트', '직접 방문·기타'];
+  const pageIndex = await readJson(store, 'detail/page-index', []);
+  const pageList = Array.isArray(pageIndex) ? pageIndex.slice(0, 500) : [];
+  const [sourceCounts, pageCounts, coverage] = await Promise.all([
+    Promise.all(sources.map(source => Promise.all(days.map(day =>
+      readJson(store, `detail/source/${day}/${encodeURIComponent(source)}`, { visitors: 0, pageViews: 0 })
+    )))),
+    Promise.all(pageList.map(path => Promise.all(days.map(day =>
+      readJson(store, `detail/page/${day}/${Buffer.from(path).toString('base64url')}`, { visitors: 0, pageViews: 0 })
+    )))),
+    Promise.all(days.map(day => readJson(store, `detail/covered/${day}`, { visitors: 0, pageViews: 0 })))
+  ]);
+  const sum = values => values.reduce((acc, v) => ({ visitors: acc.visitors + Number(v.visitors || 0), pageViews: acc.pageViews + Number(v.pageViews || 0) }), { visitors: 0, pageViews: 0 });
+  const sourceBreakdown = sources.map((source, i) => ({ source, ...sum(sourceCounts[i]) }));
+  const popularPages = pageList.map((path, i) => ({ path, ...sum(pageCounts[i]) }))
+    .sort((a, b) => b.pageViews - a.pageViews).slice(0, 10);
+  const aiNames = ['ChatGPT', 'Perplexity', 'Gemini'];
+  const aiResults = await Promise.all(aiNames.flatMap(source => pageList.map(async path => {
+    const key = Buffer.from(path).toString('base64url');
+    const values = await Promise.all(days.map(day => readJson(store, `detail/ai/${day}/${encodeURIComponent(source)}/${key}`, { visitors: 0, pageViews: 0 })));
+    return { source, path, ...sum(values) };
+  })));
+  const aiPages = aiResults.filter(x => x.pageViews > 0).sort((a,b) => b.pageViews - a.pageViews).slice(0, 10);
+  const aiDaily = await Promise.all(days.map(async day => {
+    const values = await Promise.all(aiNames.map(source => readJson(store, `detail/source/${day}/${encodeURIComponent(source)}`, { visitors: 0, pageViews: 0 })));
+    return { date: day, ...Object.fromEntries(aiNames.map((source,i) => [source, Number(values[i].pageViews || 0)])) };
+  }));
   return json({
     ok: true,
+    ai: { pages: aiPages, daily: aiDaily, note: '관심 주제는 방문 페이지 경로를 바탕으로 한 추정이며 실제 ChatGPT 질문 원문이 아닙니다.' },
+    detail: { sources: sourceBreakdown, popularPages, coveredPageViews: coverage.reduce((n, d) => n + Number(d.pageViews || 0), 0), period: '최근 7일' },
     today: history[history.length - 1],
     total: {
       visitors: Number(total.visitors || 0),

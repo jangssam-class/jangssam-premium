@@ -21,7 +21,9 @@
 
   const payload = JSON.stringify({
     visitorId,
-    path: location.pathname
+    path: location.pathname,
+    referrer: document.referrer || '',
+    campaignSource: new URLSearchParams(location.search).get('utm_source') || ''
   });
 
   const endpoint = '/.netlify/functions/visit';

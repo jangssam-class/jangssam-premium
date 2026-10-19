@@ -69,3 +69,16 @@ export async function addVisit(store, key, visitorDelta) {
 
   throw new Error('통계 저장 충돌이 반복되었습니다.');
 }
+
+export async function registerPage(store, path) {
+  const key = 'detail/page-index';
+  for (let i = 0; i < 8; i++) {
+    const old = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+    const paths = Array.isArray(old?.data) ? old.data : [];
+    if (paths.includes(path) || paths.length >= 500) return;
+    const result = old
+      ? await store.setJSON(key, [...paths, path], { onlyIfMatch: old.etag })
+      : await store.setJSON(key, [path], { onlyIfNew: true });
+    if (result.modified) return;
+  }
+}
