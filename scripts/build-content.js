@@ -392,9 +392,29 @@ const brandMarkers = /<!-- JJ_OFFICIAL_SERVICE_START -->[\s\S]*?<!-- JJ_OFFICIAL
 if (brandMarkers.test(index)) index = index.replace(brandMarkers, brandBlock);
 else if (index.includes('</main>')) index = index.replace('</main>', brandBlock + '\n</main>');
 fs.writeFileSync(indexPath,index,'utf8');
+// 전국 상세 과외 페이지: 실제 존재하는 HTML만 사이트맵에 자동 등록합니다.
+// 하위 폴더도 탐색하며, 생성된 사이트맵을 다시 빌드해도 중복되지 않습니다.
+const nationwideDir = path.join(root, 'nationwide');
+function findNationwidePages(dir, prefix = '/nationwide') {
+  if (!fs.existsSync(dir)) return [];
+  const found = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      found.push(...findNationwidePages(fullPath, `${prefix}/${encodeURIComponent(entry.name)}`));
+    } else if (entry.isFile() && /\.html?$/i.test(entry.name)) {
+      // index.html은 폴더 URL로 정규화하지 않고 실제 파일 주소를 사용합니다.
+      found.push(`${prefix}/${encodeURIComponent(entry.name)}`);
+    }
+  }
+  return found;
+}
+const nationwideUrls = findNationwidePages(nationwideDir).sort();
+console.log(`[사이트맵] 전국 상세 과외 페이지 ${nationwideUrls.length}개 발견`);
 // sitemap
 const staticUrls=[...indexedGuides.map(g => `/tutoring/${g.key}.html`),'/','/blog.html','/화상수업.html','/지역별과외찾기.html','/상담신청.html','/regions/','/regions/seoul-tutoring.html','/regions/gyeonggi-tutoring.html','/regions/incheon-tutoring.html','/regions/busan-tutoring.html','/regions/daegu-tutoring.html','/regions/daejeon-tutoring.html','/regions/gwangju-tutoring.html','/regions/ulsan-tutoring.html','/regions/online-tutoring.html'];
-const urls=[...staticUrls.map(u=>({loc:site+u,lastmod:new Date().toISOString().slice(0,10)})),...posts.map(p=>({loc:`${site}/posts/${encodeURIComponent(p.slug)}.html`,lastmod:p.modified||p.date}))];
+const urls=[...new Set([...staticUrls, ...nationwideUrls])].map(u=>({loc:site+u,lastmod:new Date().toISOString().slice(0,10)})).concat(posts.map(p=>({loc:`${site}/posts/${encodeURIComponent(p.slug)}.html`,lastmod:p.modified||p.date})));
 // Sitemap에 존재하지 않는 정적 페이지나 중복 주소가 섞이지 않도록 빌드 시 검사합니다.
 const seenUrls = new Set();
 for (const entry of urls) {
