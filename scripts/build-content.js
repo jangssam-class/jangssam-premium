@@ -111,7 +111,10 @@ function postHtml(p) {
   const url=`${site}/posts/${encodeURIComponent(p.slug)}.html`;
   const image=p.image ? (p.image.startsWith('http')?p.image:`${site}${p.image.startsWith('/')?'':'/'}${p.image}`) : `${site}/이미지/seo-share.png`;
   const articleSchema={"@type":"Article",headline:p.title,description:p.excerpt,datePublished:p.date,dateModified:p.modified||p.date,mainEntityOfPage:url,image:[image],author:{"@type":"Organization",name:"장쌤의과외교실"},publisher:{"@type":"EducationalOrganization",name:"장쌤의과외교실","logo":{"@type":"ImageObject","url":`${site}/이미지/로고.png`}}};
-  const breadcrumbSchema={"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"홈",item:site+"/"},{"@type":"ListItem",position:2,name:"교육정보",item:site+"/blog.html"},{"@type":"ListItem",position:3,name:p.title,item:url}]};
+  const categoryGuide = classifyPost(p);
+  const categoryLabel = categoryGuide ? `${categoryGuide.grade} ${categoryGuide.subject} 과외` : '교육정보';
+  const categoryUrl = categoryGuide ? `${site}/tutoring/${categoryGuide.key}.html` : `${site}/blog.html`;
+  const breadcrumbSchema={"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"홈",item:site+"/"},{"@type":"ListItem",position:2,name:categoryLabel,item:categoryUrl},{"@type":"ListItem",position:3,name:p.title,item:url}]};
   const fixedFaqItems=[1,2,3,4,5].map(i=>({
     question:String(p[`faq${i}Question`]||'').trim(),
     answer:String(p[`faq${i}Answer`]||'').trim()
@@ -174,7 +177,7 @@ function postHtml(p) {
 
 <main class="article-main">
   <article class="article-shell">
-    <nav class="post-breadcrumb" aria-label="현재 위치"><a href="../index.html">장쌤의 과외교실</a> &gt; <a href="../blog.html">교육정보</a> &gt; <span>${esc(p.title)}</span></nav>
+    <nav class="post-breadcrumb" aria-label="현재 위치"><a href="../index.html">장쌤의과외교실</a> &gt; <a href="${categoryGuide ? `../tutoring/${categoryGuide.key}.html` : `../blog.html`}">${esc(categoryLabel)}</a> &gt; <span>${esc(p.title)}</span></nav>
 
     <header class="article-header">
       <span class="post-category">${esc(p.category)}</span>
